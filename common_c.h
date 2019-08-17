@@ -9,6 +9,7 @@
 #include<dos.h>
 #include"NMOUSE.H"
 #include"interface.h"
+#include"KEYBOARD.H"
 #include"struct_c.h"
 #include"hz_c.h"
 
