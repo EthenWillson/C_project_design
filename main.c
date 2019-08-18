@@ -1,7 +1,7 @@
 #include"common_c.h"
 void main()
 {
-	int key=0;
+	//int key=0;
     int judge = 1;    //判断应该调用那些函数的变量
 	setuser person;    //表示当前用户的变量
 	setuser *head = NULL;    //用户链表的头节点
@@ -23,7 +23,7 @@ void main()
 		printf("\nout of memory");
 		return ;
 	}
-	//createuserlist(head);//创建用户链表，记得要释放
+	//createuserlist_c(head);//创建用户链表，记得要释放
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -31,10 +31,19 @@ void main()
 		{
 		case 1: //登录
 		    //Drawdetail_fj();
-			Drawloginscreen();
+			Drawloginscreen_c(&person);
 			// judge = personlogin(head, person.accounts, person.code);
+			judge=turnTo_c(&person);
 			break;
 			
+		case 2: //管理员调度中心	
+			DrawControlSystem_c(&person);
+			//judge = personregister(head, person.accounts, person.code);
+			break;
+		case 3: //普通用户	
+			// DrawControlSystem_c(&person)
+			// judge = personregister(head, person.accounts, person.code);
+			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();
 		// 	judge = personregister(head, person.accounts, person.code);

@@ -5,24 +5,25 @@
 #include"interface.h"
 #include"KEYBOARD.H"
 #include"common_c.h"
-/**********************************************************
-以下为开始界面的相关函数
-**********************************************************/
+void Drawloginscreen_c(setuser *person);//开始界面函数
 void Btn_change_manager_c();
 void Btn_change_user_c();
 void click_user_c(int color);
 void click_pass_c(int color);
 void click_limit_c(int color);
 void clear_effect_c(int manager);
-void Drawplane();
-void Drawloginscreen()
+void Drawplane();//画飞机函数
+void DrawControlSystem_c(setuser *person);//管理员调控中心函数
+/**********************************************************
+以下为开始界面的相关函数
+**********************************************************/
+void Drawloginscreen_c(setuser *person)
 {
 	int manager=0;//是否点击管理员按钮
 	// int temp;//用于吸收键盘缓冲区的变量
     int buttons,mx,my;//鼠标相关变量
 	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	char arr[]="asdfhasjkdh";
 	int choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
 	setManager managerTemp;//缓存输入的信息
 	//初始化
@@ -149,6 +150,49 @@ void Drawloginscreen()
 				if(strlen(managerTemp.class)<5 && manager==1)
 				{
 					click_limit_c(RED);//点击密码加红框
+				}
+				// if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
+				// {
+				// 	if(manager==0){strcpy(managerTemp.class,"00000");}
+				// 	register_c(managerTemp);
+				// }
+			}
+			else if(mx >= 410 && mx <= 590 && my >= 310 && my <= 330 && buttons)//点击注册按钮
+			//bar(410,270,590,290);//登录框
+			//bar(410,310,590,330);//注册框
+			{
+				clear_effect_c(manager);//清除加框效果
+				if(strlen(managerTemp.code)<6)
+				{
+					click_pass_c(RED);//密码加红框
+					puthz(450, 175, "密码不得少于6位", 16, 16, RED);
+				}
+				if(strlen(managerTemp.accounts)<6)
+				{
+					click_user_c(RED);//账号加红框
+					puthz(450, 105, "账号名不得少于6位", 16, 16, RED);
+				}
+				if(strlen(managerTemp.class)<5 && manager==1)
+				{
+					click_limit_c(RED);//权限码加红框
+				}
+				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
+				{
+					if(manager==0){strcpy(managerTemp.class,"00000");}
+					if(strcmp(managerTemp.class,"cjwzs")!=0 && strcmp(managerTemp.class,"00000")!=0)//权限码有误
+					{
+						click_limit_c(RED);//权限码加红框
+					}
+					else
+					{
+						strcpy(person->accounts,managerTemp.accounts);
+						strcpy(person->code,managerTemp.code);
+						strcpy(person->class,managerTemp.class);
+						register_c(managerTemp);//注册新用户
+						return;
+					}
+					
+					
 				}
 			}
 			else
@@ -443,5 +487,22 @@ void Drawplane()
 	
 }
 /**********************************************************
-以下为界面的相关函数
+以下为管理员界面的相关函数
 **********************************************************/
+void DrawControlSystem_c(setuser *person)
+{
+	int buttons,mx,my;//鼠标相关变量
+	//char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
+	//setManager managerTemp;//缓存输入的信息
+	//初始化
+	//鼠标初始化
+	mouseInit(&mx, &my, &buttons);
+
+    cleardevice();
+	setbkcolor(DARKGRAY);
+	outtextxy(510,238,person->class);
+	while(1)
+	{
+		newxy(&mx, &my, &buttons);
+	}
+}
