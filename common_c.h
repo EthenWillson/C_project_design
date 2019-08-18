@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<conio.h>
-#include<conio.h>
+#include<string.h>
 #include<graphics.h>
 #include<dos.h>
 #include"NMOUSE.H"
@@ -12,5 +12,6 @@
 #include"KEYBOARD.H"
 #include"struct_c.h"
 #include"hz_c.h"
+#include"register_c.h"
 
 #endif

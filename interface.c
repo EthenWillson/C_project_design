@@ -1,3 +1,7 @@
+/**********************************************************
+此文件专门存放界面相关的函数
+作者：陈俊玮
+**********************************************************/
 #include"interface.h"
 #include"KEYBOARD.H"
 #include"common_c.h"
@@ -6,9 +10,9 @@
 **********************************************************/
 void Btn_change_manager_c();
 void Btn_change_user_c();
-void click_user_c();
-void click_pass_c();
-void click_limit_c();
+void click_user_c(int color);
+void click_pass_c(int color);
+void click_limit_c(int color);
 void clear_effect_c(int manager);
 void Drawplane();
 void Drawloginscreen()
@@ -18,10 +22,16 @@ void Drawloginscreen()
     int buttons,mx,my;//鼠标相关变量
 	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	// char arr[]="asdfhasjkdh";
+	char arr[]="asdfhasjkdh";
 	int choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
 	setManager managerTemp;//缓存输入的信息
-	mouseInit(&mx, &my, &buttons);  //鼠标初始化
+	//初始化
+	//managerTemp初始化
+	managerTemp.accounts[0]='\0';
+	managerTemp.code[0]='\0';
+	managerTemp.class[0]='\0';
+	//鼠标初始化
+	mouseInit(&mx, &my, &buttons);
 
     cleardevice();
 	setbkcolor(WHITE);
@@ -90,6 +100,7 @@ void Drawloginscreen()
 				choose=0;
 				clear_effect_c(manager);//清除加框效果
 				Btn_change_manager_c();//点击管理员按钮后按钮样式变换
+				//backgroundChange(*mx, *my, 500, 50, 600 , 82);
 			}
 			else if(mx >= 400 && mx <= 500 && my >= 50&& my <= 82 && buttons)//点击用户按钮
 			{
@@ -102,7 +113,7 @@ void Drawloginscreen()
 			{
 				choose=1;
 				clear_effect_c(manager);//清除加框效果
-				click_user_c();//点击账号加绿
+				click_user_c(GREEN);//点击账号加绿
 
 				//输入账号
 				//outtextxy(410,130,arr);//试验位置
@@ -112,13 +123,33 @@ void Drawloginscreen()
 			{
 				choose=2;
 				clear_effect_c(manager);//清除加框效果
-				click_pass_c();//点击密码加绿框
+				click_pass_c(GREEN);//点击密码加绿框
 			}
 			else if(mx >= 510 && mx <= 590 && my >= 235&& my <= 265 && buttons && manager==1)//点击权限码框
 			{
 				choose=3;
 				clear_effect_c(manager);//清除加框效果
-				click_limit_c();//点击权限码加绿框
+				click_limit_c(GREEN);//点击权限码加绿框
+			}
+			else if(mx >= 410 && mx <= 590 && my >= 270 && my <= 290 && buttons)//点击登陆按钮
+			//bar(410,270,590,290);//登录框
+			//bar(410,310,590,330);//注册框
+			{
+				clear_effect_c(manager);//清除加框效果
+				if(strlen(managerTemp.code)<6)
+				{
+					click_pass_c(RED);//点击密码加红框
+					puthz(450, 175, "密码不得少于6位", 16, 16, RED);
+				}
+				if(strlen(managerTemp.accounts)<6)
+				{
+					click_user_c(RED);//点击密码加红框
+					puthz(450, 105, "账号名不得少于6位", 16, 16, RED);
+				}
+				if(strlen(managerTemp.class)<5 && manager==1)
+				{
+					click_limit_c(RED);//点击密码加红框
+				}
 			}
 			else
 			{
@@ -136,51 +167,101 @@ void Drawloginscreen()
 		{
 			key = 0;//重置键值并得到新键值
 			temp[0]='\0';
-			if (kbhit() != 0)
+			if (kbhit() != 0)//如果检测到键盘输入
 			{
 				key = bioskey(0);
-				i[0]++;
-			}
-			//如果按了回删键 
-			if (key == 0xe08 && i[0]>0)
-			{
-				setfillstyle(1,RED);
-				bar(410+(i[0]-1)*12,133,413+i[0]*12,157);//输入框1账号
-				i[0]=i[0]-2;
-				if(i[0]<0){i[0]=0;}
-			}
-			else if(i[0]>=0 && i[0]<11)
-			{
-				settextstyle(SMALL_FONT,HORIZ_DIR,7);
-				setcolor(BLUE);
-				temp[0]=searchKeyValue(key);
-				outtextxy(410+i[0]*12,133,temp);
+				if(key != 0xe08 && i[0]>=0 && i[0]<12)//如果输入不是退格键
+				{
+					if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
+					{
+						i[0]++;//账户名字符数加一
+						setfillstyle(1,WHITE);
+						bar(410+i[0]*12,133,410+(i[0]+1)*12,157);
+						settextstyle(SMALL_FONT,HORIZ_DIR,7);
+						setcolor(BLUE);
+						temp[0]=searchKeyValue(key);
+						managerTemp.accounts[i[0]-1]=temp[0];//账号名字符缓存
+						managerTemp.accounts[i[0]]='\0';
+						outtextxy(410+i[0]*12,133,temp);
+					}
+					
+				}
+				else if (key == 0xe08 && i[0]>0)//如果按了回删键 
+				{
+					setfillstyle(1,WHITE);
+					bar(410+i[0]*12,133,410+(i[0]+1)*12,157);//输入框1账号
+					managerTemp.accounts[i[0]-1]='\0';
+					i[0]--;//账号字符数减1
+				}
 			}
 			
 		}
-		else if(choose==2 && i[1]>=0 && i[1]<11)//选中密码框
+		else if(choose==2)//选中密码框
 		{
 			key = 0;//重置键值并得到新键值
 			temp[0]='\0';
-			if (kbhit() != 0)
+			if (kbhit() != 0)//如果检测到键盘输入
 			{
 				key = bioskey(0);
-				i[1]++;
+				if(key != 0xe08 && i[1]>=0 && i[1]<12)//如果输入不是退格键
+				{
+					if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
+					{
+						i[1]++;//密码字符数加一
+						setfillstyle(1,WHITE);
+						bar(410+i[1]*12,203,410+(i[1]+1)*12,227);
+						settextstyle(SMALL_FONT,HORIZ_DIR,7);
+						setcolor(BLUE);
+						temp[0]=searchKeyValue(key);
+						managerTemp.code[i[1]-1]=temp[0];//密码字符缓存
+						managerTemp.code[i[1]]='\0';
+						temp[0]='*';//把密码遮住
+						outtextxy(410+i[1]*12,203,temp);
+					}
+					
+				}
+				else if (key == 0xe08 && i[1]>0)//如果按了回删键 
+				{
+					setfillstyle(1,WHITE);
+					bar(410+i[1]*12,203,410+(i[1]+1)*12,227);
+					managerTemp.accounts[i[1]-1]='\0';
+					i[1]--;//密码字符数减1
+				}
 			}
-			temp[0]=searchKeyValue(key);
-			outtextxy(410+i[1]*11,203,temp);
+			
 		}
-		else if(choose==3 && manager==1 && i[2]>=0 && i[2]<5)//选中权限码框
+		else if(choose==3)//选中权限码框
 		{
 			key = 0;//重置键值并得到新键值
 			temp[0]='\0';
-			if (kbhit() != 0)
+			if (kbhit() != 0)//如果检测到键盘输入
 			{
 				key = bioskey(0);
-				i[2]++;
+				if(key != 0xe08 && i[2]>=0 && i[2]<5)//如果输入不是退格键
+				{
+					if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
+					{
+						i[2]++;//权限字符数加一
+						setfillstyle(1,WHITE);
+						bar(510+i[2]*12,238,513+(i[2]+1)*12,262);
+						settextstyle(SMALL_FONT,HORIZ_DIR,7);
+						setcolor(BLUE);
+						temp[0]=searchKeyValue(key);
+						managerTemp.class[i[2]-1]=temp[0];//密码字符缓存
+						managerTemp.class[i[2]]='\0';
+						outtextxy(510+i[2]*12,238,temp);
+					}
+					
+				}
+				else if (key == 0xe08 && i[2]>0)//如果按了回删键 
+				{
+					setfillstyle(1,WHITE);
+					bar(510+i[2]*12,238,513+(i[2]+1)*12,262);
+					managerTemp.accounts[i[2]-1]='\0';
+					i[2]--;//密码字符数减1
+				}
 			}
-			temp[0]=searchKeyValue(key);
-			outtextxy(510+i[2]*11,238,temp);
+			
 		}
 		else if(choose==0)//没选中
 		{
@@ -217,24 +298,24 @@ void Btn_change_user_c()//点击用户按钮后按钮样式变换
 	bar(407,232,593,268);//涂掉管理员权限码
 }
 
-void click_user_c()//点击账号加绿框
+void click_user_c(int color)//点击账号加框
 {
 	int kuang[]={410,130,590,130,590,160,410,160,410,130};
-	setcolor(GREEN);
+	setcolor(color);
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	drawpoly(5,kuang);
 }
-void click_pass_c()//点击密码加绿框
+void click_pass_c(int color)//点击密码加框
 {
 	int kuang[]={410,200,590,200,590,230,410,230,410,200};
-	setcolor(GREEN);
+	setcolor(color);
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	drawpoly(5,kuang);
 }
-void click_limit_c()//点击权限码加绿框
+void click_limit_c(int color)//点击权限码加框
 {
 	int kuang[]={510,235,590,235,590,265,510,265,510,235};
-	setcolor(GREEN);
+	setcolor(color);
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	drawpoly(5,kuang);
 }
@@ -251,20 +332,12 @@ void clear_effect_c(int manager)//清除加框效果
 	{
 		drawpoly(5,kuang3);
 	}
+	//抹掉提示信息
+	setfillstyle(1,DARKGRAY);
+	bar(450,170,595,191);//验证码输入框
+	bar(450,100,595,121);
 }
-// void input_c(int x,int y)//输入显示函数
-// {
-// 	int key = 0;//重置键值并得到新键值
-// 	char temp[2]={'\0','\0'};
-// 	temp[0]='\0';
-//     if (kbhit() != 0)
-//     {
-//         key = bioskey(0);
-//         i++;
-//     }
-//     temp[0]=searchKeyValue(key);
-//     outtextxy(145+i*10,55,temp);
-// }
+
 /**********************************************************
 Function:  Drawplane
 Description：	画飞机函数函数
