@@ -22,29 +22,75 @@ void register_c(setManager managertemp)//注册函数：把注册用户写入文
     fputc('$',fp);//$标志用户余额
     fclose(fp);
 }
-int turnTo_c(setuser *person)//跳转函数
+/****************************************
+Function:  turnTo_c
+Description:根据传入信息跳转到其它页面
+Attention:
+*****************************************/
+int turnTo_c(setuser *person,int direct)//跳转函数
 {
-    if(strcmp(person->class,"cjwzs")==0)//权限码为cjwzs（陈俊玮最帅）的人员将进入调度系统
+    if(direct==-1)//按情况判断
     {
-        return 2;
+        if(strcmp(person->class,"cjwzs")==0)//权限码为cjwzs（陈俊玮最帅）的人员将进入调度系统
+        {
+            return 2;
+        }
+        else if(strcmp(person->class,"00000")==0)//普通用户权限码00000，进入普通用户界面
+        {
+            return 3;
+        }
+        else if(strcmp(person->class,"cjwzs")!=0 && strcmp(person->class,"00000")!=0)//权限码有误
+        {
+            return 1;
+        }
     }
-    else if(strcmp(person->class,"00000")==0)//普通用户权限码00000，进入普通用户界面
+    else//直接跳转
     {
-        return 3;
+        return direct;
     }
-    else if(strcmp(person->class,"cjwzs")!=0 && strcmp(person->class,"00000")!=0)//权限码有误
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return -1;
 }
-// void login_c(setManager managertemp)//登入函数
-// {
-
-// }
+void login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
+{
+    setuser *p;
+    // closegraph();
+    for(p=head;p=p->next;p->next==NULL)
+    {
+        if(strcmp(managertemp.accounts,p->accounts)==0 && strcmp(managertemp.code,p->code)==0 )//密码验证成功
+        {
+            // if(managertemp.class=="cjwzs")//管理员
+            // {
+            //     person=p;
+            //     return;
+            // }
+            // printf("check!");
+            settextstyle(SMALL_FONT,HORIZ_DIR,7);
+		    setcolor(BLUE);
+            //outtextxy(50,300,"check");
+            person=p;
+            outtextxy(50,300,p->accounts);
+            outtextxy(50,250,person->accounts);
+            outtextxy(50,350,person->class);
+            return;
+            // closegraph();
+            // printf("accounts:%s\ncode:%s\nclass:%s\n",p->accounts,p->code,p->class);
+		    // printf("\n");
+            // return;
+        }
+        // printf("accounts:%s\ncode:%s\nclass:%s\n",p->accounts,p->code,p->class);
+		// printf("\n");
+    }
+    strcpy(person->class,"11111");
+    //closegraph();
+    // p=head;
+    // printf("accounts:%s\ncode:%s\nclass:%s\n",p->accounts,p->code,p->class);
+}
+/****************************************
+Function:  createuserlist_c
+Description:根据文件中存储的用户信息创建链表
+Attention:文件必须按要求格式化书写;
+            一定要把指针的地址传过来
+*****************************************/
 void createuserlist_c(setuser *head)//创建用户链表
 {
     FILE *fp=NULL; //打开文件的指针
@@ -60,7 +106,7 @@ void createuserlist_c(setuser *head)//创建用户链表
 	    closegraph();
 	    printf("Can't open userinf.txt");
 	    //getchar();
-	    exit(1);
+	    //exit(1);
     }
     while(!feof(fp))//文件读取，如果遇到文件结束返回值是1，否则为0
 	{
@@ -72,8 +118,8 @@ void createuserlist_c(setuser *head)//创建用户链表
 			{
 				closegraph();
 				printf("\n OUT OF MEMORY!");
-		       // getchar();
-		        exit(1);
+		        // getchar();
+		        //exit(1);
 		    }
             now=now->next;
 
@@ -93,7 +139,7 @@ void createuserlist_c(setuser *head)//创建用户链表
         else if(cha=='$')      //表示权限码的结束，金额的开始//数字如何
 	    {
 	        *p='\0';   
-            fprintf(fp,"%d",now->money);     
+            // fprintf(fp,"%d",now->money);     
 	    }
 	    else if(cha!=' '&&cha!='\n')       //将对应的账户串或密码串装入链表中
 	    {
@@ -101,4 +147,27 @@ void createuserlist_c(setuser *head)//创建用户链表
 	        p++;
 	    }
     }
+    // closegraph();
+    // printf("%s\n%s\n%s\n\n",now->accounts,now->code,now->class);
+}
+/****************************************
+Function:  freeuserlist_c
+Description:释放链表的内存空间并将头指针置为NULL
+Attention:文件必须按要求格式化书写;
+            一定要把指针的地址传过来
+*****************************************/
+void freeuserlist_c(setuser **head)
+{
+   setuser *per= *head;
+   setuser *cur=(*head)->next;
+    if(*head==NULL)
+        return ;
+    while(cur!=NULL)
+    {
+        free(per);
+	    per=cur;
+	    cur=cur->next;
+    }
+	free(per);
+	*head=NULL;
 }

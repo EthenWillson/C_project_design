@@ -9,6 +9,8 @@ void main()
     int buttons,mx,my;//鼠标相关变量
 	int driver = VGA;
 	int mode = VGAHI;
+	//char *p=NULL;
+	setuser *pt = NULL;
 	person.accounts[0] = '\0';//初始化
 	person.code[0] = '\0';//初始化
 	//person.Routes=NULL;
@@ -23,22 +25,30 @@ void main()
 		printf("\nout of memory");
 		return ;
 	}
-	//createuserlist_c(head);//创建用户链表，记得要释放
+	createuserlist_c(head);//创建用户链表，记得要释放
+	// closegraph();
+	// for(pt=head->next;pt=pt->next;pt->next==NULL)
+	// {
+	// 	printf("accounts:%s\ncode:%s\nclass:%s\n",pt->accounts,pt->code,pt->class);
+	// 	printf("\n");
+	// }
+	// return ;
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
 		switch (judge)
 		{
+		case 0://退出程序
+			freeuserlist_c(&head);//释放用户链表
+			closegraph();
+		 	//free(person.Routes);
+			return;
 		case 1: //登录
-		    //Drawdetail_fj();
-			Drawloginscreen_c(&person);
-			// judge = personlogin(head, person.accounts, person.code);
-			judge=turnTo_c(&person);
+			Drawloginscreen_c(&person,&judge,head->next);
 			break;
 			
 		case 2: //管理员调度中心	
-			DrawControlSystem_c(&person);
-			//judge = personregister(head, person.accounts, person.code);
+			DrawControlSystem_c(head->next,&judge);
 			break;
 		case 3: //普通用户	
 			// DrawControlSystem_c(&person)

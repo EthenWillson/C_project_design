@@ -5,7 +5,7 @@
 #include"interface.h"
 #include"KEYBOARD.H"
 #include"common_c.h"
-void Drawloginscreen_c(setuser *person);//开始界面函数
+void Drawloginscreen_c(setuser *person,int *judge,setuser *head);//开始界面函数
 void Btn_change_manager_c();
 void Btn_change_user_c();
 void click_user_c(int color);
@@ -13,11 +13,11 @@ void click_pass_c(int color);
 void click_limit_c(int color);
 void clear_effect_c(int manager);
 void Drawplane();//画飞机函数
-void DrawControlSystem_c(setuser *person);//管理员调控中心函数
+void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心函数
 /**********************************************************
 以下为开始界面的相关函数
 **********************************************************/
-void Drawloginscreen_c(setuser *person)
+void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 {
 	int manager=0;//是否点击管理员按钮
 	// int temp;//用于吸收键盘缓冲区的变量
@@ -34,6 +34,7 @@ void Drawloginscreen_c(setuser *person)
 	//鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 
+	//绘制登录界面
     cleardevice();
 	setbkcolor(WHITE);
 	Drawplane();	
@@ -93,7 +94,8 @@ void Drawloginscreen_c(setuser *person)
 		{
 			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
 			{
-				exit(1);
+				*judge=turnTo_c(person,0);
+				return;
 			}
 			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82 && buttons)//点击管理员按钮
 			{
@@ -151,15 +153,20 @@ void Drawloginscreen_c(setuser *person)
 				{
 					click_limit_c(RED);//点击密码加红框
 				}
-				// if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
-				// {
-				// 	if(manager==0){strcpy(managerTemp.class,"00000");}
-				// 	register_c(managerTemp);
-				// }
+				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
+				{
+					if(manager==0){strcpy(managerTemp.class,"00000");}
+					login_c(managerTemp,head->next,person);//登陆
+					outtextxy(150,250,person->accounts);//p没传到person里
+            		outtextxy(150,350,person->class);
+					closegraph();
+					// printf("accounts:%s\ncode:%s\nclass:%s\n",person->accounts,person->code,person->class);
+					// printf("\n");
+					//*judge=turnTo_c(person,-1);
+					//return;
+				}
 			}
 			else if(mx >= 410 && mx <= 590 && my >= 310 && my <= 330 && buttons)//点击注册按钮
-			//bar(410,270,590,290);//登录框
-			//bar(410,310,590,330);//注册框
 			{
 				clear_effect_c(manager);//清除加框效果
 				if(strlen(managerTemp.code)<6)
@@ -183,12 +190,13 @@ void Drawloginscreen_c(setuser *person)
 					{
 						click_limit_c(RED);//权限码加红框
 					}
-					else
+					else//注册成功——————（重复怎么办？）
 					{
 						strcpy(person->accounts,managerTemp.accounts);
 						strcpy(person->code,managerTemp.code);
 						strcpy(person->class,managerTemp.class);
 						register_c(managerTemp);//注册新用户
+						*judge=turnTo_c(person,-1);
 						return;
 					}
 					
@@ -489,20 +497,35 @@ void Drawplane()
 /**********************************************************
 以下为管理员界面的相关函数
 **********************************************************/
-void DrawControlSystem_c(setuser *person)
+void DrawControlSystem_c(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
-	//char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	//setManager managerTemp;//缓存输入的信息
-	//初始化
-	//鼠标初始化
+	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
+	setManager managerTemp;//缓存输入的信息
+	// 初始化
+	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 
+	//绘制调度界面
     cleardevice();
 	setbkcolor(DARKGRAY);
 	outtextxy(510,238,person->class);
+	outtextxy(410,238,person->accounts);
+	//画退出系统按钮
+	setlinestyle(0, 0, 3);
+	setcolor(LIGHTRED);
+	arc(600, 30, 110, 430, 15);
+	line(600, 5, 600, 31);
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
+		if(buttons)//点击事件
+		{
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
+			{
+				*judge=turnTo_c(person,0);
+				return;
+			}
+		}
 	}
 }
