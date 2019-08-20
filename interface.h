@@ -13,4 +13,5 @@ void click_limit_c(int color);
 void clear_effect_c(int manager);
 void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心函数
+void DrawUserScreen_c(setuser *person,int *judge);//普通用户界面
 #endif

@@ -1,6 +1,7 @@
 /**********************************************************
-此文件专门存放界面相关的函数
-作者：陈俊玮
+Description：  此文件专门存放界面相关的函数	
+Attention:  必须要用GB2312编码保存，不然汉字会有乱码
+Author：陈俊玮
 **********************************************************/
 #include"interface.h"
 #include"KEYBOARD.H"
@@ -12,8 +13,10 @@ void click_user_c(int color);
 void click_pass_c(int color);
 void click_limit_c(int color);
 void clear_effect_c(int manager);
+void failConfirm_c();
 void Drawplane();//画飞机函数
-void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心函数
+void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
+void DrawUserScreen_c(setuser *person,int *judge);//普通用户界面
 /**********************************************************
 以下为开始界面的相关函数
 **********************************************************/
@@ -156,14 +159,16 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
 				{
 					if(manager==0){strcpy(managerTemp.class,"00000");}
-					login_c(managerTemp,head->next,person);//登陆
-					outtextxy(150,250,person->accounts);//p没传到person里
-            		outtextxy(150,350,person->class);
-					closegraph();
-					// printf("accounts:%s\ncode:%s\nclass:%s\n",person->accounts,person->code,person->class);
-					// printf("\n");
-					//*judge=turnTo_c(person,-1);
-					//return;
+					if(login_c(managerTemp,head,person)==1)//验证成功
+					{
+						*judge=turnTo_c(person,-1);
+						return;
+					}
+					else if(login_c(managerTemp,head,person)==0)//验证失败
+					{
+						failConfirm_c();
+					}
+					
 				}
 			}
 			else if(mx >= 410 && mx <= 590 && my >= 310 && my <= 330 && buttons)//点击注册按钮
@@ -199,7 +204,6 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						*judge=turnTo_c(person,-1);
 						return;
 					}
-					
 					
 				}
 			}
@@ -299,7 +303,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						settextstyle(SMALL_FONT,HORIZ_DIR,7);
 						setcolor(BLUE);
 						temp[0]=searchKeyValue(key);
-						managerTemp.class[i[2]-1]=temp[0];//密码字符缓存
+						managerTemp.class[i[2]-1]=temp[0];//权限码字符缓存
 						managerTemp.class[i[2]]='\0';
 						outtextxy(510+i[2]*12,238,temp);
 					}
@@ -310,7 +314,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					setfillstyle(1,WHITE);
 					bar(510+i[2]*12,238,513+(i[2]+1)*12,262);
 					managerTemp.accounts[i[2]-1]='\0';
-					i[2]--;//密码字符数减1
+					i[2]--;//权限码字符数减1
 				}
 			}
 			
@@ -335,7 +339,6 @@ void Btn_change_manager_c()//点击管理员按钮后按钮样式变换
 	setfillstyle(1,WHITE);
 	bar(510,235,590,265);//验证码输入框
 	puthz(410,240,"管理员权限码",16,16,WHITE);
-
 }
 
 void Btn_change_user_c()//点击用户按钮后按钮样式变换
@@ -371,7 +374,11 @@ void click_limit_c(int color)//点击权限码加框
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	drawpoly(5,kuang);
 }
-void clear_effect_c(int manager)//清除加框效果
+void failConfirm_c()//登陆失败提示
+{
+	puthz(420, 360, "用户名或密码错误！", 16, 16, RED);
+}
+void clear_effect_c(int manager)//清除效果
 {
 	int kuang1[]={410,130,590,130,590,160,410,160,410,130};
 	int kuang2[]={410,200,590,200,590,230,410,230,410,200};
@@ -388,6 +395,7 @@ void clear_effect_c(int manager)//清除加框效果
 	setfillstyle(1,DARKGRAY);
 	bar(450,170,595,191);//验证码输入框
 	bar(450,100,595,121);
+	bar(410,360,595,400);//抹掉登陆失败信息
 }
 
 /**********************************************************
@@ -528,4 +536,12 @@ void DrawControlSystem_c(setuser *person,int *judge)
 			}
 		}
 	}
+}
+/**********************************************************
+以下为普通用户界面的相关函数
+**********************************************************/
+void DrawUserScreen_c(setuser *person,int *judge)
+{
+	cleardevice();
+	setbkcolor(RED);
 }

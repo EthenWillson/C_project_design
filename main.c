@@ -10,7 +10,7 @@ void main()
 	int driver = VGA;
 	int mode = VGAHI;
 	//char *p=NULL;
-	setuser *pt = NULL;
+	//setuser *pt = NULL;
 	person.accounts[0] = '\0';//初始化
 	person.code[0] = '\0';//初始化
 	//person.Routes=NULL;
@@ -48,11 +48,10 @@ void main()
 			break;
 			
 		case 2: //管理员调度中心	
-			DrawControlSystem_c(head->next,&judge);
+			DrawControlSystem_c(&person,&judge);
 			break;
 		case 3: //普通用户	
-			// DrawControlSystem_c(&person)
-			// judge = personregister(head, person.accounts, person.code);
+			DrawUserScreen_c(&person,&judge);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

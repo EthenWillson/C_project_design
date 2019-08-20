@@ -5,6 +5,11 @@
 #include"register_c.h"
 #include"struct_c.h"
 #include"common_c.h"
+/****************************************
+Function:  register_c
+Description:把注册用户写入文档中（目前未设置密码确认，后期进行迭代处理）
+Attention:money,spend等用数值储存的可能会有问题，最好将其改为字符串类型方便读取和存入
+*****************************************/
 void register_c(setManager managertemp)//注册函数：把注册用户写入文档中
 {
     FILE *fp;
@@ -50,46 +55,36 @@ int turnTo_c(setuser *person,int direct)//跳转函数
     }
     return -1;
 }
-void login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
+/****************************************
+Function:  login_c
+Description:根据输入的用户名和密码检索根据数据文档产生的用户链表，若匹配则返回1登陆成功，不匹配则返回0登陆失败
+Attention:money,spend等用数值储存的可能会有问题，最好将其改为字符串类型方便读取和存入
+*****************************************/
+int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
 {
     setuser *p;
     // closegraph();
     for(p=head;p=p->next;p->next==NULL)
     {
-        if(strcmp(managertemp.accounts,p->accounts)==0 && strcmp(managertemp.code,p->code)==0 )//密码验证成功
+        if(strcmp(managertemp.accounts,p->accounts)==0 && strcmp(managertemp.code,p->code)==0 && strcmp(managertemp.class,p->class)==0)//密码验证成功
         {
-            // if(managertemp.class=="cjwzs")//管理员
-            // {
-            //     person=p;
-            //     return;
-            // }
-            // printf("check!");
-            settextstyle(SMALL_FONT,HORIZ_DIR,7);
-		    setcolor(BLUE);
-            //outtextxy(50,300,"check");
-            person=p;
-            outtextxy(50,300,p->accounts);
-            outtextxy(50,250,person->accounts);
-            outtextxy(50,350,person->class);
-            return;
-            // closegraph();
-            // printf("accounts:%s\ncode:%s\nclass:%s\n",p->accounts,p->code,p->class);
-		    // printf("\n");
-            // return;
+            
+            strcpy(person->accounts,p->accounts);
+            strcpy(person->code,p->code);
+            strcpy(person->class,p->class);
+            person->money=p->money;
+            person->spend=p->spend;
+            return 1;//验证成功返回1
         }
-        // printf("accounts:%s\ncode:%s\nclass:%s\n",p->accounts,p->code,p->class);
-		// printf("\n");
     }
-    strcpy(person->class,"11111");
-    //closegraph();
-    // p=head;
-    // printf("accounts:%s\ncode:%s\nclass:%s\n",p->accounts,p->code,p->class);
+    return 0;//验证失败返回0
 }
 /****************************************
 Function:  createuserlist_c
-Description:根据文件中存储的用户信息创建链表
+Description:根据数据文件中存储的用户信息创建链表
 Attention:文件必须按要求格式化书写;
             一定要把指针的地址传过来
+            money,spend等用数值储存的可能会有问题，最好将其改为字符串类型方便读取和存入
 *****************************************/
 void createuserlist_c(setuser *head)//创建用户链表
 {
@@ -139,6 +134,7 @@ void createuserlist_c(setuser *head)//创建用户链表
         else if(cha=='$')      //表示权限码的结束，金额的开始//数字如何
 	    {
 	        *p='\0';   
+            p=now->money;
             // fprintf(fp,"%d",now->money);     
 	    }
 	    else if(cha!=' '&&cha!='\n')       //将对应的账户串或密码串装入链表中
