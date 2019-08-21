@@ -1,4 +1,5 @@
 #include"common_c.h"
+#include"personal_c.h"
 void main()
 {
 	//int key=0;
@@ -33,6 +34,7 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
+	judge=4;
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -47,11 +49,14 @@ void main()
 			Drawloginscreen_c(&person,&judge,head->next);
 			break;
 			
-		case 2: //管理员调度中心	
+		case 2: //调度管理员调度中心	
 			DrawControlSystem_c(&person,&judge);
 			break;
 		case 3: //普通用户	
 			DrawUserScreen_c(&person,&judge);
+			break;
+		case 4://个人中心
+			DrawPersonalCenter_c(&person,&judge);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

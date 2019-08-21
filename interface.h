@@ -14,4 +14,6 @@ void clear_effect_c(int manager);
 void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心函数
 void DrawUserScreen_c(setuser *person,int *judge);//普通用户界面
+void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
+//void DrawBeautifulFrame_c();//画出精美边框
 #endif

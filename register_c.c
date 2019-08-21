@@ -1,5 +1,5 @@
 /**********************************************************
-此文件专门存放注册登录相关的函数
+此文件专门存放注册登录与用户数据文件交互相关的函数
 作者：陈俊玮
 **********************************************************/
 #include"register_c.h"
@@ -75,6 +75,10 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
             person->money=p->money;
             person->spend=p->spend;
             return 1;//验证成功返回1
+        }
+        else if(strcmp(managertemp.accounts,p->accounts)==0)
+        {
+            return 2;//用户名重复返回2
         }
     }
     return 0;//验证失败返回0

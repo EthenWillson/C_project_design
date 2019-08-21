@@ -13,10 +13,12 @@ void click_user_c(int color);
 void click_pass_c(int color);
 void click_limit_c(int color);
 void clear_effect_c(int manager);
-void failConfirm_c();
+void failConfirm_c(int sign);
 void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
 void DrawUserScreen_c(setuser *person,int *judge);//普通用户界面
+void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
+
 /**********************************************************
 以下为开始界面的相关函数
 **********************************************************/
@@ -164,9 +166,13 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						*judge=turnTo_c(person,-1);
 						return;
 					}
-					else if(login_c(managerTemp,head,person)==0)//验证失败
+					else if(login_c(managerTemp,head,person)==0)//验证失败，用户不存在
 					{
-						failConfirm_c();
+						failConfirm_c(3);
+					}
+					else if(login_c(managerTemp,head,person)==2)//验证失败，密码错误
+					{
+						failConfirm_c(1);
 					}
 					
 				}
@@ -195,14 +201,22 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					{
 						click_limit_c(RED);//权限码加红框
 					}
-					else//注册成功——————（重复怎么办？）
+					else//注册成功
 					{
-						strcpy(person->accounts,managerTemp.accounts);
-						strcpy(person->code,managerTemp.code);
-						strcpy(person->class,managerTemp.class);
-						register_c(managerTemp);//注册新用户
-						*judge=turnTo_c(person,-1);
-						return;
+						if(login_c(managerTemp,head,person)==2)//如果用户名已存在
+						{
+							failConfirm_c(2);
+						}
+						else
+						{
+							strcpy(person->accounts,managerTemp.accounts);
+							strcpy(person->code,managerTemp.code);
+							strcpy(person->class,managerTemp.class);
+							register_c(managerTemp);//注册新用户
+							*judge=turnTo_c(person,-1);
+							return;
+						}
+						
 					}
 					
 				}
@@ -374,9 +388,20 @@ void click_limit_c(int color)//点击权限码加框
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	drawpoly(5,kuang);
 }
-void failConfirm_c()//登陆失败提示
+void failConfirm_c(int sign)//登陆失败提示
 {
-	puthz(420, 360, "用户名或密码错误！", 16, 16, RED);
+	if(sign==1)
+	{
+		puthz(420, 360, "密码错误！", 16, 16, RED);
+	}
+	else if(sign==2)
+	{
+		puthz(420, 360, "用户名已存在！", 16, 16, RED);
+	}
+	else if(sign==3)
+	{
+		puthz(420, 360, "用户不存在！", 16, 16, RED);
+	}
 }
 void clear_effect_c(int manager)//清除效果
 {
@@ -509,7 +534,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	setManager managerTemp;//缓存输入的信息
+	//int tri[]={25,15};//用户图标的三角形
 	// 初始化
 	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
@@ -517,8 +542,23 @@ void DrawControlSystem_c(setuser *person,int *judge)
 	//绘制调度界面
     cleardevice();
 	setbkcolor(DARKGRAY);
-	outtextxy(510,238,person->class);
-	outtextxy(410,238,person->accounts);
+	setfillstyle(1,LIGHTGRAY);
+	bar(0,0,640,50);//个人信息显示栏
+	//头像图标
+	setcolor(DARKGRAY);
+	setfillstyle(1,DARKGRAY);
+	pieslice(25,25,0,360,20);
+	setcolor(LIGHTGRAY);
+	setfillstyle(1,LIGHTGRAY);
+	pieslice(25,20,0,360,9);
+	pieslice(25,25,232,308,19);
+	//文字
+	setcolor(WHITE);
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	puthz(60, 17, "用户：", 16, 16, WHITE);
+	puthz(230, 17, "身份：调度管理员", 16, 16, WHITE);
+	// outtextxy(50,238,person->class);
+	outtextxy(110,13,person->accounts);
 	//画退出系统按钮
 	setlinestyle(0, 0, 3);
 	setcolor(LIGHTRED);
@@ -529,9 +569,14 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		newxy(&mx, &my, &buttons);
 		if(buttons)//点击事件
 		{
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//注销按钮点击退出
 			{
-				*judge=turnTo_c(person,0);
+				*judge=turnTo_c(person,1);
+				return;
+			}
+			else if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50 && buttons)//进入个人中心
+			{
+				*judge=turnTo_c(person,4);
 				return;
 			}
 		}
@@ -542,6 +587,23 @@ void DrawControlSystem_c(setuser *person,int *judge)
 **********************************************************/
 void DrawUserScreen_c(setuser *person,int *judge)
 {
+	int buttons,mx,my;//鼠标相关变量
+	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
+	// 初始化
+	// 鼠标初始化
+	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(RED);
+	while(1)
+	{
+		newxy(&mx, &my, &buttons);
+		if(buttons)//点击事件
+		{
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
+			{
+				*judge=turnTo_c(person,1);
+				return;
+			}
+		}
+	}
 }
