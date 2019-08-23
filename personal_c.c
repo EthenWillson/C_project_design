@@ -14,13 +14,17 @@ void Drawxc_self( int x, int y, int color);//修改密码按钮
 void Drawxc_auto( int x, int y, int color);//充值按钮
 void returnBtn_c(int x,int y,int color);//返回按钮
 void inputBoxGroup(int x, int y, int framecolor,int color);//绘制输入框体函数
+void frameChange_c(int x1,int y1,int x2,int y2,int color);//输入框变色函数
+// void DrawPersonalCenter_c(setuser *person,int *judge,setuser *head);//个人中心界面
+// void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//修改密码界面
 void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
 void changePasswordScreen_c(setuser *person,int *judge);//修改密码界面
 
 /**********************************************************
 个人中心界面函数
 **********************************************************/
-void DrawPersonalCenter_c(setuser *person,int *judge)
+// void DrawPersonalCenter_c(setuser *person,int *judge,setuser *head)
+void DrawPersonalCenter_c(setuser *person,int *judge)//个人中心界面
 {
 	int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
@@ -62,6 +66,7 @@ void DrawPersonalCenter_c(setuser *person,int *judge)
 			}
 			if ( buttons )
 			{
+				// changePasswordScreen_c(person,judge,head);
 				changePasswordScreen_c(person,judge);
 				return;
 			}
@@ -353,21 +358,32 @@ void returnBtn_c(int x,int y,int color)
 	drawpoly(3,arrow_two);
 }
 
+
+
+
+
+
+
+
 /**********************************************************
 修改密码界面函数
 **********************************************************/
-void changePasswordScreen_c(setuser *person,int *judge)
+// void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
+void changePasswordScreen_c(setuser *person,int *judge)//修改密码界面
 {
 	int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int sign[2]={0,0};//用于判断鼠标移动到按钮上的标志
+	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
+	setChangePass managerTemp;//修改密码缓存
+	int choose=0;//鼠标点击哪的事件
 	// 初始化
 	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(WHITE);
 	DrawBeautifulFrame_c();//边框
-	inputBoxGroup(210, 150, BLUE, LIGHTGRAY);
+	inputBoxGroup(210, 150, BLUE, LIGHTGRAY);//绘制输入框体组
 	returnBtn_c(60,184,GREEN);
 	while(1)
 	{
@@ -379,7 +395,163 @@ void changePasswordScreen_c(setuser *person,int *judge)
 				*judge=turnTo_c(person,4);
 				return;
 			}
+			else if (mx >= 300 && mx <= 470 && my >= 150 && my <= 180 && buttons)//点击原密码
+			{
+				frameChange_c(300,150,470,180,GREEN);//原密码框体变绿
+				frameChange_c(300,200,470,230,BLUE);
+				frameChange_c(300,250,470,280,BLUE);
+				choose=1;
+			}
+			else if (mx >= 300 && mx <= 470 && my >= 200 && my <= 230 && buttons)//点击新密码
+			{
+				frameChange_c(300,200,470,230,GREEN);//原密码框体变绿
+				frameChange_c(300,150,470,180,BLUE);
+				frameChange_c(300,250,470,280,BLUE);
+				choose=2;
+			}
+			else if (mx >= 300 && mx <= 470 && my >= 250 && my <= 280 && buttons)//点击新密码
+			{
+				frameChange_c(300,250,470,280,GREEN);//确认密码框体变绿
+				frameChange_c(300,150,470,180,BLUE);
+				frameChange_c(300,200,470,230,BLUE);
+				choose=3;
+			}
+			// else if (mx >= 300 && mx <= 360 && my >= 350 && my <= 380 && buttons)//点击确认按钮
+			// {
+				
+			// 	if(strcmp(managerTemp.new,managerTemp.confirm)==0)
+			// 	{
+			// 		if(changePass_c(&managerTemp,person->accounts,head)==1)
+			// 		{
+			// 			frameChange_c(300,250,470,280,RED);
+			// 			frameChange_c(300,150,470,180,BLUE);
+			// 			frameChange_c(300,200,470,230,BLUE);
+			// 		}
+			// 		else if(changePass_c(&managerTemp,person->accounts,head)==0)
+			// 		{
+			// 			frameChange_c(300,250,470,280,CYAN);
+			// 			frameChange_c(300,150,470,180,CYAN);
+			// 			frameChange_c(300,200,470,230,CYAN);
+			// 		}
+			// 	}
+			// 	else
+			// 	{
+			// 		frameChange_c(300,250,470,280,BLUE);
+			// 		frameChange_c(300,150,470,180,RED);
+			// 		frameChange_c(300,200,470,230,RED);
+			// 	}
+				
+				
+			// }
 			
+			else
+			{
+				frameChange_c(300,150,470,180,BLUE);
+				frameChange_c(300,200,470,230,BLUE);
+				frameChange_c(300,250,470,280,BLUE);
+				choose=0;
+			}
+		}//点击事件结束
+		//输入事件
+		settextstyle(SMALL_FONT,HORIZ_DIR,7);
+		setcolor(BLUE);
+		switch(choose)
+		{
+			case 1://原密码输入事件：(300,150,470,180)坐标
+				key = 0;//重置键值并得到新键值
+				temp[0]='\0';
+				if (kbhit() != 0)//如果检测到键盘输入
+				{
+					key = bioskey(0);
+					if(key != 0xe08 && i[0]>=0 && i[0]<12)//如果输入不是退格键
+					{
+						if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
+						{
+							i[0]++;//原密码字符数加一
+							setfillstyle(1,WHITE);
+							bar(305+i[0]*12,153,305+(i[0]+1)*12,177);
+							settextstyle(SMALL_FONT,HORIZ_DIR,7);
+							setcolor(DARKGRAY);
+							temp[0]=searchKeyValue(key);
+							managerTemp.old[i[0]-1]=temp[0];
+							managerTemp.old[i[0]]='\0';
+							outtextxy(305+i[0]*12,153,temp);
+						}
+						
+					}
+					else if (key == 0xe08 && i[0]>0)//如果按了回删键 
+					{
+						setfillstyle(1,WHITE);
+						bar(305+i[0]*12,153,305+(i[0]+1)*12,177);
+						managerTemp.old[i[0]-1]='\0';
+						i[0]--;
+					}
+				}
+				break;
+			
+			case 2://新密码输入事件：(300,200,470,230)坐标
+				key = 0;//重置键值并得到新键值
+				temp[0]='\0';
+				if (kbhit() != 0)//如果检测到键盘输入
+				{
+					key = bioskey(0);
+					if(key != 0xe08 && i[1]>=0 && i[1]<12)//如果输入不是退格键
+					{
+						if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
+						{
+							i[1]++;//新密码字符数加一
+							setfillstyle(1,WHITE);
+							bar(305+i[1]*12,203,305+(i[1]+1)*12,227);
+							settextstyle(SMALL_FONT,HORIZ_DIR,7);
+							setcolor(DARKGRAY);
+							temp[0]=searchKeyValue(key);
+							managerTemp.new[i[1]-1]=temp[0];
+							managerTemp.new[i[1]]='\0';
+							outtextxy(305+i[1]*12,203,temp);
+						}
+						
+					}
+					else if (key == 0xe08 && i[1]>0)//如果按了回删键 
+					{
+						setfillstyle(1,WHITE);
+						bar(305+i[1]*12,203,305+(i[1]+1)*12,227);
+						managerTemp.new[i[1]-1]='\0';
+						i[1]--;
+					}
+				}
+				break;
+
+			case 3://确认密码输入事件：(300,250,470,280)坐标
+				key = 0;//重置键值并得到新键值
+				temp[0]='\0';
+				if (kbhit() != 0)//如果检测到键盘输入
+				{
+					key = bioskey(0);
+					if(key != 0xe08 && i[2]>=0 && i[2]<12)//如果输入不是退格键
+					{
+						if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
+						{
+							i[2]++;//新密码字符数加一
+							setfillstyle(1,WHITE);
+							bar(305+i[2]*12,253,305+(i[2]+1)*12,277);
+							settextstyle(SMALL_FONT,HORIZ_DIR,7);
+							setcolor(DARKGRAY);
+							temp[0]=searchKeyValue(key);
+							managerTemp.confirm[i[2]-1]=temp[0];
+							managerTemp.confirm[i[2]]='\0';
+							outtextxy(305+i[2]*12,253,temp);
+						}
+						
+					}
+					else if (key == 0xe08 && i[2]>0)//如果按了回删键 
+					{
+						setfillstyle(1,WHITE);
+						bar(305+i[2]*12,253,305+(i[2]+1)*12,277);
+						managerTemp.confirm[i[2]-1]='\0';
+						i[2]--;
+					}
+				}
+				break;
 		}
 	}
 }
@@ -390,11 +562,17 @@ void inputBoxGroup(int x, int y, int framecolor,int color)//绘制输入框体函数
 	puthz(x,y+107,"确认密码：",16,16,color);
 	setcolor(framecolor);
 	setlinestyle(0, 0, 1);
-	rectangle(x+90,y,x+250,y+30);
-	rectangle(x+90,y+50,x+250,y+80);
-	rectangle(x+90,y+100,x+250,y+130);
+	rectangle(x+90,y,x+260,y+30);//原密码输入框
+	rectangle(x+90,y+50,x+260,y+80);//新密码输入框
+	rectangle(x+90,y+100,x+260,y+130);//确认密码输入框
 	setcolor(LIGHTRED);
 	setfillstyle(1,LIGHTRED);
-	bar(x+90,y+200,x+150,y+230);
+	bar(x+90,y+200,x+150,y+230);//确认按钮
 	puthz(x+105,y+207,"确认",16,16,WHITE);
+}
+void frameChange_c(int x1,int y1,int x2,int y2,int color)//输入框变色函数
+{
+	setlinestyle(0, 0, 1);
+	setcolor(color);
+	rectangle(x1,y1,x2,y2);
 }

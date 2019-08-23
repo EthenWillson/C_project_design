@@ -46,7 +46,7 @@ void main()
 		 	//free(person.Routes);
 			return;
 		case 1: //登录
-			Drawloginscreen_c(&person,&judge,head->next);
+			Drawloginscreen_c(&person,&judge,head);
 			break;
 			
 		case 2: //调度管理员调度中心	
@@ -56,6 +56,7 @@ void main()
 			DrawUserScreen_c(&person,&judge);
 			break;
 		case 4://个人中心
+			// DrawPersonalCenter_c(&person,&judge,head);
 			DrawPersonalCenter_c(&person,&judge);
 			break;
 		// case 2: //注册	

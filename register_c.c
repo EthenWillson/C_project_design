@@ -72,7 +72,7 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
             strcpy(person->accounts,p->accounts);
             strcpy(person->code,p->code);
             strcpy(person->class,p->class);
-            person->money=p->money;
+            strcpy(person->money,p->money);
             person->spend=p->spend;
             return 1;//验证成功返回1
         }
@@ -82,6 +82,47 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
         }
     }
     return 0;//验证失败返回0
+}
+/****************************************
+Function:  changePass_c
+Description: 修改密码函数
+output: 0代表修改密码成功,1代表密码验证失败
+Attention:文件必须按要求格式化书写;
+            一定要把指针的地址传过来
+*****************************************/
+int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
+{
+    FILE *fp=NULL; //打开文件的指针
+    setuser *ph;
+	
+    
+    if ((fp = fopen("data_c\\user\\userinf_new.txt", "wt")) == NULL)//以写的方式新建一个文件
+    {
+        closegraph();
+        printf("Can't open userinf_new.txt");
+    }
+    for(ph=head;ph->next==NULL;ph=ph->next)
+    {
+        if( strcmp(ph->accounts,account)==0 && strcmp(ph->code,managerTemp->old)==0 )
+        {
+            strcpy(ph->code,managerTemp->new);
+            fp=fopen("data_c\\user\\userinf_new.txt","at+");
+            for(ph=head;ph->next==NULL;ph=ph->next)
+            {
+                fputc('@',fp);//@标志一个用户的开头
+                fputs(ph->accounts,fp);
+                fputc('*',fp);//*标志用户密码的开头
+                fputs(ph->code,fp);
+                fputc('#',fp);//#标志用户的权限码
+                fputs(ph->class,fp);
+                fputc('$',fp);//$标志用户余额
+                fputs(ph->money,fp);
+                fclose(fp);
+            }
+            return 0;
+        }
+    }
+	return 1;
 }
 /****************************************
 Function:  createuserlist_c
@@ -102,8 +143,8 @@ void createuserlist_c(setuser *head)//创建用户链表
 	p=head->accounts;
     if ((fp = fopen("data_c\\user\\userinf.txt", "r+")) == NULL)//以读写的方式打开
     {
-	    closegraph();
-	    printf("Can't open userinf.txt");
+        closegraph();
+        printf("Can't open userinf.txt");
 	    //getchar();
 	    //exit(1);
     }
@@ -113,39 +154,39 @@ void createuserlist_c(setuser *head)//创建用户链表
 		
 		if(cha=='@')//@默认为账户名的开始
 		{
-	        if((now->next=(setuser*)malloc(sizeof(setuser)))==NULL)
+            if((now->next=(setuser*)malloc(sizeof(setuser)))==NULL)
 			{
 				closegraph();
 				printf("\n OUT OF MEMORY!");
 		        // getchar();
 		        //exit(1);
-		    }
+            }
             now=now->next;
 
 	        *p='\0';
-	        p=now->accounts;
-	    }
+            p=now->accounts;
+        }
 	    else if(cha=='*')      //表示账户串的结束，密码串的开始
-	    {
+        {
 	        *p='\0';           
-	        p=now->code;
-	    }
+            p=now->code;
+        }
         else if(cha=='#')      //表示密码串的结束，权限码的开始
-	    {
+        {
 	        *p='\0';           
-	        p=now->class;
-	    }
+            p=now->class;
+        }
         else if(cha=='$')      //表示权限码的结束，金额的开始//数字如何
-	    {
+        {
 	        *p='\0';   
             p=now->money;
             // fprintf(fp,"%d",now->money);     
-	    }
+        }
 	    else if(cha!=' '&&cha!='\n')       //将对应的账户串或密码串装入链表中
-	    {
+        {
 	        *p=cha;
-	        p++;
-	    }
+            p++;
+        }
     }
     // closegraph();
     // printf("%s\n%s\n%s\n\n",now->accounts,now->code,now->class);
