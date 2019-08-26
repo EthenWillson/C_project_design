@@ -319,6 +319,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						temp[0]=searchKeyValue(key);
 						managerTemp.class[i[2]-1]=temp[0];//权限码字符缓存
 						managerTemp.class[i[2]]='\0';
+						temp[0]='*';//把权限码遮住
 						outtextxy(510+i[2]*12,238,temp);
 					}
 					

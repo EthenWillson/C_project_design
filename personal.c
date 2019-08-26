@@ -15,10 +15,7 @@ void Drawxc_auto( int x, int y, int color);//充值按钮
 void returnBtn_c(int x,int y,int color);//返回按钮
 void inputBoxGroup(int x, int y, int framecolor,int color);//绘制输入框体函数
 void frameChange_c(int x1,int y1,int x2,int y2,int color);//输入框变色函数
-void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
-// void changePasswordScreen_c(setuser *person,int *judge);//修改密码界面
-void PersonalCenter_c(setuser *person,int *judge,setuser *head);
-// void DrawPersonalCenter_c(setuser *person,int *judge,setuser *head);//个人中心界面
+void PersonalCenter_c(setuser *person,int *judge,setuser *head);//个人中心界面
 void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//修改密码界面
 
 /**********************************************************
@@ -107,91 +104,6 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 }
 
 
-
-
-
-// void DrawPersonalCenter_c(setuser *person,int *judge,setuser *head)
-// void DrawPersonalCenter_c(setuser *person,int *judge)//个人中心界面
-// {
-// 	int buttons,mx,my;//鼠标相关变量
-// 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-// 	int sign[2]={0,0};//用于判断鼠标移动到按钮上的标志
-// 	// 初始化
-// 	// 鼠标初始化
-// 	mouseInit(&mx, &my, &buttons);
-// 	cleardevice();
-// 	setbkcolor(WHITE);
-// 	DrawBeautifulFrame_c();//边框
-//     Drawxc_self( 0, 0 , LIGHTGRAY);//修改密码按钮
-//     Drawxc_auto( 0, 0 , LIGHTGRAY);//账户充值按钮
-// 	returnBtn_c( 285, 395, CYAN);//返回按钮
-// 	puthz(260, 30, "个人中心", 32, 32, GREEN); 
-// 	puthz(220, 80, "您好！尊敬的：", 16, 16, BLUE); 
-// 	setcolor(BROWN);
-// 	outtextxy(330,75,person->accounts);
-// 	while(1)
-// 	{
-// 		newxy(&mx, &my, &buttons);
-// 		if(buttons)//点击事件
-// 		{
-// 			if (mx >= 285 && mx <= 395 && my >= 345 && my <= 445 && buttons)//返回按钮返回
-// 			{
-// 				*judge=turnTo_c(person,-1);
-// 				return;
-// 			}
-// 		}
-// 		//(157,134,476,220)修改密码////////////////////////////////
-// 		if( mx >= 147 && mx <= 486 && my >=111 && my <=230 )
-// 		{
-// 			if (sign[0]==0)
-// 			{
-// 			setfillstyle(1, WHITE);//将原先图标隐藏
-// 			bar(157,124,480,220);
-// 			Drawxc_self(10,-5,DARKGRAY);
-// 			//getMousebk(*mx, *my);
-// 			sign[0]=1;
-// 			}
-// 			if ( buttons )
-// 			{
-// 				// changePasswordScreen_c(person,judge,head);
-// 				changePasswordScreen_c(person,judge);
-// 				return;
-// 			}
-// 		}
-// 		else if ( sign[0]==1 && !(mx >= 147 && mx <= 486 && my >=111 && my <=230) )
-// 		{
-// 			setfillstyle(1, WHITE);//将原先图标隐藏
-// 			bar(157+10,124-5,480+10,220-5);
-// 			Drawxc_self(0,0,LIGHTGRAY);
-// 			sign[0]=0;
-// 		}
-// 		//(157,284,476,370)充值///////////////////////////////////////
-// 		if ( mx >= 147 && mx <= 486 && my >=261 && my <=380 )
-// 		{
-		
-// 			if (sign[1]==0)
-// 			{
-// 				setfillstyle(1, WHITE);//将原先图标隐藏
-// 				bar(157,274,480,370);
-// 				Drawxc_auto(10,-5,DARKGRAY);
-// 			  	//getMousebk(*mx, *my);
-// 				sign[1]=1;
-// 			}
-// 			// if ( buttons )
-// 			// {
-// 			//   //进入智能规划模块
-// 			// 	judge=2;
-// 			// }
-// 		}
-// 		else if (sign[1]==1 && !(mx >= 147 && mx <= 486 && my >=261 && my <=380) )
-// 		{
-// 			setfillstyle(1, WHITE);//将原先图标隐藏
-// 			bar(157+10,274-5,480+10,370-5);
-// 			Drawxc_auto(0,0,LIGHTGRAY);
-// 			sign[1]=0;
-// 		}
-// 	}
-// }
 
 /**********************************************************
 Description：	画出漂亮边框
@@ -465,6 +377,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
 	setChangePass managerTemp;//修改密码缓存
 	int choose=0;//鼠标点击哪的事件
+	int result=-1;//改密码事件
 	// 初始化
 	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
@@ -509,14 +422,15 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 				
 				if(strcmp(managerTemp.new,managerTemp.confirm)==0)
 				{
-					if(changePass_c(&managerTemp,person->accounts,head)==1)//验证失败
+					result=changePass_c(&managerTemp,person->accounts,head);
+					if(result==1)//验证失败
 					{
 						// printf("\nfail");
 						frameChange_c(300,150,470,180,RED);//原密码框体变红
 						frameChange_c(300,200,470,230,BLUE);
 						frameChange_c(300,250,470,280,BLUE);
 					}
-					else if(changePass_c(&managerTemp,person->accounts,head)==0)
+					else if(result==0)
 					{
 						// printf("\nok");
 						frameChange_c(300,250,470,280,DARKGRAY);
@@ -598,6 +512,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 							temp[0]=searchKeyValue(key);
 							managerTemp.new[i[1]-1]=temp[0];
 							managerTemp.new[i[1]]='\0';
+							temp[0]='*';
 							outtextxy(305+i[1]*12,203,temp);
 						}
 						
@@ -630,6 +545,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 							temp[0]=searchKeyValue(key);
 							managerTemp.confirm[i[2]-1]=temp[0];
 							managerTemp.confirm[i[2]]='\0';
+							temp[0]='*';
 							outtextxy(305+i[2]*12,253,temp);
 						}
 						
@@ -667,3 +583,7 @@ void frameChange_c(int x1,int y1,int x2,int y2,int color)//输入框变色函数
 	setcolor(color);
 	rectangle(x1,y1,x2,y2);
 }
+// void changePassOK_c(int x,int y)//密码修改成功弹窗
+// {
+
+// }

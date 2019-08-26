@@ -96,26 +96,11 @@ int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
     setuser *ph=head->next;
 	
     // closegraph();
-    // printf("accounts:%s\ncode:%s\nclass:%s\nnext:%x\nnow:%x\n\n",ph->accounts,ph->code,ph->class,ph->next,ph);
-    // printf("accounts:%s\ncode:%s\nclass:%s\nnext:%x\nnow:%x\n\n",head->accounts,head->code,head->class,head->next,ph);
-    
-    // if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
-    // {
-    //     closegraph();
-    //     printf("Can't open usernew.txt");
-    // }
-    // for(ph=head->next;ph->next==NULL;ph=ph->next)
-    
-    for(ph=head->next;ph=ph->next;ph->next==NULL)
+    for(ph=head;ph=ph->next;ph->next==NULL)
     {
-        // printf("accounts:%s\ncode:%s\nclass:%s\n",ph->accounts,ph->code,ph->class);
-		// printf("\n");
-        // getch();
         if( strcmp(ph->accounts,account)==0 && strcmp(ph->code,managerTemp->old)==0 )
         {
-            // closegraph();
-            // printf("found!");
-            // getch();
+            // printf("\nph->accounts:%s\nph->code:%s\naccount:%s\nph->code:%s\n\n",ph->accounts,ph->code,account,managerTemp->old);
             strcpy(ph->code,managerTemp->new);
             if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
             {
@@ -138,11 +123,11 @@ int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
             rename("data_c\\user\\usernew.txt","data_c\\user\\userinf.txt");
             return 0;
         }
+        // printf("accounts:%s\ncode:%s\nclass:%s\n",ph->accounts,ph->code,ph->class);
+		// printf("\n");
+        // getch();
     }
-    // printf("accounts:%s\ncode:%s\nclass:%s\nnext:%x\nnow:%x\n\n",pt->accounts,pt->code,pt->class,pt->next,pt);
-    // printf("return 1");
-    // getch();
-    // getch();
+    
 	return 1;
 }
 /****************************************
@@ -207,6 +192,10 @@ void createuserlist_c(setuser *head)//创建用户链表
         {
 	        *p=cha;
             p++;
+        }
+        else if(cha==' '&&cha=='\n')
+        {
+            *p='\0';  
         }
     }
     // closegraph();
