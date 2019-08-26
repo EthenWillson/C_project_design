@@ -25,6 +25,7 @@ void register_c(setManager managertemp)//注册函数：把注册用户写入文
     fputc('#',fp);//#标志用户的权限码
     fputs(managertemp.class,fp);
     fputc('$',fp);//$标志用户余额
+    // fputs(managertemp.class,"00000");
     fclose(fp);
 }
 /****************************************
@@ -87,27 +88,41 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
 Function:  changePass_c
 Description: 修改密码函数
 output: 0代表修改密码成功,1代表密码验证失败
-Attention:文件必须按要求格式化书写;
-            一定要把指针的地址传过来
+Attention:for循环貌似判断条件和叠加是反的
 *****************************************/
 int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
 {
     FILE *fp=NULL; //打开文件的指针
-    setuser *ph;
+    setuser *ph=head->next;
 	
+    // closegraph();
+    // printf("accounts:%s\ncode:%s\nclass:%s\nnext:%x\nnow:%x\n\n",ph->accounts,ph->code,ph->class,ph->next,ph);
+    // printf("accounts:%s\ncode:%s\nclass:%s\nnext:%x\nnow:%x\n\n",head->accounts,head->code,head->class,head->next,ph);
     
-    if ((fp = fopen("data_c\\user\\userinf_new.txt", "wt")) == NULL)//以写的方式新建一个文件
+    // if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
+    // {
+    //     closegraph();
+    //     printf("Can't open usernew.txt");
+    // }
+    // for(ph=head->next;ph->next==NULL;ph=ph->next)
+    
+    for(ph=head->next;ph=ph->next;ph->next==NULL)
     {
-        closegraph();
-        printf("Can't open userinf_new.txt");
-    }
-    for(ph=head;ph->next==NULL;ph=ph->next)
-    {
+        // printf("accounts:%s\ncode:%s\nclass:%s\n",ph->accounts,ph->code,ph->class);
+		// printf("\n");
+        // getch();
         if( strcmp(ph->accounts,account)==0 && strcmp(ph->code,managerTemp->old)==0 )
         {
+            // closegraph();
+            // printf("found!");
+            // getch();
             strcpy(ph->code,managerTemp->new);
-            fp=fopen("data_c\\user\\userinf_new.txt","at+");
-            for(ph=head;ph->next==NULL;ph=ph->next)
+            if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
+            {
+                closegraph();
+                printf("Can't open usernew.txt");
+            }
+            for(ph=head;ph=ph->next;ph->next==NULL)
             {
                 fputc('@',fp);//@标志一个用户的开头
                 fputs(ph->accounts,fp);
@@ -117,11 +132,17 @@ int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
                 fputs(ph->class,fp);
                 fputc('$',fp);//$标志用户余额
                 fputs(ph->money,fp);
-                fclose(fp);
             }
+            fclose(fp);
+            remove("data_c\\user\\userinf.txt");
+            rename("data_c\\user\\usernew.txt","data_c\\user\\userinf.txt");
             return 0;
         }
     }
+    // printf("accounts:%s\ncode:%s\nclass:%s\nnext:%x\nnow:%x\n\n",pt->accounts,pt->code,pt->class,pt->next,pt);
+    // printf("return 1");
+    // getch();
+    // getch();
 	return 1;
 }
 /****************************************
@@ -206,8 +227,8 @@ void freeuserlist_c(setuser **head)
     while(cur!=NULL)
     {
         free(per);
-	    per=cur;
-	    cur=cur->next;
+        per=cur;
+        cur=cur->next;
     }
 	free(per);
 	*head=NULL;

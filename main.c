@@ -1,5 +1,5 @@
 #include"common_c.h"
-#include"personal_c.h"
+#include"personal.h"
 void main()
 {
 	//int key=0;
@@ -57,7 +57,8 @@ void main()
 			break;
 		case 4://个人中心
 			// DrawPersonalCenter_c(&person,&judge,head);
-			DrawPersonalCenter_c(&person,&judge);
+			// DrawPersonalCenter_c(&person,&judge);
+			PersonalCenter_c(&person,&judge,head);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

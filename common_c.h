@@ -13,6 +13,6 @@
 #include"struct_c.h"
 #include"hz_c.h"
 #include"register_c.h"
-#include"personal_c.h"
+#include"personal.h"
 
 #endif
