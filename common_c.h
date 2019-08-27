@@ -14,5 +14,6 @@
 #include"hz_c.h"
 #include"register_c.h"
 #include"personal.h"
+#include"window_c.h"
 
 #endif

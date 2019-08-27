@@ -31,11 +31,13 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
 	setManager managerTemp;//缓存输入的信息
+	setuser *up=NULL;
 	//初始化
 	//managerTemp初始化
 	managerTemp.accounts[0]='\0';
 	managerTemp.code[0]='\0';
 	managerTemp.class[0]='\0';
+	strcpy(managerTemp.money,"00000");
 	//鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 
@@ -212,7 +214,25 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 							strcpy(person->accounts,managerTemp.accounts);
 							strcpy(person->code,managerTemp.code);
 							strcpy(person->class,managerTemp.class);
+							strcpy(person->money,managerTemp.money);
 							register_c(managerTemp);//注册新用户
+
+							// up=head;
+							// while(up->next!=NULL)
+							// {
+							// 	up=head->next;
+							// }
+							// if((up->next=(setuser*)malloc(sizeof(setuser)))==NULL)
+							// {
+							// 	closegraph();
+							// 	printf("\n OUT OF MEMORY!");
+							// }
+							// up=up->next;
+							// strcpy(up->accounts,managerTemp.accounts);
+							// strcpy(up->code,managerTemp.code);
+							// strcpy(up->class,managerTemp.class);
+							// strcpy(up->money,managerTemp.money);
+
 							*judge=turnTo_c(person,-1);
 							return;
 						}
@@ -557,7 +577,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 	setcolor(WHITE);
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	puthz(60, 17, "用户：", 16, 16, WHITE);
-	puthz(230, 17, "身份：调度管理员", 16, 16, WHITE);
+	puthz(250, 17, "身份：调度管理员", 16, 16, WHITE);
 	// outtextxy(50,238,person->class);
 	outtextxy(110,13,person->accounts);
 	//画退出系统按钮

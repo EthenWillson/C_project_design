@@ -25,7 +25,7 @@ void register_c(setManager managertemp)//注册函数：把注册用户写入文
     fputc('#',fp);//#标志用户的权限码
     fputs(managertemp.class,fp);
     fputc('$',fp);//$标志用户余额
-    // fputs(managertemp.class,"00000");
+    fputs("00000",fp);
     fclose(fp);
 }
 /****************************************

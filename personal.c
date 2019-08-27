@@ -376,9 +376,11 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 	int sign[2]={0,0};//用于判断鼠标移动到按钮上的标志
 	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
 	setChangePass managerTemp;//修改密码缓存
+	// 初始化
 	int choose=0;//鼠标点击哪的事件
 	int result=-1;//改密码事件
-	// 初始化
+	int page=-1;//密码修改成功提示窗是或否
+	
 	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
@@ -401,6 +403,8 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 				frameChange_c(300,150,470,180,GREEN);//原密码框体变绿
 				frameChange_c(300,200,470,230,BLUE);
 				frameChange_c(300,250,470,280,BLUE);
+				setfillstyle(1,WHITE);
+				bar(269,299,500,340);
 				choose=1;
 			}
 			else if (mx >= 300 && mx <= 470 && my >= 200 && my <= 230 && buttons)//点击新密码
@@ -408,6 +412,8 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 				frameChange_c(300,200,470,230,GREEN);//原密码框体变绿
 				frameChange_c(300,150,470,180,BLUE);
 				frameChange_c(300,250,470,280,BLUE);
+				setfillstyle(1,WHITE);
+				bar(269,299,500,340);
 				choose=2;
 			}
 			else if (mx >= 300 && mx <= 470 && my >= 250 && my <= 280 && buttons)//点击新密码
@@ -415,35 +421,60 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 				frameChange_c(300,250,470,280,GREEN);//确认密码框体变绿
 				frameChange_c(300,150,470,180,BLUE);
 				frameChange_c(300,200,470,230,BLUE);
+				setfillstyle(1,WHITE);
+				bar(269,299,500,340);
 				choose=3;
 			}
 			else if (mx >= 300 && mx <= 360 && my >= 350 && my <= 380 && buttons)//点击确认按钮
 			{
-				
-				if(strcmp(managerTemp.new,managerTemp.confirm)==0)
+				choose=-1;
+				if(strlen(managerTemp.new)<6 || strlen(managerTemp.confirm)<6)//新密码小于6位
+				{
+					setfillstyle(1,WHITE);
+					bar(269,299,500,340);
+					frameChange_c(300,150,470,180,BLUE);//新密码和确认密码框体变红
+					frameChange_c(300,200,470,230,RED);
+					frameChange_c(300,250,470,280,RED);
+					puthz(270,300,"新密码不得少于6位",16,16,RED);
+				}
+				else if(strcmp(managerTemp.new,managerTemp.confirm)==0)
 				{
 					result=changePass_c(&managerTemp,person->accounts,head);
 					if(result==1)//验证失败
 					{
 						// printf("\nfail");
+						setfillstyle(1,WHITE);
+						bar(269,299,500,340);
 						frameChange_c(300,150,470,180,RED);//原密码框体变红
 						frameChange_c(300,200,470,230,BLUE);
 						frameChange_c(300,250,470,280,BLUE);
+						puthz(270,300,"原密码错误",16,16,RED);
 					}
 					else if(result==0)
 					{
 						// printf("\nok");
-						frameChange_c(300,250,470,280,DARKGRAY);
-						frameChange_c(300,150,470,180,DARKGRAY);
-						frameChange_c(300,200,470,230,DARKGRAY);
-						puthz(500,300,"好的",16,16,DARKGRAY);
+						strcpy(person->code,managerTemp.confirm);
+						page=Choose_c("密码修改成功","是否返回个人中心？", &mx, &my, BROWN);
+						if(page==1)
+						{
+							*judge=4;
+							return;
+						}
+						else if(page==0)
+						{
+							changePasswordScreen_c(person,judge,head);
+							return;
+						}
 					}
 				}
 				else//新密码和确认密码不匹配
 				{
+					setfillstyle(1,WHITE);
+					bar(269,299,500,340);
 					frameChange_c(300,150,470,180,BLUE);//新密码和确认密码框体变红
 					frameChange_c(300,200,470,230,RED);
 					frameChange_c(300,250,470,280,RED);
+					puthz(270,300,"新密码和确认密码不同",16,16,RED);
 				}
 				
 				
@@ -583,7 +614,3 @@ void frameChange_c(int x1,int y1,int x2,int y2,int color)//输入框变色函数
 	setcolor(color);
 	rectangle(x1,y1,x2,y2);
 }
-// void changePassOK_c(int x,int y)//密码修改成功弹窗
-// {
-
-// }
