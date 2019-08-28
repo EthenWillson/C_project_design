@@ -29,7 +29,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
     int buttons,mx,my;//鼠标相关变量
 	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	int choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
+	int page,choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
 	setManager managerTemp;//缓存输入的信息
 	setuser *up=NULL;
 	//初始化
@@ -101,8 +101,17 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 		{
 			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
 			{
-				*judge=turnTo_c(person,0);
-				return;
+				page=Choose_c("您是否要退出","", &mx, &my, BROWN);
+				if(page==1)
+				{
+					*judge=0;
+					return;
+				}
+				else if(page==0)
+				{
+					*judge=1;
+					return;
+				}
 			}
 			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82 && buttons)//点击管理员按钮
 			{
@@ -548,6 +557,7 @@ void Drawplane()
 	line(258 - 10, 137 + 15, 225 - 10, 140 + 15);
 	
 }
+
 /**********************************************************
 以下为管理员界面的相关函数
 **********************************************************/
@@ -555,6 +565,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
+	int page;
 	//int tri[]={25,15};//用户图标的三角形
 	// 初始化
 	// 鼠标初始化
@@ -592,8 +603,17 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		{
 			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//注销按钮点击退出
 			{
-				*judge=turnTo_c(person,1);
-				return;
+				page=Choose_c("您是否要注销","", &mx, &my, BROWN);
+				if(page==1)
+				{
+					*judge=1;
+					return;
+				}
+				else if(page==0)
+				{
+					*judge=2;
+					return;
+				}
 			}
 			else if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50 && buttons)//进入个人中心
 			{
