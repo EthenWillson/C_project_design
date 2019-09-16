@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "NMOUSE.C": "cpp",
+        "KEYBOARD.C": "cpp"
+    }
+}
