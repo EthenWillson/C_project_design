@@ -623,6 +623,9 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		}
 	}
 }
+
+
+
 /**********************************************************
 以下为普通用户界面的相关函数
 **********************************************************/
@@ -635,12 +638,13 @@ void DrawUserScreen_c(setuser *person,int *judge)
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(RED);
+	
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
 		if(buttons)//点击事件
 		{
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//退出按钮点击退出
 			{
 				*judge=turnTo_c(person,1);
 				return;
