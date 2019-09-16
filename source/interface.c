@@ -634,7 +634,7 @@ void DrawUserScreen_c(setuser *person,int *judge)
 	//  Û±Í≥ı ºªØ
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
-	setbkcolor(RED);
+	setbkcolor(WHITE);
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
