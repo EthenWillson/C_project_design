@@ -34,7 +34,7 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
-	judge=4;
+	judge=5;
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -60,6 +60,16 @@ void main()
 			// DrawPersonalCenter_c(&person,&judge);
 			PersonalCenter_c(&person,&judge,head);
 			break;
+		case 5://购票界面
+		    DrawbuyScreen_j(&person,&judge,head);
+			break;
+		case 6:
+		    DrawcheckScreen_j(&person,&judge,head);
+			break;
+		case 7:
+		    DrawchargeScreen_j(&person,&judge,head);
+			break;
+
 		// case 2: //注册	
 		// 	Drawregisterscreen();
 		// 	judge = personregister(head, person.accounts, person.code);
