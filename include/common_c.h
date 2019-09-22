@@ -15,6 +15,7 @@
 #include"register_c.h"
 #include"personal.h"
 #include"window_c.h"
+#include"customer_j.h"
 #include"control_c.h"
 
 #endif
