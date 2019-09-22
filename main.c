@@ -34,7 +34,11 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
+<<<<<<< HEAD
 	judge=5;
+=======
+	judge=2;
+>>>>>>> dev
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -70,6 +74,9 @@ void main()
 		    DrawchargeScreen_j(&person,&judge,head);
 			break;
 
+		case 11://调度界面
+			drawControlScreen(&person,&judge,head);
+			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();
 		// 	judge = personregister(head, person.accounts, person.code);
