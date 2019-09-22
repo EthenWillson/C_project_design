@@ -18,6 +18,7 @@ void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
 void DrawUserScreen_c(setuser *person,int *judge);//普通用户界面
 void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
+// void circleBtn(int x,int y,int bkcolor,int charcolor,int radius,char *str)//圆形按钮
 
 /**********************************************************
 以下为开始界面的相关函数
@@ -564,6 +565,7 @@ void Drawplane()
 void DrawControlSystem_c(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
+	int sign[2]={0,0};//移动到按钮的标志
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int page;
 	//int tri[]={25,15};//用户图标的三角形
@@ -596,6 +598,30 @@ void DrawControlSystem_c(setuser *person,int *judge)
 	setcolor(LIGHTRED);
 	arc(600, 30, 110, 430, 15);
 	line(600, 5, 600, 31);
+	//太极
+	setcolor(WHITE);
+	setfillstyle(1,WHITE);
+	pieslice(320,265,0,360,202);
+	moveto(320,265);
+	setcolor(DARKGRAY);
+	ellipse(320,265,270,90,200,200);
+	ellipse(320,165,90,270,100,100);
+	ellipse(320,365,270,90,100,100);
+	setcolor(DARKGRAY);
+	setfillstyle(1,DARKGRAY);
+	floodfill(325,260,DARKGRAY);
+	//太极的两个点
+	setcolor(WHITE);
+	setfillstyle(1,WHITE);
+	pieslice(320,165,0,360,20);
+	setcolor(DARKGRAY);
+	setfillstyle(1,DARKGRAY);
+	pieslice(320,365,0,360,20);
+	// circle(320,240,200);
+	// floodfill(320,240,WHITE);
+
+
+
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
@@ -621,8 +647,83 @@ void DrawControlSystem_c(setuser *person,int *judge)
 				return;
 			}
 		}
+		if (mx >= 245 && mx <= 395 && my >= 90 && my <= 240)//鼠标移到上点
+		{
+			if(sign[0]==0)
+			{
+				//遮住原先的点
+				setcolor(DARKGRAY);
+				setfillstyle(1,DARKGRAY);
+				bar(290,135,350,195);
+				//绘制新的点
+				setcolor(WHITE);
+				setfillstyle(1,WHITE);
+				pieslice(320,125,0,360,20);
+				puthz(290, 160, "调度", 32, 32, WHITE);
+				sign[0]=1;
+			}
+			if(buttons)//点击上点
+			{
+				*judge=turnTo_c(person,11);
+				return;
+			}
+		}
+		else if(sign[0]==1 && !(mx >= 245 && mx <= 395 && my >= 90 && my <= 240))
+		{
+			sign[0]=0;
+			setcolor(DARKGRAY);
+			setfillstyle(1,DARKGRAY);
+			bar(280,90,360,205);
+			//太极的两个点
+			setcolor(WHITE);
+			setfillstyle(1,WHITE);
+			pieslice(320,165,0,360,20);
+			
+		}
+		if (mx >= 245 && mx <= 395 && my >= 290 && my <= 440)//鼠标移到下点
+		{
+			if(sign[1]==0)
+			{
+				//遮住原先的点
+				setcolor(WHITE);
+				setfillstyle(1,WHITE);
+				bar(280,320,385,440);
+				//绘制新的点
+				setcolor(DARKGRAY);
+				setfillstyle(1,DARKGRAY);
+				pieslice(320,405,0,360,20);
+				puthz(290, 340, "购票", 32, 32, DARKGRAY);
+				sign[1]=1;
+			}
+			if(buttons)//点击上点
+			{
+				*judge=turnTo_c(person,3);
+				return;
+			}
+		}
+		else if(sign[1]==1 && !(mx >= 245 && mx <= 395 && my >= 290 && my <= 440))
+		{
+			sign[1]=0;
+			setcolor(WHITE);
+			setfillstyle(1,WHITE);
+			bar(280,320,385,440);
+			//太极的两个点
+			setcolor(DARKGRAY);
+			setfillstyle(1,DARKGRAY);
+			pieslice(320,365,0,360,20);
+			
+		}
+
 	}
 }
+// void circleBtn(int x,int y,int bkcolor,int charcolor,int radius,char *str)
+// {
+// 	setfillstyle(1,bkcolor);
+// 	pieslice(x,y,0,360,radius);
+// 	puthz(x, y, str, 16, 16, charcolor);
+// }
+
+
 /**********************************************************
 以下为普通用户界面的相关函数
 **********************************************************/
@@ -635,12 +736,13 @@ void DrawUserScreen_c(setuser *person,int *judge)
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(RED);
+	
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
 		if(buttons)//点击事件
 		{
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//退出按钮点击退出
 			{
 				*judge=turnTo_c(person,1);
 				return;
