@@ -1,0 +1,101 @@
+[33mcommit 0b38f64eb49d089d384990b104ee1f55a9f942d7[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Mon Sep 16 23:08:47 2019 +0800
+
+    dev建立了
+
+[33mcommit 61b2d3e0d46a3bcb903d27b8f44d7d5042f71455[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Mon Sep 16 20:36:42 2019 +0800
+
+    share
+
+[33mcommit 26d1e9e4211632961bc839681bf967f31c02a1c7[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Sun Sep 8 21:44:10 2019 +0800
+
+    文件整理完毕
+
+[33mcommit f87eaa368b2bdf366876c6c85cf17986d9fbfd4b[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Tue Sep 3 21:58:28 2019 +0800
+
+    try
+
+[33mcommit 7130289c7f4dc9a1e011cec88d4c32ee7aceb6db[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Wed Aug 28 20:50:21 2019 +0800
+
+    给退出和注销按钮添加确认信息框
+
+[33mcommit 541191ff70b9ea0477bd210e64ca97532b88cd86[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Tue Aug 27 17:53:32 2019 +0800
+
+    修改密码页面已完成，添加提示框和错误提示，此外又发现一个bug：新注册用户未写入用户链表中，下次改进
+
+[33mcommit aa26d23ae32226c648a58ba794646cc3f7e78986[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Mon Aug 26 20:53:46 2019 +0800
+
+    修改密码基本完成，反馈效果改进成功，但有时仍会出现乱码，原因不明。且初始登入界面有bug
+
+[33mcommit af6b43357b9e63e5bcda03f60e7bdb807f64d628[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Mon Aug 26 18:37:06 2019 +0800
+
+    修改密码基本完成，但会时不时出现乱码，而且反馈效果没有启动
+
+[33mcommit 5ad505d55cdf4be980858ed0c07e8d4a07f20e1b[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Fri Aug 23 21:52:26 2019 +0800
+
+    修改密码页面增加输入框变色和输入事件，但后台交互迭代失败，原因目前不明
+
+[33mcommit f4488f78826e37d842191d852afca9af6f2ce8c2[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Wed Aug 21 20:55:59 2019 +0800
+
+    调度员界面框架搭好，个人中心页面做完，修改密码界面做完，下次进行修改密码的逻辑编写
+
+[33mcommit 0f5d36a225a01ede8d0edcbde3e88d839a287835[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Tue Aug 20 23:02:35 2019 +0800
+
+    登陆功能已完成，还需完善注册的密码确认以及用户名查重
+
+[33mcommit 27b3434db91f7acd33925f47998cbee333ae7ac3[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Mon Aug 19 22:04:08 2019 +0800
+
+    用户读取做完，但p无法传到person里
+
+[33mcommit 4550007c5efc841dbf42157b1bc6d9f26305408f[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Sun Aug 18 22:14:51 2019 +0800
+
+    分享版：创建用户列表未做
+
+[33mcommit 58d01818593ef3bdb954b3466a8a28fea4c14ad1[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Sun Aug 18 18:17:57 2019 +0800
+
+    开始输入法已完善，下面做登录和注册
+
+[33mcommit 1cad9a1f196f53c316b63e9aef5e95533da189c6[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Sat Aug 17 18:32:44 2019 +0800
+
+    回删键尝试
+
+[33mcommit f1c21aeeefb72aef832ac0ec09ed5584d739bd51[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Sat Aug 17 12:54:28 2019 +0800
+
+    加入加框效果
+
+[33mcommit 1cb541b98358b0781f6f22577cf89756610f07d8[m
+Author: Ethen Willson <2281881673@qq.com>
+Date:   Sat Aug 17 11:13:47 2019 +0800
+
+    开始页面初步搭建

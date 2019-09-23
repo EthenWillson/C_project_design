@@ -70,6 +70,9 @@ void main()
 		    DrawchargeScreen_j(&person,&judge,head);
 			break;
 
+		case 11://调度界面
+			drawControlScreen(&person,&judge,head);
+			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();
 		// 	judge = personregister(head, person.accounts, person.code);
