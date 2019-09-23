@@ -9,10 +9,12 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
 {
     int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
+    int i;//划线循环变量
     mouseInit(&mx, &my, &buttons);
 	cleardevice();
     setbkcolor(WHITE);
 	DrawBeautifulFrame_c();
+    
 
     //画出返回按钮
 	returnBtn_c(300,400,GREEN);
@@ -52,25 +54,80 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
     circle(528,80,7);
     circle(528,80,7);
     setcolor(GREEN);//x1+10,x2-10
-    line(90,80,126,80);
-    line(146,80,182,80);
-    line(202,80,238,80);
-    line(258,80,294,80);
-    line(314,80,350,80);
-    line(370,80,406,80);
-    line(426,80,462,80);
-    line(482,80,518,80);
-
+    for(i=0;i<=7;i++)
+    {
+        line(90+56*i,80,126+56*i,80);
+    }
+    
     setcolor(YELLOW);
     //2号线的线路
     circle(80,235,8);
     circle(80,235,7);
     circle(150,235,8);
     circle(150,235,7);
+    circle(220,235,8);
+    circle(220,235,7);
+    circle(290,235,8);
+    circle(290,235,7);
+    circle(360,235,8);
+    circle(360,235,7);
+    circle(430,235,8);
+    circle(430,235,7);
+    circle(500,235,8);
+    circle(500,235,7);
+    setcolor(GREEN);
+    for(i=0;i<6;i++)
+    {
+        line(90+70*i,235,140+70*i,235);
+    }
 
+    puthz(72,245,"杨",16,16,BROWN);
+    puthz(72,263,"家",16,16,BROWN);
+    puthz(72,281,"湾",16,16,BROWN);
+    puthz(142,245,"光",16,16,BROWN);
+    puthz(142,263,"谷",16,16,BROWN);
+    puthz(142,281,"广",16,16,BROWN);
+    puthz(142,299,"场",16,16,BROWN);
+    puthz(212,245,"珞",16,16,BROWN);
+    puthz(212,263,"雄",16,16,BROWN);
+    puthz(212,281,"路",16,16,BROWN); 
+    puthz(282,245,"华",16,16,BROWN);
+    puthz(282,263,"中",16,16,BROWN);
+    puthz(282,281,"科",16,16,BROWN);
+    puthz(282,299,"技",16,16,BROWN);
+    puthz(282,317,"大",16,16,BROWN);
+    puthz(282,335,"学",16,16,BROWN);
+    
 
+    setcolor(YELLOW);
+    //3号线的线路
+    circle(80,390,8);
+    circle(80,390,7);
+    circle(136,390,8);
+    circle(136,390,7);//x+56
+    circle(192,390,8);
+    circle(192,390,7);
+    circle(248,390,8);
+    circle(248,390,7);
+    circle(304,390,8);
+    circle(304,390,7);
+    circle(360,390,8);
+    circle(360,390,7);
+    circle(416,390,8);
+    circle(416,390,7);
+    circle(472,390,8);
+    circle(472,390,7);
+    circle(528,390,7);
+    circle(528,390,7);
+    setcolor(GREEN);
+    for(i=0;i<=7;i++)
+    {
+        line(90+56*i,390,126+56*i,390);
+    }
 
-
+    line(198,88,284,227);
+    line(296,243,410,382);
+    
 
     while(1)
 	{
