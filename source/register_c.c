@@ -90,15 +90,16 @@ Description: 修改密码函数
 output: 0代表修改密码成功,1代表密码验证失败
 Attention:for循环貌似判断条件和叠加是反的
 *****************************************/
-int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
+int changePass_c(setChangePass *managerTemp,char *accounts,setuser *head)
 {
     FILE *fp=NULL; //打开文件的指针
     setuser *ph=head->next;
 	
     // closegraph();
-    for(ph=head;ph=ph->next;ph->next==NULL)
+    //for(ph=head;ph=ph->next;ph->next==NULL)
+    for(ph=head;ph!=NULL;ph=ph->next)
     {
-        if( strcmp(ph->accounts,account)==0 && strcmp(ph->code,managerTemp->old)==0 )
+        if( strcmp(ph->accounts,accounts)==0 && strcmp(ph->code,managerTemp->old)==0 )
         {
             // printf("\nph->accounts:%s\nph->code:%s\naccount:%s\nph->code:%s\n\n",ph->accounts,ph->code,account,managerTemp->old);
             strcpy(ph->code,managerTemp->new);
@@ -107,7 +108,7 @@ int changePass_c(setChangePass *managerTemp,char *account,setuser *head)
                 closegraph();
                 printf("Can't open usernew.txt");
             }
-            for(ph=head;ph=ph->next;ph->next==NULL)
+            for(ph=head;ph->next!=NULL;ph=ph->next)
             {
                 fputc('@',fp);//@标志一个用户的开头
                 fputs(ph->accounts,fp);
@@ -198,6 +199,7 @@ void createuserlist_c(setuser *head)//创建用户链表
             *p='\0';  
         }
     }
+    now->next=NULL;
     // closegraph();
     // printf("%s\n%s\n%s\n\n",now->accounts,now->code,now->class);
 }
