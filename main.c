@@ -34,11 +34,7 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
-<<<<<<< HEAD
 	judge=5;
-=======
-	judge=2;
->>>>>>> dev
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/

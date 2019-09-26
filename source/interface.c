@@ -802,11 +802,7 @@ void DrawUserScreen_c(setuser *person,int *judge)
 
 		if(buttons)//点击事件
 		{
-<<<<<<< HEAD
 			if (mx >= 535 && mx <= 565 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
-=======
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//退出按钮点击退出
->>>>>>> dev
 			{
 				*judge=turnTo_c(person,1);
 				return;
