@@ -116,7 +116,7 @@ int changePass_c(setChangePass *managerTemp,char *accounts,setuser *head)
     setuser *ph;
     for(ph=head->next;ph!=NULL;ph=ph->next)
     {
-        if( strcmp(ph->accounts,account)==0 && strcmp(ph->code,managerTemp->old)==0 )//旧的密码验证成功
+        if( strcmp(ph->accounts,accounts)==0 && strcmp(ph->code,managerTemp->old)==0 )//旧的密码验证成功
         {
             strcpy(ph->code,managerTemp->new);
         }
