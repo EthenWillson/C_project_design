@@ -10,9 +10,30 @@ Function:  register_c
 Description:把注册用户写入文档中（目前未设置密码确认，后期进行迭代处理）
 Attention:money,spend等用数值储存的可能会有问题，最好将其改为字符串类型方便读取和存入
 *****************************************/
-void register_c(setManager managertemp)//注册函数：把注册用户写入文档中
+void register_c(setManager managertemp,setuser *head)//注册函数：把注册用户写入文档中
 {
     FILE *fp;
+    setuser *p=head;
+
+    //链表操作
+    while(p->next!=NULL)
+    {
+        p=p->next;
+    }
+    p->next=(setuser*)malloc(sizeof(setuser));
+    if(p->next==NULL)
+    {
+        printf("No memory.");
+        exit(1);
+    }
+    p=p->next;
+    strcpy(p->accounts,managertemp.accounts);
+    strcpy(p->code,managertemp.code);
+    strcpy(p->class,managertemp.class);
+    strcpy(p->money,"00000");
+    p->next=NULL;
+
+    //文件操作
     if((fp=fopen("data_c\\user\\userinf.txt","rt"))==NULL)
     {
         fp=fopen("data_c\\user\\userinf.txt","wt+");
@@ -160,7 +181,7 @@ void createuserlist_c(setuser *head)//创建用户链表
 		
 		if(cha=='@')//@默认为账户名的开始
 		{
-            if((now->next=(setuser*)malloc(sizeof(setuser)))==NULL)
+            if((now->next=(setuser*)malloc(sizeof(setuser)))==NULL)//开辟一个新的结点
 			{
 				closegraph();
 				printf("\n OUT OF MEMORY!");
@@ -198,6 +219,7 @@ void createuserlist_c(setuser *head)//创建用户链表
             *p='\0';  
         }
     }
+    now->next=NULL;
     // closegraph();
     // printf("%s\n%s\n%s\n\n",now->accounts,now->code,now->class);
 }

@@ -3,20 +3,139 @@
 
 void drawControlScreen(setuser *person,int *judge,setuser *head)
 {
-    int buttons,mx,my;//é¼ æ ‡ç›¸å…³å˜é‡
-	char temp[2]={'\0','\0'};//ç”¨äºå¸æ”¶é”®ç›˜ç¼“å†²åŒºçš„å˜é‡
-	// åˆå§‹åŒ–
-	// é¼ æ ‡åˆå§‹åŒ–
+    int buttons,mx,my;//Êó±êÏà¹Ø±äÁ¿
+	char temp[2]={'\0','\0'};//ÓÃÓÚÎüÊÕ¼üÅÌ»º³åÇøµÄ±äÁ¿
+	int i;//»®ÏßÑ­»·±äÁ¿
+	// ³õÊ¼»¯
+	// Êó±ê³õÊ¼»¯
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
-	setbkcolor(WHITE);
+
+	//»æÖÆµØÌúÏßÂ·
+	setbkcolor(BLACK);
+	setlinestyle(0, 0, 3);
+    setcolor(BROWN);
+    outtextxy(28,76,"1");
+    puthz(35,71,"ºÅÏß",16,16,BROWN);
+
+    outtextxy(28,231,"2");
+    puthz(35,226,"ºÅÏß",16,16,BROWN);
+
+    outtextxy(28,386,"3");
+    puthz(35,381,"ºÅÏß",16,16,BROWN);
+
+    puthz(260,5,"µ÷¶È¿ØÖÆ",32,32,BROWN);
+
+    setlinestyle(0, 0, 3);
+    setcolor(YELLOW);
+    //1ºÅÏßµÄÏßÂ·
+    circle(80,80,8);
+    circle(80,80,7);
+    circle(136,80,8);
+    circle(136,80,7);//x+56
+    circle(192,80,8);
+    circle(192,80,7);
+    circle(248,80,8);
+    circle(248,80,7);
+    circle(304,80,8);
+    circle(304,80,7);
+    circle(360,80,8);
+    circle(360,80,7);
+    circle(416,80,8);
+    circle(416,80,7);
+    circle(472,80,8);
+    circle(472,80,7);
+    circle(528,80,7);
+    circle(528,80,7);
+    setcolor(GREEN);//x1+10,x2-10
+    for(i=0;i<=7;i++)
+    {
+        line(90+56*i,80,126+56*i,80);
+    }
+    
+    setcolor(YELLOW);
+    //2ºÅÏßµÄÏßÂ·
+    circle(80,235,8);
+    circle(80,235,7);
+    circle(150,235,8);
+    circle(150,235,7);
+    circle(220,235,8);
+    circle(220,235,7);
+    circle(290,235,8);
+    circle(290,235,7);
+    circle(360,235,8);
+    circle(360,235,7);
+    circle(430,235,8);
+    circle(430,235,7);
+    circle(500,235,8);
+    circle(500,235,7);
+    setcolor(GREEN);
+    for(i=0;i<6;i++)
+    {
+        line(90+70*i,235,140+70*i,235);
+    }
+
+    puthz(72,245,"Ñî",16,16,BROWN);
+    puthz(72,263,"¼Ò",16,16,BROWN);
+    puthz(72,281,"Íå",16,16,BROWN);
+    puthz(142,245,"¹â",16,16,BROWN);
+    puthz(142,263,"¹È",16,16,BROWN);
+    puthz(142,281,"¹ã",16,16,BROWN);
+    puthz(142,299,"³¡",16,16,BROWN);
+    puthz(212,245,"çó",16,16,BROWN);
+    puthz(212,263,"ĞÛ",16,16,BROWN);
+    puthz(212,281,"Â·",16,16,BROWN); 
+    puthz(282,245,"»ª",16,16,BROWN);
+    puthz(282,263,"ÖĞ",16,16,BROWN);
+    puthz(282,281,"¿Æ",16,16,BROWN);
+    puthz(282,299,"¼¼",16,16,BROWN);
+    puthz(282,317,"´ó",16,16,BROWN);
+    puthz(282,335,"Ñ§",16,16,BROWN);
+    
+
+    setcolor(YELLOW);
+    //3ºÅÏßµÄÏßÂ·
+    circle(80,390,8);
+    circle(80,390,7);
+    circle(136,390,8);
+    circle(136,390,7);//x+56
+    circle(192,390,8);
+    circle(192,390,7);
+    circle(248,390,8);
+    circle(248,390,7);
+    circle(304,390,8);
+    circle(304,390,7);
+    circle(360,390,8);
+    circle(360,390,7);
+    circle(416,390,8);
+    circle(416,390,7);
+    circle(472,390,8);
+    circle(472,390,7);
+    circle(528,390,7);
+    circle(528,390,7);
+    setcolor(GREEN);
+    for(i=0;i<=7;i++)
+    {
+        line(90+56*i,390,126+56*i,390);
+    }
+
+    line(198,88,284,227);
+    line(296,243,410,382);
+
+
+
+
+
+
+
+
 	
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
-		if(buttons)//ç‚¹å‡»äº‹ä»¶
+		if(buttons)//µã»÷ÊÂ¼ş
 		{
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//é€€å‡ºæŒ‰é’®ç‚¹å‡»é€€å‡º
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//ÍË³ö°´Å¥µã»÷ÍË³ö
 			{
 				*judge=turnTo_c(person,1);
 				return;
