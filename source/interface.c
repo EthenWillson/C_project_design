@@ -214,7 +214,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					{
 						click_limit_c(RED);//权限码加红框
 					}
-					else//注册成功
+					else
 					{
 						if(login_c(managerTemp,head,person)==2)//如果用户名已存在
 						{
@@ -226,7 +226,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 							strcpy(person->code,managerTemp.code);
 							strcpy(person->class,managerTemp.class);
 							strcpy(person->money,managerTemp.money);
-							register_c(managerTemp);//注册新用户
+							register_c(managerTemp,head);//注册新用户
 
 							// up=head;
 							// while(up->next!=NULL)

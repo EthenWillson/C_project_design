@@ -22,7 +22,7 @@ void main()
 	
 	if ((head = (setuser *)malloc(sizeof(setuser))) == NULL)
 	{
-	    closegraph();
+		closegraph();
 		printf("\nout of memory");
 		return ;
 	}
@@ -61,13 +61,13 @@ void main()
 			PersonalCenter_c(&person,&judge,head);
 			break;
 		case 5://购票界面
-		    DrawbuyScreen_j(&person,&judge,head);
+			DrawbuyScreen_j(&person,&judge,head);
 			break;
 		case 6:
-		    DrawcheckScreen_j(&person,&judge,head);
+			DrawcheckScreen_j(&person,&judge,head);
 			break;
 		case 7:
-		    DrawchargeScreen_j(&person,&judge,head);
+			DrawchargeScreen_j(&person,&judge,head);
 			break;
 
 		case 11://调度界面
