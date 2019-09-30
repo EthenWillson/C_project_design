@@ -137,7 +137,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head)
 		{
 			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//退出按钮点击退出
 			{
-				*judge=turnTo_c(person,1);
+				*judge=turnTo_c(person,2);
 				return;
 			}
 		}

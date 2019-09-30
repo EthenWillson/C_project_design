@@ -87,11 +87,12 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 			  	//getMousebk(*mx, *my);
 				sign[1]=1;
 			}
-			// if ( buttons )
-			// {
-			//   //进入智能规划模块
-			// 	judge=2;
-			// }
+			if ( buttons )
+			{
+			  //进入充值处
+				*judge=turnTo_c(person,7);
+				return;
+			}
 		}
 		else if (sign[1]==1 && !(mx >= 147 && mx <= 486 && my >=261 && my <=380) )
 		{
