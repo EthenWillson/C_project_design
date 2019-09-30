@@ -164,12 +164,12 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				}
 				if(strlen(managerTemp.accounts)<6)
 				{
-					click_user_c(RED);//点击密码加红框
+					click_user_c(RED);//点击用户名加红框
 					puthz(450, 105, "账号名不得少于6位", 16, 16, RED);
 				}
 				if(strlen(managerTemp.class)<5 && manager==1)
 				{
-					click_limit_c(RED);//点击密码加红框
+					click_limit_c(RED);//点击权限码加红框
 				}
 				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
 				{
@@ -325,7 +325,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					setfillstyle(1,WHITE);
 					bar(410+i[1]*12,203,410+(i[1]+1)*12,227);
-					managerTemp.accounts[i[1]-1]='\0';
+					managerTemp.code[i[1]-1]='\0';
 					i[1]--;//密码字符数减1
 				}
 			}
@@ -359,7 +359,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					setfillstyle(1,WHITE);
 					bar(510+i[2]*12,238,513+(i[2]+1)*12,262);
-					managerTemp.accounts[i[2]-1]='\0';
+					managerTemp.class[i[2]-1]='\0';
 					i[2]--;//权限码字符数减1
 				}
 			}

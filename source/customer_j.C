@@ -55,7 +55,6 @@ void changemoney(int n,setuser *person,int radix,setuser *head)//文件操作
     
     number=atoi(person->money);
 	itoa(n+number,person->money,radix);	//用于修改person->money的值，字符串与整型之间的转换
-    outtextxy(80,80,person->money);
 
     for(ph=head->next;ph!=NULL;ph=ph->next)
     {
