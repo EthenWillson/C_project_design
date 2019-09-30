@@ -17,5 +17,6 @@
 #include"window_c.h"
 #include"customer_j.h"
 #include"control_c.h"
+#include"line_j.h"
 
 #endif

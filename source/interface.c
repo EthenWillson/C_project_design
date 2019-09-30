@@ -16,7 +16,7 @@ void clear_effect_c(int manager);
 void failConfirm_c(int sign);
 void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
-void DrawUserScreen_c(setuser *person,int *judge);//普通用户界面
+void DrawUserScreen_j(setuser *person,int *judge);//普通用户界面
 void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
 // void circleBtn(int x,int y,int bkcolor,int charcolor,int radius,char *str)//圆形按钮
 
@@ -696,9 +696,9 @@ void DrawControlSystem_c(setuser *person,int *judge)
 				puthz(290, 340, "购票", 32, 32, DARKGRAY);
 				sign[1]=1;
 			}
-			if(buttons)//点击上点
+			if(buttons)//点击下点
 			{
-				*judge=turnTo_c(person,3);
+				*judge=turnTo_c(person,5);
 				return;
 			}
 		}
@@ -728,7 +728,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 /**********************************************************
 以下为普通用户界面的相关函数
 **********************************************************/
-void DrawUserScreen_c(setuser *person,int *judge)
+void DrawUserScreen_j(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量

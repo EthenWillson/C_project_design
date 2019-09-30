@@ -1,24 +1,25 @@
+/**********************************************************
+此文件专门存放用户相关的函数
+作者：江明轩
+**********************************************************/
+
+
 #include"customer_j.h"
 #include"common_c.h"
-/*
-typedef struct station{
-    int zoom;
-    char station_name[20];
-} *station;//车站结构体
 
-typedef struct line{
-    int number;
-    struct station;
-}line;//线路结构体
-*/
+
+
 void DrawbuyScreen_j(setuser *person,int *judge,setuser *head);
 void DrawcheckScreen_j(setuser *person,int *judge,setuser *head);
 void DrawchargeScreen_j(setuser *person,int *judge,setuser *head);
 void Drawtipframe();
 void changemoney(int n,setuser *person,int radix,setuser *head);
-int changemoney_j(setuser *person,setuser *head);
 
-
+/**********************************************************
+Function:  Drawtipframe
+Description：	画出购票提示框
+Attention:  无
+**********************************************************/
 void Drawtipframe()
 {
     int buttons,mx,my;//鼠标相关变量
@@ -46,7 +47,11 @@ void Drawtipframe()
     }
     */
 }
-
+/**********************************************************
+Function:  changemoney
+Description：	改变文件中用户余额
+Attention:  无
+**********************************************************/
 void changemoney(int n,setuser *person,int radix,setuser *head)//文件操作
 {
     int number;
@@ -85,7 +90,11 @@ void changemoney(int n,setuser *person,int radix,setuser *head)//文件操作
         return 0;
 }
 
-
+/**********************************************************
+Function:  DrawbuyScreen
+Description：	画出购票界面，实现购票功能
+Attention:  无
+**********************************************************/
 void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
 {
     int buttons,mx,my;//鼠标相关变量
@@ -103,6 +112,7 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
 
 
     setcolor(BROWN);
+    Drawstation();
     outtextxy(26,65,"1");
     puthz(35,71,"号线",16,16,BROWN);
 
@@ -113,7 +123,7 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
     puthz(35,381,"号线",16,16,BROWN);
 
     puthz(200,32,"武汉地铁交通线",32,32,BROWN);
-
+/*
     setlinestyle(0, 0, 3);
     setcolor(YELLOW);
     //1号线的线路
@@ -219,7 +229,7 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
     {
         line(90+56*i,390,126+56*i,390);
     }
-
+*/
 
     //购票按钮
     setcolor(GREEN);
@@ -235,7 +245,7 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
         {
             if (mx >= 550 && mx <= 610 && my >= 210&& my <= 270 && buttons)//返回按钮点击返回
 			{
-				*judge=turnTo_c(person,3);
+				*judge=turnTo_c(person,-1);
 				return;
 			}
             if(mx >= 555 && mx <= 605 && my >= 125 && my <= 175 && buttons && checkclick==0)//第一次点击购票按钮
@@ -249,37 +259,11 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
         }
     }
 }
-/*
-int changemoney_j(setuser *person,setuser *head)
-{
-    FILE *fp=NULL; //打开文件的指针
-    setuser *ph=head->next;
-
-    for(ph=head;ph=ph->next;ph->next==NULL)
-    {
-        if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
-        {
-            closegraph();
-            printf("Can't open usernew.txt");
-        }
-        for(ph=head;ph=ph->next;ph->next==NULL)
-        {
-            fputc('@',fp);//@标志一个用户的开头
-            fputs(ph->accounts,fp);
-            fputc('*',fp);//*标志用户密码的开头
-            fputs(ph->code,fp);
-            fputc('#',fp);//#标志用户的权限码
-            fputs(ph->class,fp);
-            fputc('$',fp);//$标志用户余额
-            fputs(ph->money,fp);
-        }
-        fclose(fp);
-        remove("data_c\\user\\userinf.txt");
-        rename("data_c\\user\\usernew.txt","data_c\\user\\userinf.txt");
-        return 0;
-    }
-}
-*/
+/**********************************************************
+Function:  DrawcheckScreen
+Description：画出余额查询界面
+Attention:  无
+**********************************************************/
 void DrawcheckScreen_j(setuser *person,int *judge,setuser *head)
 {
     int buttons,mx,my;//鼠标相关变量
@@ -341,7 +325,11 @@ void DrawcheckScreen_j(setuser *person,int *judge,setuser *head)
     }
     
 }
-
+/**********************************************************
+Function:  DrawchargeScreen
+Description：画充值界面，并且实现充值功能
+Attention:  无
+**********************************************************/
 void DrawchargeScreen_j(setuser *person,int *judge,setuser *head)
 {
     int buttons,mx,my;//鼠标相关变量
@@ -390,7 +378,7 @@ void DrawchargeScreen_j(setuser *person,int *judge,setuser *head)
         {
             if (mx >= 300 && mx <= 360 && my >= 400&& my <= 460 && buttons)//返回按钮点击返回
 			{
-				*judge=turnTo_c(person,3);
+				*judge=turnTo_c(person,-1);
 				return;
 			}
             if (mx >= 100 && mx <= 190 && my >= 150&& my <= 200 && buttons)

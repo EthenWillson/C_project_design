@@ -20,10 +20,23 @@ typedef struct Manager
 	char money[6];  //用户余额
 }setManager;
 /*修改密码结构*/
+
 typedef struct changePass
 {
 	char old[13];  //用户的原密码
 	char new[13];  //用户的新密码
 	char confirm[13];  //确认密码
 }setChangePass;
+
+typedef struct station{
+    int x;//存放站点的x,y坐标
+	int y;
+	int radius;//存放站点的图上半径大小
+    char station_name[20];
+}station;//车站结构体
+
+typedef struct line{
+    int number;
+    struct station station;
+}setline;//线路结构体
 #endif
