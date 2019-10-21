@@ -32,11 +32,23 @@ typedef struct station{
     int x;//存放站点的x,y坐标
 	int y;
 	int radius;//存放站点的图上半径大小
+	int distance;//记录与后一个车站的距离，最后一个站点则为0
     char station_name[20];
 }station;//车站结构体
 
 typedef struct line{
     int number;
-    struct station station;
+    struct station *station;
 }setline;//线路结构体
+
+//记录一条线调度相关参数
+typedef struct trainInfo
+{
+	setline *lineHead;//一条地铁线的指针
+	int stopTime;//停站时间
+	int num;//车辆总数
+	int goTime;//发车时间间隔
+	int safeInstance;//安全距离
+}setTrainInfo;
+
 #endif
