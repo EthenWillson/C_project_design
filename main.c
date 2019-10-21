@@ -10,16 +10,20 @@ void main()
     int buttons,mx,my;//鼠标相关变量
 	int driver = VGA;
 	int mode = VGAHI;
+	all_lines_stations all;
 	//char *p=NULL;
 	//setuser *pt = NULL;
 	person.accounts[0] = '\0';//初始化
 	person.code[0] = '\0';//初始化
 	//person.Routes=NULL;
 	//person.size=0;
+
 	
+	station_information_j(&all);
+
+
 	initgraph(&driver, &mode, "../BORLANDC\\bgi");  
 	cleardevice();
-	
 	if ((head = (setuser *)malloc(sizeof(setuser))) == NULL)
 	{
 		closegraph();
@@ -35,7 +39,7 @@ void main()
 	// }
 	// return ;
 	judge=1;
-	while (1)
+	while (5)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
 		switch (judge)
