@@ -31,7 +31,6 @@ typedef struct changePass
 typedef struct station{
     int x;//存放站点的x,y坐标
 	int y;
-	int radius;//存放站点的图上半径大小
 	int distance;//记录与后一个车站的距离，最后一个站点则为0
     char station_name[20];
 }station;//车站结构体
@@ -51,4 +50,12 @@ typedef struct trainInfo
 	int safeInstance;//安全距离
 }setTrainInfo;
 
+typedef struct all{
+    station line1[9];//车站结构数组，line1[0]未用
+    station line2[10];//line2[0]未用
+    station line4[9];//line4[0]未用
+    setline station_line1;//线路结构体
+    setline station_line2;
+    setline station_line4;
+}all_lines_stations;
 #endif

@@ -12,14 +12,15 @@
 void DrawbuyScreen_j(setuser *person,int *judge,setuser *head);
 void DrawcheckScreen_j(setuser *person,int *judge,setuser *head);
 void DrawchargeScreen_j(setuser *person,int *judge,setuser *head);
-void Drawtipframe();
-void changemoney(int n,setuser *person,int radix,setuser *head);
+//void Drawtipframe();
+void changemoney_j(int n,setuser *person,int radix,setuser *head);
 
 /**********************************************************
 Function:  Drawtipframe
 Description：	画出购票提示框
 Attention:  无
 **********************************************************/
+/*
 void Drawtipframe()
 {
     int buttons,mx,my;//鼠标相关变量
@@ -32,7 +33,7 @@ void Drawtipframe()
 
     puthz(60,20,"请先点击起点",16,16,RED);
     puthz(60,40,"再点击终点",16,16,RED);
-    /*
+    
     while(1)
     {
         newxy(&mx,&my,&buttons);
@@ -45,14 +46,15 @@ void Drawtipframe()
             }
         }
     }
-    */
+    
 }
+*/
 /**********************************************************
 Function:  changemoney
 Description：	改变文件中用户余额
 Attention:  无
 **********************************************************/
-void changemoney(int n,setuser *person,int radix,setuser *head)//文件操作
+void changemoney_j(int n,setuser *person,int radix,setuser *head)//文件操作
 {
     int number;
 	FILE *fp=NULL; //打开文件的指针
@@ -100,11 +102,12 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
     int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
     int i;//划线循环变量
-    int checkclick=0;
+    int checkclick;//检验点击了几次
     mouseInit(&mx, &my, &buttons);
 	cleardevice();
     setbkcolor(WHITE);
-	DrawBeautifulFrame_c();
+	//DrawBeautifulFrame_c();
+    checkclick=0;
     
 
     //画出返回按钮
@@ -112,130 +115,40 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
 
 
     setcolor(BROWN);
-    Drawstation();
-    outtextxy(26,65,"1");
-    puthz(35,71,"号线",16,16,BROWN);
+    setlinestyle(DOTTED_LINE,0,NORM_WIDTH);
+    line(460,0,460,75);
+    line(460,75,640,75);
 
-    outtextxy(26,220,"2");
-    puthz(35,226,"号线",16,16,BROWN);
-
-    outtextxy(26,375,"3");
-    puthz(35,381,"号线",16,16,BROWN);
-
-    puthz(200,32,"武汉地铁交通线",32,32,BROWN);
-/*
-    setlinestyle(0, 0, 3);
+    setlinestyle(0,0,3);
+    setcolor(LIGHTCYAN);
+    line(500,10,550,10);
+    outtextxy(560,0,"1");
+    puthz(570,5,"号线",16,16,LIGHTBLUE);
+    setcolor(LIGHTGREEN);
+    line(500,30,550,30);
+    outtextxy(560,20,"2");
+    puthz(570,25,"号线",16,16,LIGHTGREEN);
     setcolor(YELLOW);
-    //1号线的线路
-    circle(80,80,8);
-    circle(80,80,7);
-    circle(136,80,8);
-    circle(136,80,7);//x+56
-    circle(192,80,8);
-    circle(192,80,7);
-    circle(248,80,8);
-    circle(248,80,7);
-    circle(304,80,8);
-    circle(304,80,7);
-    circle(360,80,8);
-    circle(360,80,7);
-    circle(416,80,8);
-    circle(416,80,7);
-    circle(472,80,8);
-    circle(472,80,7);
-    circle(528,80,8);
-    circle(528,80,7);
-    setcolor(GREEN);//x1+10,x2-10
-    for(i=0;i<=7;i++)
-    {
-        line(90+56*i,80,126+56*i,80);
-    }
+    line(500,50,550,50);
+    outtextxy(560,40,"3");
+    puthz(570,45,"号线",16,16,YELLOW);
+    puthz(180,0,"武汉地铁交通线",32,32,BROWN);
+
+    Drawstation1_j();
+    Drawstation2_j();
+    Drawstation4_j();
+    DrawCircles_j();
     
-    setcolor(YELLOW);
-    //2号线的线路
-    circle(80,235,8);
-    circle(80,235,7);
-    circle(150,235,8);
-    circle(150,235,7);
-    circle(220,235,8);
-    circle(220,235,7);
-    circle(290,235,8);
-    circle(290,235,7);
-    circle(360,235,8);
-    circle(360,235,7);
-    circle(430,235,8);
-    circle(430,235,7);
-    circle(500,235,8);
-    circle(500,235,7);
-    setcolor(GREEN);
-    for(i=0;i<6;i++)
-    {
-        line(90+70*i,235,140+70*i,235);
-    }
-
-    puthz(72,245,"天",16,16,BROWN);
-    puthz(72,263,"河",16,16,BROWN);
-    puthz(72,281,"机",16,16,BROWN);
-    puthz(72,299,"场",16,16,BROWN);
-    puthz(142,245,"光",16,16,BROWN);
-    puthz(142,263,"谷",16,16,BROWN);
-    puthz(142,281,"广",16,16,BROWN);
-    puthz(142,299,"场",16,16,BROWN);
-    puthz(212,245,"珞",16,16,BROWN);
-    puthz(212,263,"雄",16,16,BROWN);
-    puthz(212,281,"路",16,16,BROWN); 
-    puthz(282,245,"华",16,16,BROWN);
-    puthz(282,263,"中",16,16,BROWN);
-    puthz(282,281,"科",16,16,BROWN);
-    puthz(282,299,"技",16,16,BROWN);
-    puthz(282,317,"大",16,16,BROWN);
-    puthz(282,335,"学",16,16,BROWN);
-    puthz(352,245,"光",16,16,BROWN);
-    puthz(352,263,"谷",16,16,BROWN);
-    puthz(352,281,"大",16,16,BROWN);
-    puthz(352,299,"道",16,16,BROWN);
-    puthz(422,245,"佳",16,16,BROWN);
-    puthz(422,263,"园",16,16,BROWN);
-    puthz(422,281,"路",16,16,BROWN);
-    puthz(492,245,"佛",16,16,BROWN);
-    puthz(492,263,"祖",16,16,BROWN);
-    puthz(492,281,"岭",16,16,BROWN);
-
-    
-    
-
-    setcolor(YELLOW);
-    //3号线的线路
-    circle(80,390,8);
-    circle(80,390,7);
-    circle(136,390,8);
-    circle(136,390,7);//x+56
-    circle(192,390,8);
-    circle(192,390,7);
-    circle(248,390,8);
-    circle(248,390,7);
-    circle(304,390,8);
-    circle(304,390,7);
-    circle(360,390,8);
-    circle(360,390,7);
-    circle(416,390,8);
-    circle(416,390,7);
-    circle(472,390,8);
-    circle(472,390,7);
-    circle(528,390,8);
-    circle(528,390,7);
-    setcolor(GREEN);
-    for(i=0;i<=7;i++)
-    {
-        line(90+56*i,390,126+56*i,390);
-    }
-*/
-
     //购票按钮
     setcolor(GREEN);
     circle(580,150,30);
     puthz(565,142,"购票",16,16,CYAN);
-    puthz(60,30,"请点击购票按钮",16,16,RED);
+    puthz(30,5,"请先点击起点",16,16,RED);
+    puthz(30,25,"再点击终点",16,16,RED);
+    puthz(30,45,"最后点击购票按钮",16,16,RED);
+
+    
+
     
 
     while(1)
@@ -248,12 +161,11 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
 				*judge=turnTo_c(person,-1);
 				return;
 			}
-            if(mx >= 555 && mx <= 605 && my >= 125 && my <= 175 && buttons && checkclick==0)//第一次点击购票按钮
+            if(mx >= 555 && mx <= 605 && my >= 125 && my <= 175 && buttons && checkclick==0)//第一次点击
             {
                 checkclick=1;//代表已经点击了一次
                 setfillstyle(1,WHITE);
-                bar(60,20,200,50);
-                Drawtipframe();//画出提示框
+                
             }
             //if(mx>=)
         }
@@ -288,7 +200,7 @@ void DrawcheckScreen_j(setuser *person,int *judge,setuser *head)
 	returnBtn_c(300,400,GREEN);
 
     puthz(90,95,"您的余额为：",16,16,CYAN);
-    changemoney(0,person,10,head);
+    changemoney_j(0,person,10,head);
     setcolor(MAGENTA);
     outtextxy(200,90,person->money);
 
@@ -383,31 +295,41 @@ void DrawchargeScreen_j(setuser *person,int *judge,setuser *head)
 			}
             if (mx >= 100 && mx <= 190 && my >= 150&& my <= 200 && buttons)
             {
-                changemoney(10,person,10,head);//充值10元，修改person->money的值
+                setfillstyle(1,WHITE);
+                bar(60,340,250,370);
+                changemoney_j(10,person,10,head);//充值10元，修改person->money的值
                 //changemoney_j(person,head);
                 puthz(80,350,"您已成功充值10元",16,16,RED);
             }
             if (mx >= 280 && mx <= 370 && my >= 150&& my <= 200 && buttons)
             {
-                changemoney(20,person,10,head);//充值20元，修改person->money的值
+                setfillstyle(1,WHITE);
+                bar(60,340,250,370);
+                changemoney_j(20,person,10,head);//充值20元，修改person->money的值
                 //changemoney_j(person,head);
                 puthz(80,350,"您已成功充值20元",16,16,RED);
             }
             if (mx >= 460 && mx <= 550 && my >= 150&& my <= 200 && buttons)
             {
-                changemoney(50,person,10,head);
+                setfillstyle(1,WHITE);
+                bar(60,340,250,370);
+                changemoney_j(50,person,10,head);
                 //changemoney_j(person,head);
                 puthz(80,350,"您已成功充值50元",16,16,RED);
             }
             if (mx >= 100 && mx <= 190 && my >= 280&& my <= 330 && buttons)
             {
-                changemoney(100,person,10,head);
+                
+                setfillstyle(1,WHITE);
+                bar(60,340,250,370);changemoney_j(100,person,10,head);
                 //changemoney_j(person,head);
                 puthz(80,350,"您已成功充值100元",16,16,RED);
             }
             if (mx >= 280 && mx <= 370 && my >= 280&& my <= 330 && buttons)
             {
-                changemoney(200,person,10,head);
+                
+                setfillstyle(1,WHITE);
+                bar(60,340,250,370);changemoney_j(200,person,10,head);
                 //changemoney_j(person,head);
                 puthz(80,350,"您已成功充值200元",16,16,RED);
             }
