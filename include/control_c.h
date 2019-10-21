@@ -4,7 +4,7 @@
 #include"common_c.h"
 
 void drawControlScreen(setuser *person,int *judge,setuser *head);
-void otherEvent();
+int otherEvent(int *mx,int *my,int *buttons);
 
 
 #endif

@@ -1,17 +1,27 @@
 #include"control_c.h"
 #include"common_c.h"
-void otherEvent()//其它事件，如鼠标的更新和点击事件等
+/**********************************************************
+Function:  otherEvent
+Description：	其它事件，如鼠标的更新和点击事件等
+Attention:  无
+**********************************************************/
+int otherEvent(int *mx,int *my,int *buttons)
 {
-    newxy(&mx, &my, &buttons);
-	if(buttons)//点击事件
+    newxy(mx, my, buttons);
+	if(*buttons)//点击事件
 	{
-		if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//退出按钮点击退出
+		if (*mx >= 585 && *mx <= 615 && *my >= 5&& *my <= 45)//退出按钮点击退出
 		{
-			*judge=turnTo_c(person,2);
-			return;
+			return 0;
 		}
 	}
+	return 1;
 }
+/**********************************************************
+Function:  drawControlScreen
+Description：	画调度页面，实现动画
+Attention:  无
+**********************************************************/
 void drawControlScreen(setuser *person,int *judge,setuser *head)
 {
     int buttons,mx,my;//鼠标相关变量
@@ -36,6 +46,10 @@ void drawControlScreen(setuser *person,int *judge,setuser *head)
 	
 	while(1)
 	{
-		otherEvent();
+		if(otherEvent(&mx,&my,&buttons)==0)
+		{
+			*judge=turnTo_c(person,2);
+			return;
+		}
 	}
 }
