@@ -28,6 +28,7 @@ void main()
 	{
 		closegraph();
 		printf("\nout of memory");
+		getch();
 		return ;
 	}
 	createuserlist_c(head);//创建用户链表，记得要释放
@@ -38,7 +39,7 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
-	judge=1;
+	judge=2;
 	while (5)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -75,7 +76,7 @@ void main()
 			break;
 
 		case 11://调度界面 
-			drawControlScreen(&person,&judge,head);
+			drawControlScreen(&person,&judge,head,&all);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

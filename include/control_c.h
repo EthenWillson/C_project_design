@@ -3,7 +3,7 @@
 
 #include"common_c.h"
 
-void drawControlScreen(setuser *person,int *judge,setuser *head);
+void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_stations *all);
 int otherEvent(int *mx,int *my,int *buttons);
 
 
