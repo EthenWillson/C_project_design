@@ -121,7 +121,8 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				choose=0;
 				clear_effect_c(manager);//清除加框效果
 				Btn_change_manager_c();//点击管理员按钮后按钮样式变换
-				//backgroundChange(*mx, *my, 500, 50, 600 , 82);
+				// getMousebk(mx,my);
+				backgroundChange(mx,my, 500, 50, 600 , 82);
 			}
 			else if(mx >= 400 && mx <= 500 && my >= 50&& my <= 82 && buttons)//点击用户按钮
 			{
@@ -129,12 +130,17 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				choose=0;
 				clear_effect_c(manager);//清除加框效果
 				Btn_change_user_c();//点击用户按钮后按钮样式变换
+				backgroundChange(mx,my, 400, 50, 500 , 82);
+				// getMousebk(mx,my);
 			}
 			else if(mx >= 410 && mx <= 590 && my >= 130&& my <= 160 && buttons)//点击账号框
 			{
 				choose=1;
+				mousehide(mx,my);
 				clear_effect_c(manager);//清除加框效果
 				click_user_c(GREEN);//点击账号加绿
+				// backgroundChange(mx , my, 410, 130, 590 , 160);
+				getMousebk(mx,my);
 
 				//输入账号
 				//outtextxy(410,130,arr);//试验位置
@@ -143,14 +149,22 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 			else if(mx >= 410 && mx <= 590 && my >= 200&& my <= 230 && buttons)//点击密码框
 			{
 				choose=2;
+				mousehide(mx,my);
 				clear_effect_c(manager);//清除加框效果
 				click_pass_c(GREEN);//点击密码加绿框
+				getMousebk(mx,my);
+				// backgroundChange(mx , my, 410, 200, 590 , 230);
+				// getMousebk(mx,my);
 			}
 			else if(mx >= 510 && mx <= 590 && my >= 235&& my <= 265 && buttons && manager==1)//点击权限码框
 			{
 				choose=3;
+				mousehide(mx,my);
 				clear_effect_c(manager);//清除加框效果
 				click_limit_c(GREEN);//点击权限码加绿框
+				getMousebk(mx,my);
+				// backgroundChange(mx , my, 510, 235, 590 , 265);
+				// getMousebk(mx,my);
 			}
 			else if(mx >= 410 && mx <= 590 && my >= 270 && my <= 290 && buttons)//点击登陆按钮
 			//bar(410,270,590,290);//登录框
@@ -161,15 +175,18 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					click_pass_c(RED);//点击密码加红框
 					puthz(450, 175, "密码不得少于6位", 16, 16, RED);
+					// getMousebk(mx,my);
 				}
 				if(strlen(managerTemp.accounts)<6)
 				{
 					click_user_c(RED);//点击用户名加红框
 					puthz(450, 105, "账号名不得少于6位", 16, 16, RED);
+					// getMousebk(mx,my);
 				}
 				if(strlen(managerTemp.class)<5 && manager==1)
 				{
 					click_limit_c(RED);//点击权限码加红框
+					// getMousebk(mx,my);
 				}
 				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
 				{
@@ -197,15 +214,18 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					click_pass_c(RED);//密码加红框
 					puthz(450, 175, "密码不得少于6位", 16, 16, RED);
+					// getMousebk(mx,my);
 				}
 				if(strlen(managerTemp.accounts)<6)
 				{
 					click_user_c(RED);//账号加红框
 					puthz(450, 105, "账号名不得少于6位", 16, 16, RED);
+					// getMousebk(mx,my);
 				}
 				if(strlen(managerTemp.class)<5 && manager==1)
 				{
 					click_limit_c(RED);//权限码加红框
+					// getMousebk(mx,my);
 				}
 				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
 				{
@@ -213,6 +233,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					if(strcmp(managerTemp.class,"cjwzs")!=0 && strcmp(managerTemp.class,"00000")!=0)//权限码有误
 					{
 						click_limit_c(RED);//权限码加红框
+						// getMousebk(mx,my);
 					}
 					else
 					{
@@ -256,6 +277,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 			{
 				choose=0;
 				clear_effect_c(manager);//清除加框效果
+				// getMousebk(mx,my);
 			}
 
 			
@@ -275,6 +297,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
 					{
+						mousehide(mx,my);
 						i[0]++;//账户名字符数加一
 						setfillstyle(1,WHITE);
 						bar(410+i[0]*12,133,410+(i[0]+1)*12,157);
@@ -284,15 +307,18 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						managerTemp.accounts[i[0]-1]=temp[0];//账号名字符缓存
 						managerTemp.accounts[i[0]]='\0';
 						outtextxy(410+i[0]*12,133,temp);
+						getMousebk(mx,my);
 					}
-					
 				}
 				else if (key == 0xe08 && i[0]>0)//如果按了回删键 
 				{
+					mousehide(mx,my);
 					setfillstyle(1,WHITE);
 					bar(410+i[0]*12,133,410+(i[0]+1)*12,157);//输入框1账号
 					managerTemp.accounts[i[0]-1]='\0';
 					i[0]--;//账号字符数减1
+					getMousebk(mx,my);
+					// getMousebk(mx,my);
 				}
 			}
 			
@@ -308,6 +334,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
 					{
+						mousehide(mx,my);
 						i[1]++;//密码字符数加一
 						setfillstyle(1,WHITE);
 						bar(410+i[1]*12,203,410+(i[1]+1)*12,227);
@@ -318,15 +345,17 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						managerTemp.code[i[1]]='\0';
 						temp[0]='*';//把密码遮住
 						outtextxy(410+i[1]*12,203,temp);
+						getMousebk(mx,my);
 					}
-					
 				}
 				else if (key == 0xe08 && i[1]>0)//如果按了回删键 
 				{
+					mousehide(mx,my);
 					setfillstyle(1,WHITE);
 					bar(410+i[1]*12,203,410+(i[1]+1)*12,227);
 					managerTemp.code[i[1]-1]='\0';
 					i[1]--;//密码字符数减1
+					getMousebk(mx,my);
 				}
 			}
 			
@@ -342,6 +371,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				{
 					if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
 					{
+						mousehide(mx,my);
 						i[2]++;//权限字符数加一
 						setfillstyle(1,WHITE);
 						bar(510+i[2]*12,238,513+(i[2]+1)*12,262);
@@ -352,15 +382,18 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 						managerTemp.class[i[2]]='\0';
 						temp[0]='*';//把权限码遮住
 						outtextxy(510+i[2]*12,238,temp);
+						getMousebk(mx,my);
 					}
 					
 				}
 				else if (key == 0xe08 && i[2]>0)//如果按了回删键 
 				{
+					mousehide(mx,my);
 					setfillstyle(1,WHITE);
 					bar(510+i[2]*12,238,513+(i[2]+1)*12,262);
 					managerTemp.class[i[2]-1]='\0';
 					i[2]--;//权限码字符数减1
+					getMousebk(mx,my);
 				}
 			}
 			
@@ -652,6 +685,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		{
 			if(sign[0]==0)
 			{
+				mousehide(mx,my);
 				//遮住原先的点
 				setcolor(DARKGRAY);
 				setfillstyle(1,DARKGRAY);
@@ -662,6 +696,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 				pieslice(320,125,0,360,20);
 				puthz(290, 160, "调度", 32, 32, WHITE);
 				sign[0]=1;
+				getMousebk(mx,my);
 			}
 			if(buttons)//点击上点
 			{
@@ -671,6 +706,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		}
 		else if(sign[0]==1 && !(mx >= 245 && mx <= 395 && my >= 90 && my <= 240))
 		{
+			mousehide(mx,my);
 			sign[0]=0;
 			setcolor(DARKGRAY);
 			setfillstyle(1,DARKGRAY);
@@ -679,12 +715,13 @@ void DrawControlSystem_c(setuser *person,int *judge)
 			setcolor(WHITE);
 			setfillstyle(1,WHITE);
 			pieslice(320,165,0,360,20);
-			
+			getMousebk(mx,my);
 		}
 		if (mx >= 245 && mx <= 395 && my >= 290 && my <= 440)//鼠标移到下点
 		{
 			if(sign[1]==0)
 			{
+				mousehide(mx,my);
 				//遮住原先的点
 				setcolor(WHITE);
 				setfillstyle(1,WHITE);
@@ -695,6 +732,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 				pieslice(320,405,0,360,20);
 				puthz(290, 340, "购票", 32, 32, DARKGRAY);
 				sign[1]=1;
+				getMousebk(mx,my);
 			}
 			if(buttons)//点击下点
 			{
@@ -704,6 +742,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		}
 		else if(sign[1]==1 && !(mx >= 245 && mx <= 395 && my >= 290 && my <= 440))
 		{
+			mousehide(mx,my);
 			sign[1]=0;
 			setcolor(WHITE);
 			setfillstyle(1,WHITE);
@@ -712,7 +751,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 			setcolor(DARKGRAY);
 			setfillstyle(1,DARKGRAY);
 			pieslice(320,365,0,360,20);
-			
+			getMousebk(mx,my);
 		}
 
 	}

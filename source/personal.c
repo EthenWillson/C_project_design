@@ -55,11 +55,12 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 		{
 			if (sign[0]==0)
 			{
-			setfillstyle(1, WHITE);//将原先图标隐藏
-			bar(157,124,480,220);
-			Drawxc_self(10,-5,DARKGRAY);
-			//getMousebk(*mx, *my);
-			sign[0]=1;
+				mousehide(mx,my);
+				setfillstyle(1, WHITE);//将原先图标隐藏
+				bar(157,124,480,220);
+				Drawxc_self(10,-5,DARKGRAY);
+				sign[0]=1;
+				getMousebk(mx, my);
 			}
 			if ( buttons )
 			{
@@ -70,10 +71,12 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 		}
 		else if ( sign[0]==1 && !(mx >= 147 && mx <= 486 && my >=111 && my <=230) )
 		{
+			mousehide(mx,my);
 			setfillstyle(1, WHITE);//将原先图标隐藏
 			bar(157+10,124-5,480+10,220-5);
 			Drawxc_self(0,0,LIGHTGRAY);
 			sign[0]=0;
+			getMousebk(mx,my);
 		}
 		//(157,284,476,370)充值///////////////////////////////////////
 		if ( mx >= 147 && mx <= 486 && my >=261 && my <=380 )
@@ -81,10 +84,11 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 		
 			if (sign[1]==0)
 			{
+				mousehide(mx,my);
 				setfillstyle(1, WHITE);//将原先图标隐藏
 				bar(157,274,480,370);
 				Drawxc_auto(10,-5,DARKGRAY);
-			  	//getMousebk(*mx, *my);
+				getMousebk(mx, my);
 				sign[1]=1;
 			}
 			if ( buttons )
@@ -96,9 +100,11 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 		}
 		else if (sign[1]==1 && !(mx >= 147 && mx <= 486 && my >=261 && my <=380) )
 		{
+			mousehide(mx,my);
 			setfillstyle(1, WHITE);//将原先图标隐藏
 			bar(157+10,274-5,480+10,370-5);
 			Drawxc_auto(0,0,LIGHTGRAY);
+			getMousebk(mx, my);
 			sign[1]=0;
 		}
 	}
@@ -401,29 +407,35 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 			}
 			else if (mx >= 300 && mx <= 470 && my >= 150 && my <= 180 && buttons)//点击原密码
 			{
+				mousehide(mx,my);
 				frameChange_c(300,150,470,180,GREEN);//原密码框体变绿
 				frameChange_c(300,200,470,230,BLUE);
 				frameChange_c(300,250,470,280,BLUE);
 				setfillstyle(1,WHITE);
 				bar(269,299,500,340);
+				getMousebk(mx,my);
 				choose=1;
 			}
 			else if (mx >= 300 && mx <= 470 && my >= 200 && my <= 230 && buttons)//点击新密码
 			{
+				mousehide(mx,my);
 				frameChange_c(300,200,470,230,GREEN);//原密码框体变绿
 				frameChange_c(300,150,470,180,BLUE);
 				frameChange_c(300,250,470,280,BLUE);
 				setfillstyle(1,WHITE);
 				bar(269,299,500,340);
+				getMousebk(mx,my);
 				choose=2;
 			}
 			else if (mx >= 300 && mx <= 470 && my >= 250 && my <= 280 && buttons)//点击新密码
 			{
+				mousehide(mx,my);
 				frameChange_c(300,250,470,280,GREEN);//确认密码框体变绿
 				frameChange_c(300,150,470,180,BLUE);
 				frameChange_c(300,200,470,230,BLUE);
 				setfillstyle(1,WHITE);
 				bar(269,299,500,340);
+				getMousebk(mx,my);
 				choose=3;
 			}
 			else if (mx >= 300 && mx <= 360 && my >= 350 && my <= 380 && buttons)//点击确认按钮
@@ -431,12 +443,14 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 				choose=-1;
 				if(strlen(managerTemp.new)<6 || strlen(managerTemp.confirm)<6)//新密码小于6位
 				{
+					mousehide(mx,my);
 					setfillstyle(1,WHITE);
 					bar(269,299,500,340);
 					frameChange_c(300,150,470,180,BLUE);//新密码和确认密码框体变红
 					frameChange_c(300,200,470,230,RED);
 					frameChange_c(300,250,470,280,RED);
 					puthz(270,300,"新密码不得少于6位",16,16,RED);
+					getMousebk(mx,my);
 				}
 				else if(strcmp(managerTemp.new,managerTemp.confirm)==0)
 				{
@@ -444,12 +458,14 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 					if(result==1)//验证失败
 					{
 						// printf("\nfail");
+						mousehide(mx,my);
 						setfillstyle(1,WHITE);
 						bar(269,299,500,340);
 						frameChange_c(300,150,470,180,RED);//原密码框体变红
 						frameChange_c(300,200,470,230,BLUE);
 						frameChange_c(300,250,470,280,BLUE);
 						puthz(270,300,"原密码错误",16,16,RED);
+						getMousebk(mx,my);
 					}
 					else if(result==0)
 					{
@@ -470,12 +486,14 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 				}
 				else//新密码和确认密码不匹配
 				{
+					mousehide(mx,my);
 					setfillstyle(1,WHITE);
 					bar(269,299,500,340);
 					frameChange_c(300,150,470,180,BLUE);//新密码和确认密码框体变红
 					frameChange_c(300,200,470,230,RED);
 					frameChange_c(300,250,470,280,RED);
 					puthz(270,300,"新密码和确认密码不同",16,16,RED);
+					getMousebk(mx,my);
 				}
 				
 				
@@ -483,9 +501,11 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 			
 			else
 			{
+				mousehide(mx,my);
 				frameChange_c(300,150,470,180,BLUE);
 				frameChange_c(300,200,470,230,BLUE);
 				frameChange_c(300,250,470,280,BLUE);
+				getMousebk(mx,my);
 				choose=0;
 			}
 		}//点击事件结束
@@ -504,6 +524,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 					{
 						if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
 						{
+							mousehide(mx,my);
 							i[0]++;//原密码字符数加一
 							setfillstyle(1,WHITE);
 							bar(305+i[0]*12,153,305+(i[0]+1)*12,177);
@@ -513,15 +534,18 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 							managerTemp.old[i[0]-1]=temp[0];
 							managerTemp.old[i[0]]='\0';
 							outtextxy(305+i[0]*12,153,temp);
+							getMousebk(mx,my);
 						}
 						
 					}
 					else if (key == 0xe08 && i[0]>0)//如果按了回删键 
 					{
+						mousehide(mx,my);
 						setfillstyle(1,WHITE);
 						bar(305+i[0]*12,153,305+(i[0]+1)*12,177);
 						managerTemp.old[i[0]-1]='\0';
 						i[0]--;
+						getMousebk(mx,my);
 					}
 				}
 				break;
@@ -536,6 +560,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 					{
 						if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
 						{
+							mousehide(mx,my);
 							i[1]++;//新密码字符数加一
 							setfillstyle(1,WHITE);
 							bar(305+i[1]*12,203,305+(i[1]+1)*12,227);
@@ -546,15 +571,18 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 							managerTemp.new[i[1]]='\0';
 							temp[0]='*';
 							outtextxy(305+i[1]*12,203,temp);
+							getMousebk(mx,my);
 						}
 						
 					}
 					else if (key == 0xe08 && i[1]>0)//如果按了回删键 
 					{
+						mousehide(mx,my);
 						setfillstyle(1,WHITE);
 						bar(305+i[1]*12,203,305+(i[1]+1)*12,227);
 						managerTemp.new[i[1]-1]='\0';
 						i[1]--;
+						getMousebk(mx,my);
 					}
 				}
 				break;
@@ -569,6 +597,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 					{
 						if(searchKeyValue(key) != '\0')//其中输入的是字母或者数字
 						{
+							mousehide(mx,my);
 							i[2]++;//新密码字符数加一
 							setfillstyle(1,WHITE);
 							bar(305+i[2]*12,253,305+(i[2]+1)*12,277);
@@ -579,15 +608,18 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 							managerTemp.confirm[i[2]]='\0';
 							temp[0]='*';
 							outtextxy(305+i[2]*12,253,temp);
+							getMousebk(mx,my);
 						}
 						
 					}
 					else if (key == 0xe08 && i[2]>0)//如果按了回删键 
 					{
+						mousehide(mx,my);
 						setfillstyle(1,WHITE);
 						bar(305+i[2]*12,253,305+(i[2]+1)*12,277);
 						managerTemp.confirm[i[2]-1]='\0';
 						i[2]--;
+						getMousebk(mx,my);
 					}
 				}
 				break;
