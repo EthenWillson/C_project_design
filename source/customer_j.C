@@ -9,11 +9,12 @@
 
 
 
-void DrawbuyScreen_j(setuser *person,int *judge,setuser *head);
+void DrawbuyScreen_j(setuser *person,int *judge,setuser *head,all_lines_stations *all);
 void DrawcheckScreen_j(setuser *person,int *judge,setuser *head);
 void DrawchargeScreen_j(setuser *person,int *judge,setuser *head);
 //void Drawtipframe();
 void changemoney_j(int n,setuser *person,int radix,setuser *head);
+
 
 /**********************************************************
 Function:  Drawtipframe
@@ -97,18 +98,25 @@ Function:  DrawbuyScreen
 Description：	画出购票界面，实现购票功能
 Attention:  无
 **********************************************************/
-void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
+void DrawbuyScreen_j(setuser *person,int *judge,setuser *head,all_lines_stations *all)
 {
     int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
     int i;//划线循环变量
-    int checkclick;//检验点击了几次
+    int sta_checkclick[5][10];//二维数组标志量，检验点击了几次（0表示没点击，1表示点击了）
+    int flag;
+    int start_station;//存储起点信息,比如12代表1号线第2站为起点
+    int end_station;//存储终点信息，和上面一行差不多
+    //char sss[10]="江明轩";
+    flag=0;
+    start_station=0;
+    end_station=0;
     mouseInit(&mx, &my, &buttons);
 	cleardevice();
     setbkcolor(WHITE);
 	//DrawBeautifulFrame_c();
-    checkclick=0;
-    
+    //puthz(30,130,sss,16,16,RED);//这句话可以显示！
+    //outtextxy(30,160,all->line1[1].x);
 
     //画出返回按钮
 	returnBtn_c(550,210,GREEN);
@@ -147,28 +155,212 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head)
     puthz(30,25,"再点击终点",16,16,RED);
     puthz(30,45,"最后点击购票按钮",16,16,RED);
 
-    
-
-    
-
     while(1)
 	{
 		newxy(&mx, &my, &buttons);
-        if(buttons)
+        if(buttons)//专门用来搞返回上个界面
         {
-            if (mx >= 550 && mx <= 610 && my >= 210&& my <= 270 && buttons)//返回按钮点击返回
+             if (mx >= 550 && mx <= 610 && my >= 210&& my <= 270 && buttons)//返回按钮点击返回
 			{
-				*judge=turnTo_c(person,-1);
+				*judge=turnTo_c(person,3);
 				return;
 			}
-            if(mx >= 555 && mx <= 605 && my >= 125 && my <= 175 && buttons && checkclick==0)//第一次点击
-            {
-                checkclick=1;//代表已经点击了一次
-                setfillstyle(1,WHITE);
-                
-            }
-            //if(mx>=)
         }
+       
+        
+        /***************对于第一次点击起点站******************/
+        if(buttons&&flag==0&&flag!=2)
+        {
+            //三条线的圈圈，并且显示出起点
+            //1号线的
+            if(mx >= 75 && mx <= 85 && my >= 95 && my <= 105 && buttons )//第一次点击
+            {
+                Draw_start_sta_j(80,100,&all->line1[1],&sta_checkclick[1][1],&start_station,&flag);
+            }
+            if(mx >= 135 && mx <= 145 && my >= 95 && my <= 105 && buttons )
+            {
+                Draw_start_sta_j(140,100,&all->line1[2],&sta_checkclick[1][2],&start_station,&flag);  
+            }
+            if(mx >= 195 && mx <= 205 && my >= 95 && my <= 105 && buttons )
+            {
+                Draw_start_sta_j(200,100,&all->line1[3],&sta_checkclick[1][3],&start_station,&flag);
+            }
+            if(mx >= 255 && mx <= 265 && my >= 95 && my <= 105 && buttons )//这个是循礼门站，1和2的交点，到时候要特殊处理
+            {
+                Draw_start_sta_j(260,100,&all->line1[4],&sta_checkclick[1][4],&start_station,&flag);
+            }
+            if(mx >= 315 && mx <= 325 && my >= 95 && my <= 105 && buttons )
+            {
+                Draw_start_sta_j(320,100,&all->line1[5],&sta_checkclick[1][5],&start_station,&flag);
+            }
+            if(mx >= 375 && mx <= 385 && my >= 95 && my <= 105 && buttons )
+            {
+                Draw_start_sta_j(380,100,&all->line1[6],&sta_checkclick[1][6],&start_station,&flag);
+            }
+            if(mx >= 435 && mx <= 445 && my >= 95 && my <= 105 && buttons )
+            {
+               Draw_start_sta_j(440,100,&all->line1[7],&sta_checkclick[1][7],&start_station,&flag);
+            }
+            if(mx >= 495 && mx <= 505 && my >= 95 && my <= 105 && buttons )
+            {
+                Draw_start_sta_j(500,100,&all->line1[8],&sta_checkclick[1][8],&start_station,&flag);
+            }
+            //2号线的
+            if(mx >= 295 && mx <= 305 && my >= 65 && my <= 75 && buttons )//第一次点击
+            {
+                Draw_start_sta_j(300,170,&all->line2[1],&sta_checkclick[2][1],&start_station,&flag);
+            }
+            if(mx >= 255 && mx <= 265 && my >= 151 && my <= 161 && buttons )
+            {
+                Draw_start_sta_j(260,156,&all->line2[3],&sta_checkclick[2][3],&start_station,&flag);   
+            }
+                if(mx >= 255 && mx <= 265 && my >= 207 && my <= 217 && buttons )
+                {
+                    Draw_start_sta_j(260,212,&all->line2[4],&sta_checkclick[2][4],&start_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 263 && my <= 273 && buttons )
+                {
+                    Draw_start_sta_j(260,268,&all->line2[5],&sta_checkclick[2][5],&start_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons )
+                {
+                    Draw_start_sta_j(260,324,&all->line2[6],&sta_checkclick[2][6],&start_station,&flag);//有个小的计算失误，但问题不大
+                }                                                                                       //这两个draw距离其实是66
+                if(mx >= 255 && mx <= 265 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(260,380,&all->line2[7],&sta_checkclick[2][7],&start_station,&flag);
+                }
+                if(mx >= 195 && mx <= 205 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(200,380,&all->line2[8],&sta_checkclick[2][8],&start_station,&flag);
+                }
+                if(mx >= 235 && mx <= 245 && my >= 405 && my <= 415 && buttons )
+                {
+                    Draw_start_sta_j(240,410,&all->line2[9],&sta_checkclick[2][9],&start_station,&flag);
+                }
+                //4号线的
+                if(mx >= 75 && mx <= 85 && my >= 375 && my <= 385 && buttons )//第一次点击
+                {
+                    Draw_start_sta_j(80,380,&all->line4[1],&sta_checkclick[4][1],&start_station,&flag);
+                }
+                if(mx >= 135 && mx <= 145 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(140,380,&all->line4[2],&sta_checkclick[4][2],&start_station,&flag);   
+                }
+                if(mx >= 315 && mx <= 325 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(320,380,&all->line4[5],&sta_checkclick[4][5],&start_station,&flag);
+                }
+                if(mx >= 375 && mx <= 380 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(380,380,&all->line4[6],&sta_checkclick[4][6],&start_station,&flag);
+                }
+                if(mx >= 435 && mx <= 445 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(440,380,&all->line4[7],&sta_checkclick[4][7],&start_station,&flag);
+                }
+                if(mx >= 495 && mx <= 505 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_start_sta_j(500,380,&all->line2[8],&sta_checkclick[4][8],&start_station,&flag);
+                }
+                continue;
+            }//if第一次点击起始站
+            /***************对于第一次点击起点站之后******************/
+            
+            if(buttons&&flag==1)
+            {
+                if(mx >= 75 && mx <= 85 && my >= 95 && my <= 105 && buttons )//第一次点击
+                {
+                    Draw_end_sta_j(all,80,100,all->line1[1],&sta_checkclick[1][1],&start_station,&end_station,&flag);
+                }
+                if(mx >= 135 && mx <= 145 && my >= 95 && my <= 105 && buttons )
+                {
+                    Draw_end_sta_j(all,140,100,all->line1[2],&sta_checkclick[1][2],&start_station,&end_station,&flag);  
+                }
+                if(mx >= 195 && mx <= 205 && my >= 95 && my <= 105 && buttons )
+                {
+                    Draw_end_sta_j(all,200,100,all->line1[3],&sta_checkclick[1][3],&start_station,&end_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 95 && my <= 105 && buttons )//这个是循礼门站，1和2的交点，到时候要特殊处理
+                {
+                    Draw_end_sta_j(all,260,100,all->line1[4],&sta_checkclick[1][4],&start_station,&end_station,&flag);
+                }
+                if(mx >= 315 && mx <= 325 && my >= 95 && my <= 105 && buttons )
+                {
+                    Draw_end_sta_j(all,320,100,all->line1[5],&sta_checkclick[1][5],&start_station,&end_station,&flag);
+                }
+                if(mx >= 375 && mx <= 385 && my >= 95 && my <= 105 && buttons )
+                {
+                    Draw_end_sta_j(all,380,100,all->line1[6],&sta_checkclick[1][6],&start_station,&end_station,&flag);
+                }
+                if(mx >= 435 && mx <= 445 && my >= 95 && my <= 105 && buttons )
+                {
+                    Draw_end_sta_j(all,440,100,all->line1[7],&sta_checkclick[1][7],&start_station,&end_station,&flag);
+                }
+                if(mx >= 495 && mx <= 505 && my >= 95 && my <= 105 && buttons )
+                {
+                    Draw_end_sta_j(all,500,100,all->line1[8],&sta_checkclick[1][8],&start_station,&end_station,&flag);
+                }
+                //2号线的
+                if(mx >= 295 && mx <= 305 && my >= 65 && my <= 75 && buttons )
+                {
+                    Draw_end_sta_j(all,300,170,all->line2[1],&sta_checkclick[2][1],&start_station,&end_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 151 && my <= 161 && buttons )
+                {
+                    Draw_end_sta_j(all,260,151,all->line2[3],&sta_checkclick[2][3],&start_station,&end_station,&flag);   
+                }
+                if(mx >= 255 && mx <= 265 && my >= 207 && my <= 217 && buttons )
+                {
+                    Draw_end_sta_j(all,260,212,all->line2[4],&sta_checkclick[2][4],&start_station,&end_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 263 && my <= 273 && buttons )
+                {
+                    Draw_end_sta_j(all,260,278,all->line2[5],&sta_checkclick[2][5],&start_station,&end_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons )
+                {
+                    Draw_end_sta_j(all,260,334,all->line2[6],&sta_checkclick[2][6],&start_station,&end_station,&flag);
+                }
+                if(mx >= 255 && mx <= 265 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,260,380,all->line2[7],&sta_checkclick[2][7],&start_station,&end_station,&flag);
+                }
+                if(mx >= 195 && mx <= 205 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,200,380,all->line2[8],&sta_checkclick[2][8],&start_station,&end_station,&flag);
+                }
+                if(mx >= 235 && mx <= 245 && my >= 405 && my <= 415 && buttons )
+                {
+                    Draw_end_sta_j(all,240,410,all->line2[9],&sta_checkclick[2][9],&start_station,&end_station,&flag);
+                }
+                //4号线的
+                if(mx >= 75 && mx <= 85 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,80,380,all->line4[1],&sta_checkclick[4][1],&start_station,&end_station,&flag);
+                }
+                if(mx >= 135 && mx <= 145 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,140,380,all->line4[2],&sta_checkclick[4][2],&start_station,&end_station,&flag);   
+                }
+                if(mx >= 315 && mx <= 325 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,320,380,all->line4[5],&sta_checkclick[4][5],&start_station,&end_station,&flag);
+                }
+                if(mx >= 375 && mx <= 380 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,380,380,all->line4[6],&sta_checkclick[4][6],&start_station,&end_station,&flag);
+                }
+                if(mx >= 435 && mx <= 445 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,440,380,all->line4[7],&sta_checkclick[4][7],&start_station,&end_station,&flag);
+                }
+                if(mx >= 495 && mx <= 505 && my >= 375 && my <= 385 && buttons )
+                {
+                    Draw_end_sta_j(all,500,380,all->line2[8],&sta_checkclick[4][8],&start_station,&end_station,&flag);
+                }
+            }
+        
     }
 }
 /**********************************************************

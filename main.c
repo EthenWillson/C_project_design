@@ -65,7 +65,7 @@ void main()
 			PersonalCenter_c(&person,&judge,head);
 			break;
 		case 5://购票界面
-			DrawbuyScreen_j(&person,&judge,head);
+			DrawbuyScreen_j(&person,&judge,head,&all);//这个地方少传一个参数竟然不会报错！
 			break;
 		case 6://余额查询
 			DrawcheckScreen_j(&person,&judge,head);

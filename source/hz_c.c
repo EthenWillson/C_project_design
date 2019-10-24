@@ -37,7 +37,7 @@ int  outputLetterNum(char ch,int x,int y,int color)
 }
 
 
-void puthz(int x, int y,char *s,int flag,int part,int color)
+void puthz(int x, int y,char s[],int flag,int part,int color)
 {
 	FILE *hzk_p;                                       //定义汉字库文件指针
 	unsigned char quma,weima;                 //定义汉字的区码和位码
