@@ -40,14 +40,14 @@ typedef struct{
 typedef struct station{
     int x;//存放站点的x,y坐标
 	int y;
-	Triple_distance distance;//距离三元组结构体
+	Triple_distance distance;//距离三元组结构体（原先是float）
     char station_name[20];//站名
 	int simple_name;//站点的简称
 }station;
 
 /*线路结构*/
 typedef struct line{
-    int number;
+    int number;//线路编号
     struct station *station;
 }setline;
 
@@ -60,4 +60,32 @@ typedef struct all{
     setline station_line2;
     setline station_line4;
 }all_lines_stations;
+
+//记录某辆车的相关信息
+typedef struct train
+{
+	float x;
+	float y;
+	int k;//标志着进入第k个站与第k+1站之间
+	int i;//标志着进入第几个位移量
+	int reverse;//0标志正向，1标志反向
+	int count;//记录停车时间：0不停车
+	int setDotSave[6][6];//列车保存点阵
+	struct train *next;
+}setTrain;
+
+//记录一条线调度相关参数
+typedef struct trainInfo
+{
+	setline *lineHead;//一条地铁线的指针
+	setTrain *trainHead;//一条线上每辆车的列表
+	int wait;//停站时间
+	int num;//车辆总数
+	int goTime;//发车时间间隔
+	int safeInstance;//安全距离
+}setTrainInfo;
+
+
+
+
 #endif
