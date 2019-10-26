@@ -160,9 +160,9 @@ void DrawbuyScreen_j(setuser *person,int *judge,setuser *head,all_lines_stations
 		newxy(&mx, &my, &buttons);
         if(buttons)//专门用来搞返回上个界面
         {
-             if (mx >= 550 && mx <= 610 && my >= 210&& my <= 270 && buttons)//返回按钮点击返回
+            if (mx >= 550 && mx <= 610 && my >= 210&& my <= 270 && buttons)//返回按钮点击返回
 			{
-				*judge=turnTo_c(person,3);
+				*judge=turnTo_c(person,-1);
 				return;
 			}
         }

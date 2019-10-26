@@ -62,7 +62,7 @@ void station_information_j(all_lines_stations *all)
     Initstation_j(&(all->line2[6]),260,334,"小龟山",26,0,10.0,0);
     Initstation_j(&(all->line2[7]),260,380,"洪山广场",20,0,11.3,3.0);
     Initstation_j(&(all->line2[8]),200,380,"中南路",30,0,12.2,2.1);
-    Initstation_j(&(all->line2[9]),240,410,"宝通寺",29,0,1.36,0);
+    Initstation_j(&(all->line2[9]),240,410,"宝通寺",29,0,13.6,0);
     //all->line2[9].distance=0;
 
     Initstation_j(&(all->line4[0]),0,0,"0",00,0,0,0);
@@ -161,7 +161,7 @@ void Drawstation4_j()
     setcolor(YELLOW);
     for(i=0;i<7;i++)
     {
-       line(85+60*i,380,135+60*i,380);
+        line(85+60*i,380,135+60*i,380);
     }
 }
 

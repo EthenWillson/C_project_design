@@ -11,7 +11,7 @@ void drawDot(setTrain *dot,int color)
 {
 	setcolor(color);
 	setfillstyle(1, color);
-	bar(dot->x-2,dot->y-2,dot->x+2,dot->y+2);
+	bar((int)dot->x-2,(int)dot->y-2,(int)dot->x+2,(int)dot->y+2);
 }
 /**********************************************************
 Function:  hideDot
@@ -25,7 +25,7 @@ void hideDot(setTrain *dot)
 	{
 		for (j = 0;j<6;j++)
 		{
-			putpixel(dot->x -3 + i, dot->y -3 + j, dot->setDotSave[i][j]);
+			putpixel((int)dot->x -3 + i, (int)dot->y -3 + j, dot->setDotSave[i][j]);
 		}
 	}
 }
@@ -88,7 +88,6 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 				exit(1);
 			}
 			temp->next=NULL;
-			temp->k=0;
 			temp->i=0;
 			temp->x=0.0;
 			temp->y=0.0;
@@ -97,10 +96,16 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 			if(j<INITCARNUM/2)//前一半车正向开
 			{
 				temp->reverse=0;
+				temp->k=0;
 			}
 			else//后一半车反向开
 			{
 				temp->reverse=1;
+				if(i==1)
+					temp->k=8;
+				else
+					temp->k=7;
+				
 			}
 			
 		}
@@ -128,16 +133,37 @@ Function:  changePlace
 Description：	地铁前进动画
 Attention:  无
 **********************************************************/
-void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
+void changePlace(setTrain *dot,station *line,int speed,int length,int wait,int linenum)//linenum表示第几条线
 {
 	float xnew,ynew;
 	int i;
+	float distance;
+	// closegraph();
+	// 			printf("%d\n",line[8].x);
+	// 			printf("%d\n",line[9].x);
+	// 			printf("%d\n",line[8].y);
+	// 			printf("%d\n",line[9].y);
+	// 			getch();
 	if(dot->count==0)//车不在站台
 	{
 		if(dot->reverse==0)//车正向行驶
 		{
-			xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/(line[dot->k+1].distance)*speed*(dot->i);
-			ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/(line[dot->k+1].distance)*speed*(dot->i);
+			//计算两站间距
+			if(linenum==1)//一号线
+			{
+				distance=(line[dot->k+2].distance.dx)-(line[dot->k+1].distance.dx);
+			}
+			else if(linenum==2)//二号线
+			{
+				distance=(line[dot->k+2].distance.dy)-(line[dot->k+1].distance.dy);
+			}
+			else if(linenum==4)//四号线
+			{
+				distance=(line[dot->k+2].distance.dz)-(line[dot->k+1].distance.dz);
+			}
+			distance=distance*100;
+			xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/distance*speed*(dot->i);
+			ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/distance*speed*(dot->i);
 			if(dot->setDotSave[0][0]!=-100)//判断是不是第一次加载
 			{
 				hideDot(dot);
@@ -151,7 +177,7 @@ void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
 			drawDot(dot,BLUE);
 			//位移量进1
 			dot->i++;
-			if(dot->i==(line[dot->k+1].distance)/speed)//车如果到站
+			if(dot->i==(int)(distance/speed))//车如果到站
 			{
 				dot->i=0;
 				dot->k++;
@@ -160,13 +186,42 @@ void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
 			if(dot->k==length-1)//车到了终点站
 			{
 				dot->reverse=1;
+				//清除两车向蹭之后的噪点
+				if(linenum==1)//一号线
+				{
+					Drawstation1_j();
+					DrawCircles_j();
+				}
+				else if(linenum==2)//二号线
+				{
+					Drawstation2_j();
+					DrawCircles_j();
+				}
+				else if(linenum==4)//四号线
+				{
+					Drawstation4_j();
+					DrawCircles_j();
+				}
 			}
-			delay(20);
+			delay(5);
 		}
 		else//车逆向行驶
 		{
-			xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/(line[dot->k].distance)*speed*(dot->i);
-			ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/(line[dot->k].distance)*speed*(dot->i);
+			if(linenum==1)//一号线
+			{
+				distance=(line[dot->k+1].distance.dx)-(line[dot->k].distance.dx);
+			}
+			else if(linenum==2)//二号线
+			{
+				distance=(line[dot->k+1].distance.dy)-(line[dot->k].distance.dy);
+			}
+			else if(linenum==4)//四号线
+			{
+				distance=(line[dot->k+1].distance.dz)-(line[dot->k].distance.dz);
+			}
+			distance=distance*100;
+			xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i);
+			ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i);
 			if(dot->setDotSave[0][0]!=-100)//判断是不是第一次加载
 			{
 				hideDot(dot);
@@ -180,24 +235,41 @@ void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
 			drawDot(dot,RED);
 			//位移量进1
 			dot->i++;
-			if(dot->i==(line[dot->k].distance)/speed)//车如果到站
+			if(dot->i==(int)distance/speed)//车如果到站
 			{
 				dot->i=0;
 				dot->k--;
 				dot->count=wait;
+				
 			}
 			if(dot->k==0)//车到了始发站
 			{
 				dot->reverse=0;
+				//清除两车向蹭之后的噪点
+				if(linenum==1)//一号线
+				{
+					Drawstation1_j();
+					DrawCircles_j();
+				}
+				else if(linenum==2)//二号线
+				{
+					Drawstation2_j();
+					DrawCircles_j();
+				}
+				else if(linenum==4)//四号线
+				{
+					Drawstation4_j();
+					DrawCircles_j();
+				}
 			}
-			delay(20);
+			delay(5);
 		}
 		
 	}
 	else//车在站台
 	{
 		dot->count--;
-		delay(20);
+		delay(5);
 	}
 	
 }
@@ -220,10 +292,15 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 
 
 	// closegraph();
-	// printf("\n%d\n%d",Info[0].trainHead->k,Info[0].trainHead->i);
-	// printf("\n%d\n%d",Info[1].trainHead->k,Info[1].trainHead->i);
-	// printf("\n%d\n%d",Info[2].trainHead->k,Info[2].trainHead->i);
-	// printf("\n%d\n%d",Info[0].trainHead->next->k,Info[0].trainHead->next->i);
+	// printf("\n%f\n%f",Info[2].lineHead->station[0].distance.dz,Info[2].lineHead->station[1].distance.dz);
+	// printf("\n%f\n%f",Info[2].lineHead->station[2].distance.dz,Info[2].lineHead->station[3].distance.dz);
+	// printf("\n%f\n%f",Info[2].lineHead->station[4].distance.dz,Info[2].lineHead->station[5].distance.dz);
+	// printf("\n%f\n%f",Info[1].lineHead->station[9].distance.dx,Info[1].lineHead->station[9].distance.dy);
+	// printf("\n%d\n%d",Info[1].lineHead->station[8].x,Info[1].lineHead->station[9].x);
+	// printf("\n%d\n%d",Info[1].lineHead->station[8].y,Info[1].lineHead->station[9].y);
+	// printf("\n%d\n%d",Info[1].lineHead->station[9].x,all->line2[9].x);
+	// printf("\n%f\n%f",Info[1].lineHead->station[6].distance.dy,Info[1].lineHead->station[7].distance.dy);
+	// printf("\n%f\n%f",Info[1].lineHead->station[8].distance.dy,Info[1].lineHead->station[9].distance.dy);
 	// getch() ;
 
 	//绘制界面
@@ -244,7 +321,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
     puthz(570,25,"号线",16,16,LIGHTGREEN);
     setcolor(YELLOW);
     line(500,50,550,50);
-    outtextxy(560,40,"3");
+    outtextxy(560,40,"4");
     puthz(570,45,"号线",16,16,YELLOW);
     puthz(180,0,"地铁调度一览",32,32,BROWN);
 
@@ -253,22 +330,6 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
     Drawstation4_j();
     DrawCircles_j();
 
-	// closegraph();
-	// printf("\n%d",Info[0].trainHead->reverse);
-	// printf("\n%d",Info[1].trainHead->reverse);
-	// printf("\n%d",Info[2].trainHead->reverse);
-	// printf("\n%d",Info[0].trainHead->next->reverse);
-	// printf("\n%d",Info[1].trainHead->next->reverse);
-	// printf("\n%d",Info[2].trainHead->next->reverse);
-	// getch();
-
-	// closegraph();
-	// printf("\n%d",Info[0].trainHead->k);
-	// printf("\n%f\n%f",line[dot->k+1].x,line[dot->k+2].x);
-	// printf("\n%f\n%f",line[dot->k+1].x,((float)((line[dot->k+1].x)-(line[dot->k+2].x))));
-	// printf("\n%f\n%f",xnew,ynew);
-	// getch() ;
-
 
 
 	
@@ -276,11 +337,14 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	{
 		// changePlace(&Info[0].lineHead[0],Info[0].lineHead->station,1,8,200);
 		//一号线
-		changePlace(Info[0].trainHead,Info[0].lineHead->station,1,8,200);
+		changePlace(Info[0].trainHead,Info[0].lineHead->station,2,8,20,1);
+		changePlace(Info[0].trainHead->next,Info[0].lineHead->station,1,8,20,1);
 		//二号线
-		changePlace(Info[1].trainHead,Info[1].lineHead->station,1,8,200);
+		changePlace(Info[1].trainHead,Info[1].lineHead->station,2,9,20,2);
+		changePlace(Info[1].trainHead->next,Info[1].lineHead->station,2,9,20,2);
 		//四号线
-		changePlace(Info[2].trainHead,Info[2].lineHead->station,1,8,200);
+		changePlace(Info[2].trainHead,Info[2].lineHead->station,2,8,20,4);
+		changePlace(Info[2].trainHead->next,Info[2].lineHead->station,2,8,20,4);
 		if(otherEvent(&mx,&my,&buttons)==0)
 		{
 			*judge=turnTo_c(person,2);
