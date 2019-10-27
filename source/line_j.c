@@ -7,8 +7,11 @@ void Drawstation1_j();
 void Drawstation2_j();
 void Drawstation4_j();
 void Draw_start_sta_j(int x,int y,station *sta,int *sta_checkclick,int *start_station,int *flag);
-void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_checkclick,int *start_station,int *end_station,int *flag);
+void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_checkclick,int *start_station,int *end_station,int *flag,int *price);
 float cal_distance_j(all_lines_stations *all,int *start_name,int *end_name);
+int cal_price_j(float distance);
+void transform1(float num,char* str);
+void transform2(float num,char* str);
 //float cal_price_j(float distance);
 //int judge_sta_checkclick_j(int** sta_checkclick);
 /**********************************************************
@@ -46,6 +49,13 @@ void station_information_j(all_lines_stations *all)
     Initstation_j(&(all->line1[2]),140,100,"Àû¼Ã±±Â·",12,0.9,0,0);
     Initstation_j(&(all->line1[3]),200,100,"ÓÑÒêÂ·",13,1.8,0,0);
     Initstation_j(&(all->line1[4]),260,100,"Ñ­ÀñÃÅ",10,2.8,1.5,0);
+    /*
+    closegraph();
+    printf("%f\n",all->line1[4].distance.dx);
+    printf("%f\n",all->line1[4].distance.dy);
+    printf("%f\n",all->line1[4].distance.dz);
+    getch();
+    */
     Initstation_j(&(all->line1[5]),320,100,"´óÖÇÂ·",15,3.9,0,0);
     Initstation_j(&(all->line1[6]),380,100,"ÈıÑôÂ·",16,6.6,0,0);
     Initstation_j(&(all->line1[7]),440,100,"»ÆÆÖÂ·",17,7.8,0,0);
@@ -62,7 +72,7 @@ void station_information_j(all_lines_stations *all)
     Initstation_j(&(all->line2[6]),260,334,"Ğ¡¹êÉ½",26,0,10.0,0);
     Initstation_j(&(all->line2[7]),260,380,"ºéÉ½¹ã³¡",20,0,11.3,3.0);
     Initstation_j(&(all->line2[8]),200,380,"ÖĞÄÏÂ·",30,0,12.2,2.1);
-    Initstation_j(&(all->line2[9]),240,410,"±¦Í¨ËÂ",29,0,1.36,0);
+    Initstation_j(&(all->line2[9]),240,410,"±¦Í¨ËÂ",29,0,13.6,0);
     //all->line2[9].distance=0;
 
     Initstation_j(&(all->line4[0]),0,0,"0",00,0,0,0);
@@ -164,7 +174,12 @@ void Drawstation4_j()
        line(85+60*i,380,135+60*i,380);
     }
 }
-
+/**********************************************************
+ Function:  cal_distance
+ Description:  ¸ù¾İÈıÔª×é£¬¼ÆËã
+ Attention:  &(all->line1[0])£¬Èı¸ö½»µãÔÚÃ¿ÌõÏßÀïµÄ¶¨ÒåÊÇÒ»ÑùµÄ£»
+             ×¢Òâ10 20 30 00¼òÒ×±àÂë£¬ºóÃæÎÄ×Ö¶ÁÈ¡»áÓÃµ½¡£
+**********************************************************/
 float cal_distance_j(all_lines_stations *all,int *start_name,int *end_name)//¼ÆËã¾àÀëµÄËã·¨
 {
     station sta1,sta2;
@@ -178,16 +193,16 @@ float cal_distance_j(all_lines_stations *all,int *start_name,int *end_name)//¼ÆË
     {
         if(all->line1[i].simple_name==*start_name)
         {
-            x1=sta1.distance.dx;
-            y1=sta1.distance.dy;
-            z1=sta1.distance.dz;
+            x1=all->line1[i].distance.dx;
+            y1=all->line1[i].distance.dy;
+            z1=all->line1[i].distance.dz;
             line_of_sta1=1;
         }
         if(all->line1[i].simple_name==*end_name)
         {
-            x2=sta2.distance.dx;
-            y2=sta2.distance.dy;
-            z2=sta2.distance.dz;
+            x2=all->line1[i].distance.dx;
+            y2=all->line1[i].distance.dy;
+            z2=all->line1[i].distance.dz;
             line_of_sta2=1;
         }
     }
@@ -195,16 +210,16 @@ float cal_distance_j(all_lines_stations *all,int *start_name,int *end_name)//¼ÆË
     {
         if(all->line2[i].simple_name==*start_name)
         {
-            x1=sta1.distance.dx;
-            y1=sta1.distance.dy;
-            z1=sta1.distance.dz;
+            x1=all->line2[i].distance.dx;
+            y1=all->line2[i].distance.dy;
+            z1=all->line2[i].distance.dz;
             line_of_sta1=2;
         }
         if(all->line2[i].simple_name==*end_name)
         {
-            x2=sta2.distance.dx;
-            y2=sta2.distance.dy;
-            z2=sta2.distance.dz;
+            x2=all->line2[i].distance.dx;
+            y2=all->line2[i].distance.dy;
+            z2=all->line2[i].distance.dz;
             line_of_sta2=2;
         }
     }
@@ -212,150 +227,209 @@ float cal_distance_j(all_lines_stations *all,int *start_name,int *end_name)//¼ÆË
     {
         if(all->line4[i].simple_name==*start_name)
         {
-            x1=sta1.distance.dx;
-            y1=sta1.distance.dy;
-            z1=sta1.distance.dz;
+            x1=all->line4[i].distance.dx;
+            y1=all->line4[i].distance.dy;
+            z1=all->line4[i].distance.dz;
             line_of_sta1=4;
         }
         if(all->line4[i].simple_name==*end_name)
         {
-            x2=sta2.distance.dx;
-            y2=sta2.distance.dy;
-            z2=sta2.distance.dz;
+            x2=all->line4[i].distance.dx;
+            y2=all->line4[i].distance.dy;
+            z2=all->line4[i].distance.dz;
             line_of_sta2=4;
         }
     }
+    /*
+    closegraph();
+    printf("%f\n",x1);
+    printf("%f\n",y1);
+    printf("%f\n",z1);
+    printf("%f\n",x2);
+    printf("%f\n",y2);
+    printf("%f\n",z2);
+    getch();
+    */
+
     //ÖÁ´Ë£¬ÈıÔª×é¸³ÖµÍê±Ï£¬µ«¾ßÌåÊôÓÚÄÄÌõÏßĞèÒª¿¼ÂÇ½Úµã
     //10£¬20£¬30Îª½Úµã£¬ĞèÒªÏÈÌØÊâ¿¼ÂÇ!
-    if(start_name==10)
+    if(*start_name==29&&*end_name==30)
     {
-        if(line_of_sta2==1&&end_name!=20&&end_name!=30)//10ºÍline1µÄ
+        return 1.4;
+    }
+    if(*end_name==29&&*start_name==30)
+    {
+        return 1.4;
+    }
+    else if(*start_name==10)
+    {
+        if(line_of_sta2==1&&*end_name!=20&&*end_name!=30)//10ºÍline1µÄ
         {
-            return abs(2.8-x2);//¦¤x
+            return fabs(2.8-x2);//¦¤x
         }
-        if(line_of_sta2==2||end_name==20||end_name==30)//10ºÍline2µÄ,°üÀ¨ÁË20ºÍ30
+        if(line_of_sta2==2||*end_name==20||*end_name==30)//10ºÍline2µÄ,°üÀ¨ÁË20ºÍ30
         {
-            return abs(1.5-y2);//¦¤y
+            return fabs(1.5-y2);//¦¤y
         }
         if(line_of_sta2==4)//10ºÍ4ºÅÏßµÄ
         {
-            return 9.8+abs(z2-3);//ÖÕµãºÍNode2¾àÀë+Node1ÓëNode2¾àÀë
+            return 9.8+fabs(z2-3);//ÖÕµãºÍNode2¾àÀë+Node1ÓëNode2¾àÀë
         }
     }
-    else if(start_name==20)
+    else if(*start_name==20)
     {
-        if(line_of_sta2==1||end_name==10&&end_name!=30)
+        if(line_of_sta2==1||*end_name==10&&*end_name!=30)
         {
-            return abs(2.8-x2)+9.8;//ÖÕµãÓëNode1¾àÀë+Node1ÓëNode2¾àÀë
+            return fabs(2.8-x2)+9.8;//ÖÕµãÓëNode1¾àÀë+Node1ÓëNode2¾àÀë
         }
-        if(line_of_sta2==2||end_name==30)
+        if(line_of_sta2==2||*end_name==30)
         {
-            return abs(11.3-y2);//¦¤y
+            return fabs(11.3-y2);//¦¤y
         }
         if(line_of_sta2==4)
         {
-            return abs(3.0-z2);//¦¤z
+            return fabs(3.0-z2);//¦¤z
         }
     }
-    else if(start_name==30)
+    else if(*start_name==30)
     {
-        if(line_of_sta2==1||end_name==10&&end_name!=20)
+        if(*end_name=29)
         {
-            return abs(2.8-x1)+9.8+0.9;//ÖÕµãºÍNode1¾àÀë+Node1ÓëNode2¾àÀë+Node2ÓëNode3¾àÀë
+            return fabs(13.6-12.2);
         }
-        if(line_of_sta2==2||end_name==20)
+        if(line_of_sta2==1||*end_name==10&&*end_name!=20)
         {
-            return abs(11.3-y2)+0.9;//ÖÕµãºÍNode2¾àÀë+Node2ÓëNode3¾àÀë
+            return fabs(2.8-x1)+9.8+0.9;//ÖÕµãºÍNode1¾àÀë+Node1ÓëNode2¾àÀë+Node2ÓëNode3¾àÀë
+        }
+        if(line_of_sta2==2||*end_name==20)
+        {
+            return fabs(11.3-y2)+0.9;//ÖÕµãºÍNode2¾àÀë+Node2ÓëNode3¾àÀë
         }
         if(line_of_sta2==4)
         {
-            return abs(3.0-z2);//¦¤z
+            return fabs(3.0-z2);//¦¤z
         }
+        
     }
-    else if(end_name==10)
+    else if(*end_name==10)
     {
-        if(line_of_sta1==1&&start_name!=20&&start_name!=30)//10ºÍline1µÄ
+        if(line_of_sta1==1&&*start_name!=20&&*start_name!=30)//10ºÍline1µÄ
         {
-            return abs(2.8-x1);//¦¤x
+            return fabs(2.8-x1);//¦¤x
         }
-        if(line_of_sta1==2||start_name==20||start_name==30)//10ºÍline2µÄ,°üÀ¨ÁË20ºÍ30
+        if(line_of_sta1==2||*start_name==20||*start_name==30)//10ºÍline2µÄ,°üÀ¨ÁË20ºÍ30
         {
-            return abs(1.5-y1);//¦¤y
+            return fabs(1.5-y1);//¦¤y
         }
         if(line_of_sta1==4)//10ºÍ4ºÅÏßµÄ
         {
-            return 9.8+abs(z1-3);//ÆğµãºÍNode2¾àÀë+Node1ÓëNode2¾àÀë
+            return 9.8+fabs(z1-3);//ÆğµãºÍNode2¾àÀë+Node1ÓëNode2¾àÀë
         }
     }
-    else if(end_name==20)
+    else if(*end_name==20)
     {
-        if(line_of_sta1==1||start_name==10&&start_name!=30)
+        if(line_of_sta1==1||*start_name==10&&*start_name!=30)
         {
-            return abs(2.8-x1)+9.8;//ÆğµãÓëNode1¾àÀë+Node1ÓëNode2¾àÀë
+            return fabs(2.8-x1)+9.8;//ÆğµãÓëNode1¾àÀë+Node1ÓëNode2¾àÀë
         }
-        if(line_of_sta1==2||start_name==30)
+        if(line_of_sta1==2||*start_name==30)
         {
-            return abs(11.3-y1);//¦¤y
+            return fabs(11.3-y1);//¦¤y
         }
         if(line_of_sta1==4)
         {
-            return abs(3.0-z1);//¦¤z
+            return fabs(3.0-z1);//¦¤z
         }
     }
-    else if(end_name==30)
+    else if(*end_name==30)
     {
-        if(line_of_sta1==1||start_name==10&&start_name!=20)
+        if(*start_name==29)
         {
-            return abs(2.8-x1)+9.8+0.9;//ÆğµãºÍNode1¾àÀë+Node1ÓëNode2¾àÀë+Node2ÓëNode3¾àÀë
+            return fabs(13.6-12.2);
         }
-        if(line_of_sta1==2||start_name==20)
+        if(line_of_sta1==1||*start_name==10&&*start_name!=20)
         {
-            return abs(11.3-y1)+0.9;//ÆğµãºÍNode2¾àÀë+Node2ÓëNode3¾àÀë
+            return fabs(2.8-x1)+9.8+0.9;//ÆğµãºÍNode1¾àÀë+Node1ÓëNode2¾àÀë+Node2ÓëNode3¾àÀë
+        }
+        if(line_of_sta1==2||*start_name==20)
+        {
+            return fabs(11.3-y1)+0.9;//ÆğµãºÍNode2¾àÀë+Node2ÓëNode3¾àÀë
         }
         if(line_of_sta1==4)
         {
-            return abs(3.0-z1);//¦¤z
+            return fabs(3.0-z1);//¦¤z
         }
     }
     else if(line_of_sta1==1&&line_of_sta2==1)
     {
-        return abs(x1-x2);//¦¤x
+        return fabs(x1-x2);//¦¤x
     }
     else if(line_of_sta1==1&&line_of_sta2==2)
     {
-        return abs(2.8-x1)+abs(1.5-y2);//Æğµãµ½Node1¾àÀë+Node1µ½ÖÕµã¾àÀë
+        return fabs(2.8-x1)+fabs(1.5-y2);//Æğµãµ½Node1¾àÀë+Node1µ½ÖÕµã¾àÀë
     }
-    else if(line_of_sta1==1&&line_of_sta2==3)
+    else if(line_of_sta1==1&&line_of_sta2==4)
     {
-        return abs(2.8-x1)+9.8+abs(3.0-z2);//Æğµãµ½Node1¾àÀë+Node1µ½Node2¾àÀë+Node2¾àÀëµ½ÖÕµã¾àÀë
+        return fabs(2.8-x1)+9.8+fabs(3.0-z2);//Æğµãµ½Node1¾àÀë+Node1µ½Node2¾àÀë+Node2¾àÀëµ½ÖÕµã¾àÀë
     }
-    else if(line_of_sta1==2&&line_of_sta1==1)
+    else if(line_of_sta1==2&&line_of_sta2==1)
     {
-        return abs(1.5-y1)+abs(2.8-x2);//Æğµãµ½Node1¾àÀë+Node1µ½ÖÕµã¾àÀë
+        return fabs(1.5-y1)+fabs(2.8-x2);//Æğµãµ½Node1¾àÀë+Node1µ½ÖÕµã¾àÀë
     }
     else if(line_of_sta1==2&&line_of_sta2==2)
     {
-        return abs(y1-y2);//¦¤y
+        return fabs(y1-y2);//¦¤y
     }
-    else if(line_of_sta1==2&&line_of_sta2==3)
+    else if(line_of_sta1==2&&line_of_sta2==4)
     {
-        return abs(11.3-y1)+abs(3.0-z2);//Æğµãµ½Node2¾àÀë+Node2µ½ÖÕµã¾àÀë
+        return fabs(11.3-y1)+fabs(3.0-z2);//Æğµãµ½Node2¾àÀë+Node2µ½ÖÕµã¾àÀë
     }
-    else if(line_of_sta1==3&&line_of_sta2==1)
+    else if(line_of_sta1==4&&line_of_sta2==1)
     {
-        return abs(3.0-z1)+9.8+abs(2.8-x2);//Æğµãµ½Node2¾àÀë+Node2µ½Node1¾àÀë+Node1µ½ÖÕµã¾àÀë
+        return fabs(3.0-z1)+9.8+fabs(2.8-x2);//Æğµãµ½Node2¾àÀë+Node2µ½Node1¾àÀë+Node1µ½ÖÕµã¾àÀë
     }
-    else if(line_of_sta1==3&&line_of_sta2==2)
+    else if(line_of_sta1==4&&line_of_sta2==2)
     {
-        return abs(3.0-z1)+abs(11.3-y2);//Æğµãµ½Node2¾àÀë+Node2µ½ÖÕµã¾àÀë
+        return fabs(3.0-z1)+fabs(11.3-y2);//Æğµãµ½Node2¾àÀë+Node2µ½ÖÕµã¾àÀë
     }
-    else if(line_of_sta1==3&&line_of_sta2==3)
+    else if(line_of_sta1==4&&line_of_sta2==4)
     {
-        return abs(z1-z2);//¦¤z
+        return fabs(z1-z2);//¦¤z
     }
     
 }
+int cal_price_j(float distance)
+{
+    int price=0;
+    if(distance<=4) price=2;
+    else if(distance>4&&distance<=8) price=3;
+    else if(distance>8&&distance<=12) price=4;
+    else if(distance>12&&distance<=18) price=5;
+    else return 0;
+    return price;
+}
 
+void transform1(float num,char* str)
+{
+    int n;
+	n=(int)num;
+	itoa(n,str,10);
+}
+
+void transform2(float num,char *str)
+{
+    int n;
+	n=(int)((((num)-(int)num)*10)+0.5);//5.1ÔõÃ´±ä³ÉÁË5.0?
+    itoa(n,str,10);
+    
+    // closegraph();
+    // printf("n=%d\n",n);
+    // printf("num=%f\n",num);
+    // printf("%d\n%f\n%f",(int)num,(((num)-(int)num)*10),((((num)-(int)num)*10)+0.5));
+    // printf("str=%s",str);
+    // getch();
+    
+}
 void Draw_start_sta_j(int x,int y,station *sta,int *sta_checkclick,int *start_station,int *flag)
 {
     puthz(30,130,"Æğµã£º",16,16,RED);
@@ -366,33 +440,20 @@ void Draw_start_sta_j(int x,int y,station *sta,int *sta_checkclick,int *start_st
     *sta_checkclick=1;
     *start_station=sta->simple_name;//Æğµã¼òÒ×´úÂë
     *flag=1;
+    
 }
 
-void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_checkclick,int *start_station,int *end_station,int *flag)
+void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_checkclick,int *start_station,int *end_station,int *flag,int *price)
 {
     float distance=0;
-    float price=0;
-    /*
-    if(*start_station==*end_station)
+    char price_string[2];//´æ·Å¼Û¸ñµÄ×Ö·û´®ĞÎÊ½µÄÊı×é
+    char distance_string1[3];//´æ·Å¾àÀëµÄÕûÊı²¿·ÖµÄ×Ö·û´®ĞÎÊ½µÄÊı×é
+    char distance_string2[2];//Ğ¡Êı²¿·Ö
+    //eg£º16.7£¬Ôòstr1={1£¬6£¬'\0'}£¬str2={7,'\0'}¡£
+    //ÆğµãÖÕµãÏàÍ¬£¬¾ÍÊ²Ã´Ò²²»×ö
+    *end_station=sta.simple_name;
+    if(*start_station!=*end_station)
     {
-        setcolor(LIGHTMAGENTA);
-        circle(x,y,5);
-        circle(x,y,4);
-        *sta_checkclick=0;//µã»÷ÁËÁ½´Î£¬¾Íµ±×÷Ã»µã»÷
-        *start_station=0;//ÆğµãÃ»ÁË
-        *end_station=0;//ÖÕµãÃ»ÁË
-        setfillstyle(1,WHITE);//°ÑÔ­À´µÄÍ¿µô
-        bar(20,120,200,100);
-        *flag=0;
-    }
-    */
-       *end_station=sta.simple_name;
-    //if(*start_station!=*end_station)
-    //{
-        //float s;
-        //int a[10];//°Ñdistance±ä³É×Ö·û´®ºó´æ´¢µÄÊı×é
-        //int i;
-
         puthz(30,160,"ÖÕµã£º",16,16,RED);
         puthz(80,160,sta.station_name,16,16,RED);
         setcolor(RED);
@@ -403,17 +464,37 @@ void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_che
         printf("%d  %d\n",x,y);
         printf("%d  %d\n",sta.distance.dx,sta.distance.dx);
         printf("\n%s",sta.station_name);
-        getch();
+        getch();//·ñÔòÒ»ÉÁ¶ø¹ı
         */
         *sta_checkclick=1;//´ú±íÕâÕ¾Ò²µã¹ıÁË
         distance=cal_distance_j(all,start_station,end_station);
-        //price=cal_price_j(distance);
+        *price=cal_price_j(distance);
+        itoa(*price,price_string,10);//½«¼Û¸ñÊı×ª»¯³É×Ö·û´®£¬±ãÓÚÊä³ö
+        transform1(distance,distance_string1);
+        transform2(distance,distance_string2);
+        /*
+        closegraph();
+        printf("%f\n",distance);
+        getch();
+        */
+        /*
+        printf("%d\n",price);
+        printf("%s\n",distance_string1);
+        printf("%s\n",distance_string2);
+        printf("%s\n",price_string);
+        getch();
+        */
+        settextstyle(0,0,2);
         puthz(30,190,"¾àÀë£º",16,16,RED);
-        //outtextxy(80,190,distance);//¼ÆËã¾àÀë
-        //puthz(30,220,"Æ±¼Û£º",16,16,RED);
-        //outtextxy(80,220,price);//¼ÆËãÆ±¼Û
+        outtextxy(80,190,distance_string1);//Êä³ö¾àÀë
+        outtextxy(105,190,".");
+        outtextxy(115,190,distance_string2);
+        outtextxy(130,190,"km");
+        puthz(30,220,"Æ±¼Û£º",16,16,RED);
+        outtextxy(80,220,price_string);//Êä³öÆ±¼Û
+        puthz(95,220,"Ôª",16,16,RED);
         *flag=2;
-    //}
+    }
     
 }
 /*

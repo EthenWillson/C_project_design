@@ -7,6 +7,7 @@
 #include<string.h>
 #include<graphics.h>
 #include<dos.h>
+#include<math.h>
 #include<time.h>
 #include"NMOUSE.H"
 #include"interface.h"

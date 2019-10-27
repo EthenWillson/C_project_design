@@ -9,6 +9,7 @@ typedef struct User
 	char class[6];  //管理员权限码,用户为00000
 	char money[6];  //用户余额
 	unsigned long int spend;//用户消费
+	char record[100];//出行记录
 	struct User *next;  //指向下一个用户的指针
 }setuser;
 
@@ -41,6 +42,7 @@ typedef struct station{
     int x;//存放站点的x,y坐标
 	int y;
 	Triple_distance distance;//距离三元组结构体（原先是float）
+	int dis;
     char station_name[20];//站名
 	int simple_name;//站点的简称
 }station;

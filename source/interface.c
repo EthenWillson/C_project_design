@@ -813,7 +813,7 @@ void DrawUserScreen_j(setuser *person,int *judge)
 	line(470,320,470,390);
 	line(170,390,470,390);
 	puthz(200, 95, "π∫∆±", 32, 32, GREEN);
-	puthz(200, 215, "”‡∂Ó≤È—Ø", 32, 32, GREEN);
+	puthz(200, 215, "’Àªß≤È—Ø", 32, 32, GREEN);
 	puthz(200, 335, "’Àªß≥‰÷µ", 32, 32, GREEN);
 
 	while(1)

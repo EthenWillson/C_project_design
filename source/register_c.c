@@ -136,6 +136,9 @@ int changePass_c(setChangePass *managerTemp,char *accounts,setuser *head)
         fputs(ph->class,fp);
         fputc('$',fp);//$标志用户余额
         fputs(ph->money,fp);
+        fputc('^',fp);//标志出行记录的开头
+        fputs(ph->record,fp);
+        fputc('&',fp);//结束符
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
@@ -198,6 +201,12 @@ void createuserlist_c(setuser *head)//创建用户链表
         {
 	        *p='\0';   
             p=now->money;
+            // fprintf(fp,"%d",now->money);     
+        }
+        else if(cha=='^') 
+        {     //表示金额的结束，出行记录的开始
+	        *p='\0';   
+            p=now->record;
             // fprintf(fp,"%d",now->money);     
         }
 	    else if(cha!=' '&&cha!='\n')       //将对应的账户串或密码串装入链表中

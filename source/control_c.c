@@ -1,11 +1,12 @@
 #include"control_c.h"
 #include"common_c.h"
-#define LINENUM 3  //ÏßÂ·ÌõÊý
-#define INITCARNUM 2 //³õÊ¼³µÁ¾
+#define LINENUM 3  //ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½
+#define INITCARNUM 2 //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+
 /**********************************************************
 Function:  drawDot
-Description£º	»­µØÌúµã
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
 void drawDot(setTrain *dot,int color)
 {
@@ -15,8 +16,8 @@ void drawDot(setTrain *dot,int color)
 }
 /**********************************************************
 Function:  hideDot
-Description£º	Òþ²ØµØÌúµã²¢ÏÔÏÖ±³¾°
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ã²¢ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
 void hideDot(setTrain *dot)
 {
@@ -31,9 +32,10 @@ void hideDot(setTrain *dot)
 }
 /**********************************************************
 Function:  readDotbk
-Description£º	¶ÁÈ¡µØÌúµã±³¾°
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ã±³ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
+/*
 void readDotbk(setTrain *dot)
 {
 	int i, j;
@@ -45,11 +47,13 @@ void readDotbk(setTrain *dot)
 		}
 	}
 }
+*/
 /**********************************************************
 Function:  initTranInfo
-Description£º	Ïà¹Ø½á¹¹ÌåµÄ³õÊ¼»¯
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½Ø½á¹¹ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
+/*
 void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 {
 	int i,j;
@@ -59,8 +63,8 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 	Info[2].lineHead=&(all->station_line4);
 	for(i=0;i<LINENUM;i++)
 	{
-		Info[i].num=INITCARNUM;//Ä¬ÈÏÁ½Á¾³µ
-		//³õÊ¼»¯µÚÒ»Á¾³µ
+		Info[i].num=INITCARNUM;//Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 		Info[i].trainHead=(setTrain*)malloc(sizeof(setTrain));
 		if(Info[i].trainHead==NULL)
 		{
@@ -76,7 +80,7 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 		Info[i].trainHead->count=0;
 		Info[i].trainHead->reverse=0;
 		Info[i].trainHead->setDotSave[0][0]=-100;
-		//³õÊ¼»¯ÆäËü³µ
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for(temp=Info[i].trainHead,j=1;j<INITCARNUM;j++)
 		{
 			temp->next=(setTrain*)malloc(sizeof(setTrain));
@@ -94,11 +98,11 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 			temp->y=0.0;
 			temp->count=0;
 			temp->setDotSave[0][0]=-100;
-			if(j<INITCARNUM/2)//Ç°Ò»°ë³µÕýÏò¿ª
+			if(j<INITCARNUM/2)//Ç°Ò»ï¿½ë³µï¿½ï¿½ï¿½ï¿½
 			{
 				temp->reverse=0;
 			}
-			else//ºóÒ»°ë³µ·´Ïò¿ª
+			else//ï¿½ï¿½Ò»ï¿½ë³µï¿½ï¿½ï¿½ï¿½
 			{
 				temp->reverse=1;
 			}
@@ -106,87 +110,91 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 		}
 	}
 }
+*/
 /**********************************************************
 Function:  otherEvent
-Description£º	ÆäËüÊÂ¼þ£¬ÈçÊó±êµÄ¸üÐÂºÍµã»÷ÊÂ¼þµÈ
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ÂºÍµï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
+/*
 int otherEvent(int *mx,int *my,int *buttons)
 {
     newxy(mx, my, buttons);
-	if(*buttons)//µã»÷ÊÂ¼þ
+	if(*buttons)//ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	{
-		if (*mx >= 550 && *mx <= 610 && *my >= 210&& *my <= 270)//ÍË³ö°´Å¥µã»÷ÍË³ö
+		if (*mx >= 550 && *mx <= 610 && *my >= 210&& *my <= 270)//ï¿½Ë³ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½Ë³ï¿½
 		{
 			return 0;
 		}
 	}
 	return 1;
 }
+*/
 /**********************************************************
 Function:  changePlace
-Description£º	µØÌúÇ°½ø¶¯»­
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
+/*
 void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
 {
 	float xnew,ynew;
 	int i;
-	if(dot->count==0)//³µ²»ÔÚÕ¾Ì¨
+	if(dot->count==0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾Ì¨
 	{
-		if(dot->reverse==0)//³µÕýÏòÐÐÊ»
+		if(dot->reverse==0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»
 		{
 			xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/(line[dot->k+1].distance)*speed*(dot->i);
 			ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/(line[dot->k+1].distance)*speed*(dot->i);
-			if(dot->setDotSave[0][0]!=-100)//ÅÐ¶ÏÊÇ²»ÊÇµÚÒ»´Î¼ÓÔØ
+			if(dot->setDotSave[0][0]!=-100)//ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½Çµï¿½Ò»ï¿½Î¼ï¿½ï¿½ï¿½
 			{
 				hideDot(dot);
 			}
 			dot->x=xnew;
 			dot->y=ynew;
 			readDotbk(dot);
-			//ÕýÏò³µÓÃÀ¶É«
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
 			setcolor(BLUE);
 			setfillstyle(1, BLUE);
 			drawDot(dot,BLUE);
-			//Î»ÒÆÁ¿½ø1
+			//Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
 			dot->i++;
-			if(dot->i==(line[dot->k+1].distance)/speed)//³µÈç¹ûµ½Õ¾
+			if(dot->i==(line[dot->k+1].distance)/speed)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾
 			{
 				dot->i=0;
 				dot->k++;
 				dot->count=wait;
 			}
-			if(dot->k==length-1)//³µµ½ÁËÖÕµãÕ¾
+			if(dot->k==length-1)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½Õ¾
 			{
 				dot->reverse=1;
 			}
 			delay(20);
 		}
-		else//³µÄæÏòÐÐÊ»
+		else//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»
 		{
 			xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/(line[dot->k].distance)*speed*(dot->i);
 			ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/(line[dot->k].distance)*speed*(dot->i);
-			if(dot->setDotSave[0][0]!=-100)//ÅÐ¶ÏÊÇ²»ÊÇµÚÒ»´Î¼ÓÔØ
+			if(dot->setDotSave[0][0]!=-100)//ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½Çµï¿½Ò»ï¿½Î¼ï¿½ï¿½ï¿½
 			{
 				hideDot(dot);
 			}
 			dot->x=xnew;
 			dot->y=ynew;
 			readDotbk(dot);
-			//ÄæÏò³µÓÃÀ¶É«
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
 			setcolor(RED);
 			setfillstyle(1, RED);
 			drawDot(dot,RED);
-			//Î»ÒÆÁ¿½ø1
+			//Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
 			dot->i++;
-			if(dot->i==(line[dot->k].distance)/speed)//³µÈç¹ûµ½Õ¾
+			if(dot->i==(line[dot->k].distance)/speed)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾
 			{
 				dot->i=0;
 				dot->k--;
 				dot->count=wait;
 			}
-			if(dot->k==0)//³µµ½ÁËÊ¼·¢Õ¾
+			if(dot->k==0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Õ¾
 			{
 				dot->reverse=0;
 			}
@@ -194,26 +202,28 @@ void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
 		}
 		
 	}
-	else//³µÔÚÕ¾Ì¨
+	else//ï¿½ï¿½ï¿½ï¿½Õ¾Ì¨
 	{
 		dot->count--;
 		delay(20);
 	}
 	
 }
+*/
 /**********************************************************
 Function:  drawControlScreen
-Description£º	»­µ÷¶ÈÒ³Ãæ£¬ÊµÏÖ¶¯»­
-Attention:  ÎÞ
+Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½æ£¬Êµï¿½Ö¶ï¿½ï¿½ï¿½
+Attention:  ï¿½ï¿½
 **********************************************************/
+/*
 void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_stations *all)
 {
-    int buttons,mx,my;//Êó±êÏà¹Ø±äÁ¿
-	char temp[2]={'\0','\0'};//ÓÃÓÚÎüÊÕ¼üÅÌ»º³åÇøµÄ±äÁ¿
-	int i;//»®ÏßÑ­»·±äÁ¿
-    setTrainInfo Info[3];//¼ÇÂ¼ÈýÌõÏßµ÷¶ÈµÄÏà¹Ø²ÎÊý
-	// ³õÊ¼»¯
-	// Êó±ê³õÊ¼»¯
+    int buttons,mx,my;//ï¿½ï¿½ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½
+	char temp[2]={'\0','\0'};//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
+	int i;//ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    setTrainInfo Info[3];//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½Èµï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
+	// ï¿½ï¿½Ê¼ï¿½ï¿½
+	// ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	initTranInfo(Info,all);
@@ -226,10 +236,10 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	// printf("\n%d\n%d",Info[0].trainHead->next->k,Info[0].trainHead->next->i);
 	// getch() ;
 
-	//»æÖÆ½çÃæ
-	//»æÖÆ·µ»Ø°´Å¥
+	//ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Ø°ï¿½Å¥
 	returnBtn_c(550,210,GREEN);
-	//»æÖÆµØÌúÏßÂ·
+	//ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Â·
 	line(460,0,460,75);
     line(460,75,640,75);
 
@@ -237,16 +247,16 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
     setcolor(LIGHTCYAN);
     line(500,10,550,10);
     outtextxy(560,0,"1");
-    puthz(570,5,"ºÅÏß",16,16,LIGHTBLUE);
+    puthz(570,5,"ï¿½ï¿½ï¿½ï¿½",16,16,LIGHTBLUE);
     setcolor(LIGHTGREEN);
     line(500,30,550,30);
     outtextxy(560,20,"2");
-    puthz(570,25,"ºÅÏß",16,16,LIGHTGREEN);
+    puthz(570,25,"ï¿½ï¿½ï¿½ï¿½",16,16,LIGHTGREEN);
     setcolor(YELLOW);
     line(500,50,550,50);
     outtextxy(560,40,"3");
-    puthz(570,45,"ºÅÏß",16,16,YELLOW);
-    puthz(180,0,"µØÌúµ÷¶ÈÒ»ÀÀ",32,32,BROWN);
+    puthz(570,45,"ï¿½ï¿½ï¿½ï¿½",16,16,YELLOW);
+    puthz(180,0,"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½",32,32,BROWN);
 
     Drawstation1_j();
     Drawstation2_j();
@@ -275,11 +285,11 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	while(1)
 	{
 		// changePlace(&Info[0].lineHead[0],Info[0].lineHead->station,1,8,200);
-		//Ò»ºÅÏß
+		//Ò»ï¿½ï¿½ï¿½ï¿½
 		changePlace(Info[0].trainHead,Info[0].lineHead->station,1,8,200);
-		//¶þºÅÏß
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		changePlace(Info[1].trainHead,Info[1].lineHead->station,1,8,200);
-		//ËÄºÅÏß
+		//ï¿½Äºï¿½ï¿½ï¿½
 		changePlace(Info[2].trainHead,Info[2].lineHead->station,1,8,200);
 		if(otherEvent(&mx,&my,&buttons)==0)
 		{
@@ -288,3 +298,4 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 		}
 	}
 }
+*/

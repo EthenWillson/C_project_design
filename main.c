@@ -19,7 +19,7 @@ void main()
 	//person.size=0;
 
 	
-	station_information_j(&all);
+	
 
 
 	initgraph(&driver, &mode, "../BORLANDC\\bgi");  
@@ -32,6 +32,7 @@ void main()
 		return ;
 	}
 	createuserlist_c(head);//创建用户链表，记得要释放
+	station_information_j(&all);
 	// closegraph();
 	// for(pt=head->next;pt=pt->next;pt->next==NULL)
 	// {
@@ -39,7 +40,7 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
-	judge=2;
+	judge=1;
 	while (5)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -74,9 +75,17 @@ void main()
 		case 7://充值
 			DrawchargeScreen_j(&person,&judge,head);
 			break;
+		case 8:
+		    //closegraph();
+			//getch();
+		    DrawpriceScreen_j(&person,&judge); 
+			break;
+		case 9:
+		    DrawrecordScreen_j(&person,&judge,&all);
+			break;
 
 		case 11://调度界面 
-			drawControlScreen(&person,&judge,head,&all);
+			//drawControlScreen(&person,&judge,head,&all);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();
