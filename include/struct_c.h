@@ -71,7 +71,6 @@ typedef struct train
 	int Ti;//总共要多少位移
 	int reverse;//0标志正向，1标志反向
 	int count;//记录停车时间：0不停车
-	// float distance[2];//记录单位位移像素数
 	int setDotSave[6][6];//列车保存点阵
 	struct train *next;
 }setTrain;

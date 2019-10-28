@@ -2,6 +2,11 @@
 #include"common_c.h"
 #define LINENUM 3  //线路条数
 #define INITCARNUM 2 //初始车辆
+#define TIMEUNIT 10 //时间单位
+#define DISTANCEUNIT 300 //距离单位
+#define DAULTSPEED 1
+#define DAULTWAIT 10
+#define DAULTGOTIME 200
 /**********************************************************
 Function:  drawControlFrame
 Description：	绘制控制框
@@ -9,6 +14,12 @@ Attention:  无
 **********************************************************/
 void drawControlFrame(int x,int y)
 {
+	char wait[5];
+	char speed[5];
+	char goTime[5];
+	itoa(DAULTSPEED,speed,10);
+	itoa(DAULTWAIT,wait,10);
+	itoa(DAULTGOTIME,goTime,10);
 	puthz(0+x, 0+y, "列车速度：", 16, 16, LIGHTCYAN);
 	puthz(0+x, 40+y, "停站时间：", 16, 16, LIGHTCYAN);
 	puthz(0+x, 80+y, "发车间隔：", 16, 16, LIGHTCYAN);
@@ -26,7 +37,7 @@ void drawControlFrame(int x,int y)
 	bar(x+84,y+2,x+86,y+14);
 	setcolor(WHITE);
 	settextstyle(SMALL_FONT,HORIZ_DIR,7);
-	outtextxy(x+124,y-5,"1");
+	outtextxy(x+118,y-5,speed);
 	//等待
 	setcolor(WHITE);
 	setfillstyle(1, WHITE);
@@ -39,7 +50,7 @@ void drawControlFrame(int x,int y)
 	bar(x+84,y+42,x+86,y+54);
 	setcolor(WHITE);
 	settextstyle(SMALL_FONT,HORIZ_DIR,7);
-	outtextxy(x+124,y+35,"10");
+	outtextxy(x+118,y+35,wait);
 	//发车
 	setcolor(WHITE);
 	setfillstyle(1, WHITE);
@@ -52,7 +63,7 @@ void drawControlFrame(int x,int y)
 	bar(x+84,y+82,x+86,y+94);
 	setcolor(WHITE);
 	settextstyle(SMALL_FONT,HORIZ_DIR,7);
-	outtextxy(x+124,y+75,"20");
+	outtextxy(x+118,y+75,goTime);
 }
 /**********************************************************
 Function:  drawDot
@@ -115,81 +126,13 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 	for(i=0;i<3;i++)
 	{
 		Info[i].num=0;
-		Info[i].wait=10;//停站时间
-		Info[i].speed=1;//速度
-		Info[i].goTime=20;//发车
+		Info[i].wait=DAULTWAIT;//停站时间
+		Info[i].speed=DAULTSPEED;//速度
+		Info[i].goTime=DAULTGOTIME;//发车
 		Info[i].trainHead=NULL;//正向车链表
 		Info[i].rtrainHead=NULL;//逆向车链表
 	}
 }
-// void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
-// {
-// 	int i,j;
-// 	setTrain *temp;
-// 	Info[0].lineHead=&(all->station_line1);
-// 	Info[1].lineHead=&(all->station_line2);
-// 	Info[2].lineHead=&(all->station_line4);
-// 	for(i=0;i<LINENUM;i++)
-// 	{
-// 		Info[i].num=INITCARNUM;//默认两辆车
-// 		Info[i].wait=10;//停站时间
-// 		Info[i].speed=1;//速度
-// 		Info[i].goTime=20;//发车
-// 		//初始化第一辆车
-// 		Info[i].trainHead=(setTrain*)malloc(sizeof(setTrain));
-// 		if(Info[i].trainHead==NULL)
-// 		{
-// 			closegraph();
-// 			printf("\nout of memory");
-// 			exit(1);
-// 		}
-// 		Info[i].trainHead->next=NULL;
-// 		Info[i].trainHead->k=0;
-// 		Info[i].trainHead->i=0;
-// 		Info[i].trainHead->x=0.0;
-// 		Info[i].trainHead->y=0.0;
-// 		Info[i].trainHead->count=1;
-// 		Info[i].trainHead->reverse=0;
-// 		Info[i].trainHead->setDotSave[0][0]=-100;
-// 		Info[i].trainHead->distance[0]=0.0;//记录要经过多少个单位位移
-// 		Info[i].trainHead->distance[1]=0.0;
-// 		//初始化其它车
-// 		for(temp=Info[i].trainHead,j=1;j<INITCARNUM;j++)
-// 		{
-// 			temp->next=(setTrain*)malloc(sizeof(setTrain));
-// 			temp=temp->next;
-// 			if(temp==NULL)
-// 			{
-// 				closegraph();
-// 				printf("\nout of memory");
-// 				exit(1);
-// 			}
-// 			temp->next=NULL;
-// 			temp->i=0;
-// 			temp->x=0.0;
-// 			temp->y=0.0;
-// 			temp->count=1;
-// 			temp->setDotSave[0][0]=-100;
-// 			temp->distance[0]=0.0;
-// 			temp->distance[1]=0.0;
-// 			if(j<INITCARNUM/2)//前一半车正向开
-// 			{
-// 				temp->reverse=0;
-// 				temp->k=0;
-// 			}
-// 			else//后一半车反向开
-// 			{
-// 				temp->reverse=1;
-// 				if(i==1)
-// 					temp->k=8;
-// 				else
-// 					temp->k=7;
-				
-// 			}
-			
-// 		}
-// 	}
-// }
 /**********************************************************
 Function:  otherEvent
 Description：	其它事件，如鼠标的更新和点击事件等
@@ -244,6 +187,28 @@ int otherEvent(int *mx,int *my,int *buttons)
 	return -1;
 }
 /**********************************************************
+Function:  controlGoTime
+Description：	控制发车时间
+Attention:  无
+**********************************************************/
+void controlGoTime(setTrainInfo *Info,int *GotimeI)
+{
+	
+	if(*GotimeI>=(Info->goTime)*TIMEUNIT)
+	{
+		*GotimeI=0;
+		createTrain(Info,0);
+		createTrain(Info,1);
+		changeDot(Info);
+	}
+	else
+	{
+		*GotimeI=*GotimeI+1;
+		changeDot(Info);
+	}
+	delay(5);
+}
+/**********************************************************
 Function:  judgeCrash
 Description：	监测地铁“碰撞”事件
 Input:  Info 一条线相关参数
@@ -271,6 +236,7 @@ void debugElf(int x,int y,int bkcolor,int ccolor,int a,int b,int c)
 	outtextxy(x+2,y+2,ac);
 	outtextxy(x+2,y+32,bc);
 	outtextxy(x+2,y+62,cc);
+	delay(5);
 }
 /**********************************************************
 Function:  deleteTrain
@@ -290,6 +256,7 @@ Attention:  reverse为0正向，reverse为1反向
 void createTrain(setTrainInfo *Info,int reverse)
 {
 	setTrain *T,*Tb;
+	//正向车初始化
 	if(reverse==0)
 	{
 		for(T=Info->trainHead,Tb=Info->trainHead;T!=NULL;T=T->next)
@@ -307,7 +274,6 @@ void createTrain(setTrainInfo *Info,int reverse)
 		}
 		
 		//初始化
-		
 		T->count=1;
 		T->setDotSave[0][0]=-100;
 		T->next=NULL;
@@ -318,10 +284,34 @@ void createTrain(setTrainInfo *Info,int reverse)
 		T->k=1;
 		T->Ti=0;
 	}
-	// closegraph();
-	// printf("%d\n%d\n%d\n",Info->trainHead->count,Info->speed,Info->stationNum);
-	// printf("%d\n%d\n%d\n",Info->trainHead->count,Info->speed,Info->stationNum);
-	// getch();
+	//逆向车初始化
+	if(reverse==1)
+	{
+		for(T=Info->rtrainHead,Tb=Info->rtrainHead;T!=NULL;T=T->next)
+		{
+			Tb=T;
+		}
+		T=(setTrain*)malloc(sizeof(setTrain));
+		if(Tb==NULL)
+		{
+			Info->rtrainHead=T;
+		}
+		else
+		{
+			Tb->next=T;
+		}
+		
+		//初始化
+		T->count=1;
+		T->setDotSave[0][0]=-100;
+		T->next=NULL;
+		T->i=0;
+		T->x=Info->lineHead->station[Info->stationNum].x;
+		T->y=Info->lineHead->station[Info->stationNum].y;
+		T->reverse=0;
+		T->k=Info->stationNum;
+		T->Ti=0;
+	}
 }
 /**********************************************************
 Function:  changeDot
@@ -339,7 +329,7 @@ void changeDot(setTrainInfo *Info)
 	//初始化
 	fT=Info->trainHead;
 	rT=Info->rtrainHead;
-
+	//正向
 	for(fT=Info->trainHead,fTb=Info->trainHead;fT!=NULL;fTb=fT,fT=fT->next)
 	{
 		if(fT->count==0)//车不在站台
@@ -348,34 +338,24 @@ void changeDot(setTrainInfo *Info)
 			{
 				hideDot(fT);
 			}
-			// xnew=(fT->x)+fT->distance[0]*speed;
-			// ynew=(fT->y)+fT->distance[1]*speed;
 			fT->i+=speed;//加上speed
 			xnew=(line[fT->k].x)+((float)((line[fT->k+1].x)-(line[fT->k].x)))/(fT->Ti)*(fT->i);
 			ynew=(line[fT->k].y)+((float)((line[fT->k+1].y)-(line[fT->k].y)))/(fT->Ti)*(fT->i);
 			if(Info->lineHead->number==1)//一号线
 			{
-				// distance=(line[dot->k+2].distance.dx)-(line[dot->k+1].distance.dx);
-				// distance=distance*100;
 				fT->x=xnew;
 				fT->y=ynew-3;
 			}
 			else if(Info->lineHead->number==2)//二号线
 			{
-				// distance=(line[dot->k+2].distance.dy)-(line[dot->k+1].distance.dy);
 				fT->x=xnew-3;
 				fT->y=ynew;
 			}
 			else if(Info->lineHead->number==4)//四号线
 			{
-				// distance=(line[dot->k+2].distance.dz)-(line[dot->k+1].distance.dz);
 				fT->x=xnew;
 				fT->y=ynew-3;
 			}
-			// xnew=fT->x+(fT->distance[0])*speed;
-			// ynew=fT->y+(fT->distance[1])*speed;
-			// dot->x=xnew;
-			// dot->y=ynew;
 			readDotbk(fT);
 			//正向车用蓝色
 			setcolor(BLUE);
@@ -387,7 +367,7 @@ void changeDot(setTrainInfo *Info)
 				{
 					fT->i=0;
 					fT->k++;
-					fT->count=Info->wait;
+					fT->count=(Info->wait)*TIMEUNIT;
 				}
 				else//终点站
 				{
@@ -396,7 +376,7 @@ void changeDot(setTrainInfo *Info)
 				}
 				
 			}
-			delay(5);
+			// delay(5);
 		}
 		else//车在站台
 		{
@@ -414,272 +394,90 @@ void changeDot(setTrainInfo *Info)
 				{
 					distance=(line[fT->k+1].distance.dz)-(line[fT->k].distance.dz);
 				}
-				distance=distance*500;
+				distance=distance*DISTANCEUNIT;
 				fT->Ti=(int)(distance);
 			}
 			fT->count--;
-			delay(5);
+			// delay(5);
+		}
+		
+		
+	}
+	//逆向
+	for(rT=Info->rtrainHead,rTb=Info->rtrainHead;rT!=NULL;rTb=rT,rT=rT->next)
+	{
+		if(rT->count==0)//车不在站台
+		{
+			if(rT->setDotSave[0][0]!=-100)//判断是不是第一次加载
+			{
+				hideDot(rT);
+			}
+			rT->i+=speed;//加上speed
+			xnew=(line[rT->k].x)-((float)((line[rT->k].x)-(line[rT->k-1].x)))/(rT->Ti)*(rT->i);
+			ynew=(line[rT->k].y)-((float)((line[rT->k].y)-(line[rT->k-1].y)))/(rT->Ti)*(rT->i);
+			if(Info->lineHead->number==1)//一号线
+			{
+				rT->x=xnew;
+				rT->y=ynew+3;
+			}
+			else if(Info->lineHead->number==2)//二号线
+			{
+				rT->x=xnew+3;
+				rT->y=ynew;
+			}
+			else if(Info->lineHead->number==4)//四号线
+			{
+				rT->x=xnew;
+				rT->y=ynew+3;
+			}
+			readDotbk(rT);
+			//逆向车用红色
+			setcolor(RED);
+			setfillstyle(1, RED);
+			drawDot(rT,RED);
+			if(rT->Ti<=rT->i)//到站
+			{
+				if(rT->k!=1)//非起点站
+				{
+					rT->i=0;
+					rT->k--;
+					rT->count=(Info->wait)*TIMEUNIT;
+				}
+				else//起点站
+				{
+					deleteTrain(rTb,rT);
+					rT=rTb;
+				}
+				
+			}
+			// delay(5);
+		}
+		else//车在站台
+		{
+			if(rT->count==1)//准备开车时
+			{
+				if(Info->lineHead->number==1)//一号线
+				{
+					distance=(line[rT->k].distance.dx)-(line[rT->k-1].distance.dx);
+				}
+				else if(Info->lineHead->number==2)//二号线
+				{
+					distance=(line[rT->k].distance.dy)-(line[rT->k-1].distance.dy);
+				}
+				else if(Info->lineHead->number==4)//四号线
+				{
+					distance=(line[rT->k].distance.dz)-(line[rT->k-1].distance.dz);
+				}
+				distance=distance*DISTANCEUNIT;
+				rT->Ti=(int)(distance);
+			}
+			rT->count--;
+			// delay(5);
 		}
 		
 		
 	}
 }
-
-/**********************************************************
-Function:  changePlace
-Description：	地铁前进动画
-Attention:  无
-**********************************************************/
-// void changePlace(setTrain *dot,station *line,int speed,int length,int wait,int linenum)//linenum表示第几条线
-// {
-// 	float xnew,ynew;
-// 	int i;
-// 	float distance;
-// 	// closegraph();
-// 	// 			printf("%d\n",line[8].x);
-// 	// 			printf("%d\n",line[9].x);
-// 	// 			printf("%d\n",line[8].y);
-// 	// 			printf("%d\n",line[9].y);
-// 	// 			getch();
-// 	if(dot->count==0)//车不在站台
-// 	{
-// 		if(dot->reverse==0)//车正向行驶
-// 		{
-// 			//计算两站间距
-// 			if(linenum==1)//一号线
-// 			{
-// 				// distance=(line[dot->k+2].distance.dx)-(line[dot->k+1].distance.dx);
-// 				// distance=distance*100;
-// 				xnew=(dot->x)+dot->distance[0]*speed;
-// 				ynew=(dot->y)+dot->distance[1]*speed-3;
-// 				// xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/distance*speed*(dot->i);
-// 				// ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/distance*speed*(dot->i)-3;
-// 			}
-// 			else if(linenum==2)//二号线
-// 			{
-// 				// distance=(line[dot->k+2].distance.dy)-(line[dot->k+1].distance.dy);
-// 				// distance=distance*100;
-// 				xnew=(dot->x)+dot->distance[0]*speed-3;
-// 				ynew=(dot->y)+dot->distance[1]*speed;
-// 				// xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/distance*speed*(dot->i)-3;
-// 				// ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/distance*speed*(dot->i);
-// 			}
-// 			else if(linenum==4)//四号线
-// 			{
-// 				// distance=(line[dot->k+2].distance.dz)-(line[dot->k+1].distance.dz);
-// 				// distance=distance*100;
-// 				xnew=(dot->x)+dot->distance[0]*speed;
-// 				ynew=(dot->y)+dot->distance[1]*speed-3;
-// 				// xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/distance*speed*(dot->i);
-// 				// ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/distance*speed*(dot->i)-3;
-// 			}
-// 			// distance=distance*100;
-// 			// xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/distance*speed*(dot->i);
-// 			// ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/distance*speed*(dot->i);
-// 			if(dot->setDotSave[0][0]!=-100)//判断是不是第一次加载
-// 			{
-// 				hideDot(dot);
-// 			}
-// 			dot->x=xnew;
-// 			dot->y=ynew;
-// 			readDotbk(dot);
-// 			//正向车用蓝色
-// 			setcolor(BLUE);
-// 			setfillstyle(1, BLUE);
-// 			drawDot(dot,BLUE);
-// 			//位移量进1
-// 			dot->i++;
-// 			// if(dot->i==(int)(distance/speed))//车如果到站
-// 			// {
-// 			// 	dot->i=0;
-// 			// 	dot->k++;
-// 			// 	dot->count=wait;
-// 			// }
-// 			if((int)dot->x>(int)line[dot->k+2].x && (int)dot->y>(int)line[dot->k+2].y)//车如果到站
-// 			{
-// 				dot->i=0;
-// 				dot->k--;
-// 				dot->count=wait;
-// 			}
-// 			// if(dot->k==length-1)//车到了终点站
-// 			// {
-// 				// dot->reverse=1;
-// 				//清除两车向蹭之后的噪点
-// 				// if(linenum==1)//一号线
-// 				// {
-// 				// 	Drawstation1_j();
-// 				// 	DrawCircles_j();
-// 				// }
-// 				// else if(linenum==2)//二号线
-// 				// {
-// 				// 	Drawstation2_j();
-// 				// 	DrawCircles_j();
-// 				// }
-// 				// else if(linenum==4)//四号线
-// 				// {
-// 				// 	Drawstation4_j();
-// 				// 	DrawCircles_j();
-// 				// }
-// 			// }
-// 			delay(5);
-// 		}
-// 		else//车逆向行驶
-// 		{
-// 			if(linenum==1)//一号线
-// 			{
-// 				distance=(line[dot->k+1].distance.dx)-(line[dot->k].distance.dx);
-// 				distance=distance*100;
-// 				xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i);
-// 				ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i)+3;
-// 			}
-// 			else if(linenum==2)//二号线
-// 			{
-// 				distance=(line[dot->k+1].distance.dy)-(line[dot->k].distance.dy);
-// 				distance=distance*100;
-// 				xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i)+3;
-// 				ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i);
-// 			}
-// 			else if(linenum==4)//四号线
-// 			{
-// 				distance=(line[dot->k+1].distance.dz)-(line[dot->k].distance.dz);
-// 				distance=distance*100;
-// 				xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i);
-// 				ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i)+3;
-// 			}
-// 			// distance=distance*100;
-// 			// xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i);
-// 			// ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i);
-// 			if(dot->setDotSave[0][0]!=-100)//判断是不是第一次加载
-// 			{
-// 				hideDot(dot);
-// 			}
-// 			dot->x=xnew;
-// 			dot->y=ynew;
-// 			readDotbk(dot);
-// 			//逆向车用蓝色
-// 			setcolor(RED);
-// 			setfillstyle(1, RED);
-// 			drawDot(dot,RED);
-// 			//位移量进1
-// 			dot->i++;
-// 			// if(dot->i==(int)distance/speed)//车如果到站
-// 			// {
-// 			// 	dot->i=0;
-// 			// 	dot->k--;
-// 			// 	dot->count=wait;
-				
-// 			// }
-// 			if(dot->x==line[dot->k].x && dot->y==line[dot->k].y)//车如果到站
-// 			{
-// 				dot->i=0;
-// 				dot->k--;
-// 				dot->count=wait;
-				
-// 			}
-// 			if(dot->k==0)//车到了始发站
-// 			{
-// 				dot->reverse=0;
-// 				//清除两车向蹭之后的噪点
-// 				// if(linenum==1)//一号线
-// 				// {
-// 				// 	Drawstation1_j();
-// 				// 	DrawCircles_j();
-// 				// }
-// 				// else if(linenum==2)//二号线
-// 				// {
-// 				// 	Drawstation2_j();
-// 				// 	DrawCircles_j();
-// 				// }
-// 				// else if(linenum==4)//四号线
-// 				// {
-// 				// 	Drawstation4_j();
-// 				// 	DrawCircles_j();
-// 				// }
-// 			}
-// 			delay(5);
-// 		}
-		
-// 	}
-// 	else//车在站台
-// 	{
-		
-// 		if(dot->count==1)
-// 		{
-// 			if(dot->reverse==0)//正向
-// 			{
-// 				if(linenum==1)//一号线
-// 				{
-// 					distance=(line[dot->k+2].distance.dx)-(line[dot->k+1].distance.dx);
-// 					dot->x=(line[dot->k+1].x);
-// 					dot->y=(line[dot->k+1].y);
-// 				}
-// 				else if(linenum==2)//二号线
-// 				{
-// 					distance=(line[dot->k+2].distance.dy)-(line[dot->k+1].distance.dy);
-// 					dot->x=(line[dot->k+1].x);
-// 					dot->y=(line[dot->k+1].y);
-// 				}
-// 				else if(linenum==4)//四号线
-// 				{
-// 					distance=(line[dot->k+2].distance.dz)-(line[dot->k+1].distance.dz);
-// 					dot->x=(line[dot->k+1].x);
-// 					dot->y=(line[dot->k+1].y);
-// 				}
-// 				distance=distance*100;
-// 				dot->distance[0]=(((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/distance);
-// 				dot->distance[1]=(((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/distance);
-// 			}
-// 			else if(dot->reverse==1)//反向
-// 			{
-// 				if(linenum==1)//一号线
-// 				{
-// 					distance=(line[dot->k+1].distance.dx)-(line[dot->k].distance.dx);
-// 					dot->x=(line[dot->k+1].x);
-// 					dot->y=(line[dot->k+1].y);
-// 				}
-// 				else if(linenum==2)//二号线
-// 				{
-// 					distance=(line[dot->k+1].distance.dy)-(line[dot->k].distance.dy);
-// 					dot->x=(line[dot->k+1].x);
-// 					dot->y=(line[dot->k+1].y);
-// 				}
-// 				else if(linenum==4)//四号线
-// 				{
-// 					distance=(line[dot->k+1].distance.dz)-(line[dot->k].distance.dz);
-// 					dot->x=(line[dot->k+1].x);
-// 					dot->y=(line[dot->k+1].y);
-// 				}
-// 				distance=distance*100;
-// 				dot->distance[0]=(((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance);
-// 				dot->distance[1]=(((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance);
-// 			}
-// 		}
-// 		// if(linenum==1)//一号线
-// 		// 	{
-// 		// 		distance=(line[dot->k+1].distance.dx)-(line[dot->k].distance.dx);
-// 		// 		distance=distance*100;
-// 		// 		xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i);
-// 		// 		ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i)+3;
-// 		// 	}
-// 		// 	else if(linenum==2)//二号线
-// 		// 	{
-// 		// 		distance=(line[dot->k+1].distance.dy)-(line[dot->k].distance.dy);
-// 		// 		distance=distance*100;
-// 		// 		xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i)+3;
-// 		// 		ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i);
-// 		// 	}
-// 		// 	else if(linenum==4)//四号线
-// 		// 	{
-// 		// 		distance=(line[dot->k+1].distance.dz)-(line[dot->k].distance.dz);
-// 		// 		distance=distance*100;
-// 		// 		xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/distance*speed*(dot->i);
-// 		// 		ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/distance*speed*(dot->i)+3;
-// 		// 	}
-// 		dot->count--;
-// 		delay(5);
-// 	}
-	
-// }
 /**********************************************************
 Function:  changeValue
 Description：	数值变动函数
@@ -690,18 +488,16 @@ void changeValue(int *para)
 	char temp[4];
 	//涂掉原先的数
 	setcolor(DARKGRAY);
-	// setfillstyle(1,DARKGRAY);
-	// bar(515,180,572,210);
 	setfillstyle(1,DARKGRAY);
 	bar(515,180,572,390);
 	setcolor(WHITE);
 	settextstyle(SMALL_FONT,HORIZ_DIR,7);
 	itoa(para[0],temp,10);
-	outtextxy(534,185,temp);
+	outtextxy(528,185,temp);
 	itoa(para[1],temp,10);
-	outtextxy(534,225,temp);
+	outtextxy(528,225,temp);
 	itoa(para[2],temp,10);
-	outtextxy(534,265,temp);
+	outtextxy(528,265,temp);
 }
 /**********************************************************
 Function:  drawControlScreen
@@ -714,7 +510,8 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int i;//划线循环变量
 	int currentNum=0;//当前调度线路
-	int para[3]={1,10,10};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
+	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
+	int goTimeI[3]={0,0,0};
     setTrainInfo Info[3];//记录三条线调度的相关参数
 	// 初始化
 	// 鼠标初始化
@@ -722,19 +519,6 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	cleardevice();
 	setbkcolor(DARKGRAY);
 	initTranInfo(Info,all);
-
-
-	// closegraph();
-	// printf("\n%f\n%f",Info[2].lineHead->station[0].distance.dz,Info[2].lineHead->station[1].distance.dz);
-	// printf("\n%f\n%f",Info[2].lineHead->station[2].distance.dz,Info[2].lineHead->station[3].distance.dz);
-	// printf("\n%f\n%f",Info[2].lineHead->station[4].distance.dz,Info[2].lineHead->station[5].distance.dz);
-	// printf("\n%f\n%f",Info[1].lineHead->station[9].distance.dx,Info[1].lineHead->station[9].distance.dy);
-	// printf("\n%d\n%d",Info[1].lineHead->station[8].x,Info[1].lineHead->station[9].x);
-	// printf("\n%d\n%d",Info[1].lineHead->station[8].y,Info[1].lineHead->station[9].y);
-	// printf("\n%d\n%d",Info[1].lineHead->station[9].x,all->line2[9].x);
-	// printf("\n%f\n%f",Info[1].lineHead->station[6].distance.dy,Info[1].lineHead->station[7].distance.dy);
-	// printf("\n%f\n%f",Info[1].lineHead->station[8].distance.dy,Info[1].lineHead->station[9].distance.dy);
-	// getch() ;
 
 	//绘制界面
 	//绘制返回按钮
@@ -776,27 +560,25 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	drawControlFrame(410,190);
 
 	createTrain(&Info[0],0);
+	createTrain(&Info[0],1);
+	createTrain(&Info[1],0);
+	createTrain(&Info[1],1);
+	createTrain(&Info[2],0);
+	createTrain(&Info[2],1);
 	while(1)
 	{
 		//debug
 		// debugElf(15,160,WHITE,LIGHTBLUE,int a,int b,int c);
-		// changePlace(&Info[0].lineHead[0],Info[0].lineHead->station,1,8,200);
 		//一号线
-		
-		// debugElf(15,160,WHITE,LIGHTBLUE,Info->trainHead->count,Info->speed,Info->stationNum);
-		// closegraph();
-		// printf("%d\n%d\n%d\n",Info->trainHead->count,Info->speed,Info->stationNum);
-		// getch();
-		changeDot(&Info[0]);
-		
-		// changePlace(Info[0].trainHead,Info[0].lineHead->station,Info[0].speed,8,Info[0].wait,1);
-		// changePlace(Info[0].trainHead->next,Info[0].lineHead->station,Info[0].speed,8,Info[0].wait,1);
+		controlGoTime(&Info[0],&goTimeI[0]);
+		// changeDot(&Info[0]);
 		//二号线
-		// changePlace(Info[1].trainHead,Info[1].lineHead->station,Info[1].speed,9,Info[1].wait,2);
-		// changePlace(Info[1].trainHead->next,Info[1].lineHead->station,Info[1].speed,9,Info[1].wait,2);
+		controlGoTime(&Info[1],&goTimeI[1]);
+		// changeDot(&Info[1]);
 		//四号线
-		// changePlace(Info[2].trainHead,Info[2].lineHead->station,Info[2].speed,8,Info[1].wait,4);
-		// changePlace(Info[2].trainHead->next,Info[2].lineHead->station,Info[2].speed,8,Info[1].wait,4);
+		controlGoTime(&Info[2],&goTimeI[2]);
+		// changeDot(&Info[2]);
+		
 		switch(otherEvent(&mx,&my,&buttons))
 		{
 			case 0:
