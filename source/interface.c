@@ -663,6 +663,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50 && mouseover==0)//进入个人中心
 		{
 			mouseover=1;
+			mousehide(mx,my);
 			setcolor(LIGHTBLUE);
 			setfillstyle(1,LIGHTBLUE);
 			pieslice(25,25,0,360,20);
@@ -670,10 +671,12 @@ void DrawControlSystem_c(setuser *person,int *judge)
 			setfillstyle(1,WHITE);
 			pieslice(25,20,0,360,9);
 			pieslice(25,25,232,308,19);
+			getMousebk(mx,my);
 		}
 		if(!(mx >= 0 && mx <= 50 && my >= 0&& my <= 50) && mouseover==1)
 		{
 			mouseover=0;
+			mousehide(mx,my);
 			setcolor(DARKGRAY);
 			setfillstyle(1,DARKGRAY);
 			pieslice(25,25,0,360,20);
@@ -681,6 +684,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 			setfillstyle(1,LIGHTGRAY);
 			pieslice(25,20,0,360,9);
 			pieslice(25,25,232,308,19);
+			getMousebk(mx,my);
 		}
 		if(buttons)//点击事件
 		{

@@ -68,8 +68,10 @@ typedef struct train
 	float y;
 	int k;//标志着进入第k个站与第k+1站之间
 	int i;//标志着进入第几个位移量
+	int Ti;//总共要多少位移
 	int reverse;//0标志正向，1标志反向
 	int count;//记录停车时间：0不停车
+	// float distance[2];//记录单位位移像素数
 	int setDotSave[6][6];//列车保存点阵
 	struct train *next;
 }setTrain;
@@ -78,11 +80,14 @@ typedef struct train
 typedef struct trainInfo
 {
 	setline *lineHead;//一条地铁线的指针
-	setTrain *trainHead;//一条线上每辆车的列表
+	setTrain *trainHead;//一条线上正向车的列表
+	setTrain *rtrainHead;//一条线上逆向车的列表
+	int speed;//速度
 	int wait;//停站时间
-	int num;//车辆总数
 	int goTime;//发车时间间隔
+	int num;//车辆总数
 	int safeInstance;//安全距离
+	int stationNum;//站的总数
 }setTrainInfo;
 
 
