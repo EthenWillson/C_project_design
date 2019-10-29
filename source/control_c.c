@@ -6,7 +6,14 @@
 #define DISTANCEUNIT 300 //距离单位
 #define DAULTSPEED 1
 #define DAULTWAIT 10
-#define DAULTGOTIME 200
+#define DAULTGOTIME 120
+#define MAXSPEED 8
+#define MINSPEED 0
+#define MAXWAIT 35
+#define MINWAIT 10
+#define MAXGOTIME 250
+#define MINGOTIME 50
+#define ACCUMTIME 1300
 /**********************************************************
 Function:  drawControlFrame
 Description：	绘制控制框
@@ -191,9 +198,9 @@ Function:  controlGoTime
 Description：	控制发车时间
 Attention:  无
 **********************************************************/
-void controlGoTime(setTrainInfo *Info,int *GotimeI)
+void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum)
 {
-	
+	*accum=*accum+1;
 	if(*GotimeI>=(Info->goTime)*TIMEUNIT)
 	{
 		*GotimeI=0;
@@ -264,6 +271,11 @@ void createTrain(setTrainInfo *Info,int reverse)
 			Tb=T;
 		}
 		T=(setTrain*)malloc(sizeof(setTrain));
+		if(T==NULL)
+		{
+			printf("No memory.");
+			getch();
+		}
 		if(Tb==NULL)
 		{
 			Info->trainHead=T;
@@ -371,8 +383,10 @@ void changeDot(setTrainInfo *Info)
 				}
 				else//终点站
 				{
-					deleteTrain(fTb,fT);
-					fT=fTb;
+					// deleteTrain(fTb,fT);
+					// fT=fTb;
+					Info->trainHead=fT->next;
+					free(fT);
 				}
 				
 			}
@@ -445,8 +459,10 @@ void changeDot(setTrainInfo *Info)
 				}
 				else//起点站
 				{
-					deleteTrain(rTb,rT);
-					rT=rTb;
+					// deleteTrain(rTb,rT);
+					// rT=rTb;
+					Info->rtrainHead=rT->next;
+					free(rT);
 				}
 				
 			}
@@ -509,6 +525,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
     int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int i;//划线循环变量
+	long int accum=0;//累计器
 	int currentNum=0;//当前调度线路
 	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
 	int goTimeI[3]={0,0,0};
@@ -568,17 +585,24 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	while(1)
 	{
 		//debug
-		// debugElf(15,160,WHITE,LIGHTBLUE,int a,int b,int c);
+		debugElf(15,160,WHITE,LIGHTBLUE,accum,ACCUMTIME,2);
 		//一号线
-		controlGoTime(&Info[0],&goTimeI[0]);
+		controlGoTime(&Info[0],&goTimeI[0],&accum);
 		// changeDot(&Info[0]);
 		//二号线
-		controlGoTime(&Info[1],&goTimeI[1]);
+		controlGoTime(&Info[1],&goTimeI[1],&accum);
 		// changeDot(&Info[1]);
 		//四号线
-		controlGoTime(&Info[2],&goTimeI[2]);
+		controlGoTime(&Info[2],&goTimeI[2],&accum);
 		// changeDot(&Info[2]);
-		
+		if(accum>=ACCUMTIME)
+		{
+			accum=0;
+			Drawstation1_j();
+    	    Drawstation2_j();
+    		Drawstation4_j();
+    		DrawCircles_j();
+		}
 		switch(otherEvent(&mx,&my,&buttons))
 		{
 			case 0:
@@ -655,45 +679,57 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 				break;
 			//点击速度+
 			case 4:
-				//涂掉原先的数
-				para[0]++;
-				Info[currentNum].speed=para[0];
-				changeValue(para);
+				if(para[0]>=MINSPEED&&para[0]<MAXSPEED)
+				{
+					para[0]++;
+					Info[currentNum].speed=para[0];
+					changeValue(para);
+				}
 				break;
-			//点击速度+
+			//点击速度-
 			case 5:
-				//涂掉原先的数
-				para[0]--;
-				Info[currentNum].speed=para[0];
-				changeValue(para);
+				if(para[0]>MINSPEED&&para[0]<=MAXSPEED)
+				{
+					para[0]--;
+					Info[currentNum].speed=para[0];
+					changeValue(para);
+				}
 				break;
 			//点击停站+
 			case 6:
-				//涂掉原先的数
-				para[1]++;
-				Info[currentNum].wait=para[1];
-				changeValue(para);
+				if(para[1]>=MINWAIT&&para[1]<MAXWAIT)
+				{
+					para[1]++;
+					Info[currentNum].wait=para[1];
+					changeValue(para);
+				}
 				break;
 			//点击停站-
 			case 7:
-				//涂掉原先的数
-				para[1]--;
-				Info[currentNum].wait=para[1];
-				changeValue(para);
+				if(para[1]>MINWAIT&&para[1]<=MAXWAIT)
+				{
+					para[1]--;
+					Info[currentNum].wait=para[1];
+					changeValue(para);
+				}
 				break;
 			//点击发车+
 			case 8:
-				//涂掉原先的数
-				para[2]++;
-				Info[currentNum].goTime=para[2];
-				changeValue(para);
+				if(para[2]>=MINGOTIME&&para[2]<MAXGOTIME)
+				{
+					para[2]++;
+					Info[currentNum].goTime=para[2];
+					changeValue(para);
+				}
 				break;
 			//点击发车-
 			case 9:
-				//涂掉原先的数
-				para[2]--;
-				Info[currentNum].goTime=para[2];
-				changeValue(para);
+				if(para[2]>MINGOTIME&&para[2]<=MAXGOTIME)
+				{
+					para[2]--;
+					Info[currentNum].goTime=para[2];
+					changeValue(para);
+				}
 				break;
 		}
 	}

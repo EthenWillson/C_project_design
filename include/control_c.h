@@ -7,9 +7,9 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 int otherEvent(int *mx,int *my,int *buttons);
 void createTrain(setTrainInfo *Info,int reverse);
 void deleteTrain(setTrain *before,setTrain *current);
-void controlGoTime(setTrainInfo *Info,int *GotimeI);
 int otherEvent(int *mx,int *my,int *buttons);
 void changeDot(setTrainInfo *Info);
+void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum);
 
 
 #endif
