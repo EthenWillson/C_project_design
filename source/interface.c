@@ -602,6 +602,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 	int sign[2]={0,0};//移动到按钮的标志
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int page;
+	int mouseover=0;
 	//int tri[]={25,15};//用户图标的三角形
 	// 初始化
 	// 鼠标初始化
@@ -659,9 +660,35 @@ void DrawControlSystem_c(setuser *person,int *judge)
 	while(1)
 	{
 		newxy(&mx, &my, &buttons);
+		if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50 && mouseover==0)//进入个人中心
+		{
+			mouseover=1;
+			mousehide(mx,my);
+			setcolor(LIGHTBLUE);
+			setfillstyle(1,LIGHTBLUE);
+			pieslice(25,25,0,360,20);
+			setcolor(WHITE);
+			setfillstyle(1,WHITE);
+			pieslice(25,20,0,360,9);
+			pieslice(25,25,232,308,19);
+			getMousebk(mx,my);
+		}
+		if(!(mx >= 0 && mx <= 50 && my >= 0&& my <= 50) && mouseover==1)
+		{
+			mouseover=0;
+			mousehide(mx,my);
+			setcolor(DARKGRAY);
+			setfillstyle(1,DARKGRAY);
+			pieslice(25,25,0,360,20);
+			setcolor(LIGHTGRAY);
+			setfillstyle(1,LIGHTGRAY);
+			pieslice(25,20,0,360,9);
+			pieslice(25,25,232,308,19);
+			getMousebk(mx,my);
+		}
 		if(buttons)//点击事件
 		{
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//注销按钮点击退出
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//注销按钮点击退出
 			{
 				page=Choose_c("您是否要注销","", &mx, &my, BROWN);
 				if(page==1)
@@ -675,7 +702,7 @@ void DrawControlSystem_c(setuser *person,int *judge)
 					return;
 				}
 			}
-			else if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50 && buttons)//进入个人中心
+			else if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50)//进入个人中心
 			{
 				*judge=turnTo_c(person,4);
 				return;
