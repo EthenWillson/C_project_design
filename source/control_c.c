@@ -14,19 +14,73 @@
 #define MAXGOTIME 250
 #define MINGOTIME 30
 #define ACCUMTIME 1300
+#define PNADDCYECLE 20
 /**********************************************************
 Function:  addPN_c
 Description：	增加客流量
 Attention:  无
 **********************************************************/
-void addPN_c(setTrainInfo *Info)
+void addPN_c(setTrainInfo *Info,int *timeCycle)
 {
-	int i;
-	for(i=1;i<=Info->stationNum;i++)
+	int i,randomS;
+	(*timeCycle)+=1;
+	if(*timeCycle>=PNADDCYECLE)
 	{
-		srand(clock()+time(NULL));
-		(Info->lineHead->station+i)->peopleNum+=(rand()%10);
+		*timeCycle=0;
+		for(i=1;i<=Info->stationNum;i++)
+		{
+			randomS=(Info->lineHead->station+i)->station_name[time(NULL)%18];
+			srand(randomS*clock()+randomS*time(NULL));
+			if(rand()%2==0)
+			{
+				if((Info->lineHead->station+i)->level==0)
+				{
+					randomS*=(randomS+time(NULL));
+					srand(randomS*clock()+randomS*time(NULL));
+					(Info->lineHead->station+i)->peopleNum+=(rand()%6);
+				}
+				else if((Info->lineHead->station+i)->level==1)
+				{
+					randomS*=(randomS+time(NULL));
+					srand(randomS*clock()+randomS*time(NULL));
+					(Info->lineHead->station+i)->peopleNum+=(rand()%12);
+				}
+				else if((Info->lineHead->station+i)->level==2)
+				{
+					if((Info->lineHead->station+i)->peopleNum<300)
+					{
+						randomS*=(randomS+time(NULL));
+						srand(randomS*clock()+randomS*time(NULL));
+						(Info->lineHead->station+i)->peopleNum+=(rand()%25);
+					}
+					else
+					{
+						randomS*=(randomS+time(NULL));
+						srand(randomS*clock()+randomS*time(NULL));
+						(Info->lineHead->station+i)->peopleNum+=(rand()%6);
+					}
+					
+				}
+				else if((Info->lineHead->station+i)->level==3)
+				{
+					if((Info->lineHead->station+i)->peopleNum<400)
+					{
+						randomS*=(randomS+time(NULL));
+						srand(randomS*clock()+randomS*time(NULL));
+						(Info->lineHead->station+i)->peopleNum+=(rand()%55);
+					}
+					else
+					{
+						randomS*=(randomS+time(NULL));
+						srand(randomS*clock()+randomS*time(NULL));
+						(Info->lineHead->station+i)->peopleNum+=(rand()%10);
+					}
+					
+				}
+			}
+		}
 	}
+	
 }
 /**********************************************************
 Function:  drawControlFrame
@@ -212,9 +266,9 @@ Function:  controlGoTime
 Description：	控制发车时间
 Attention:  无
 **********************************************************/
-void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum)
+void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum,int *timeCycle)
 {
-	addPN_c(Info);
+	addPN_c(Info,timeCycle);
 	*accum=*accum+1;
 	if(*GotimeI>=(Info->goTime)*TIMEUNIT)
 	{
@@ -603,6 +657,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	int i;//划线循环变量
 	long int accum=0;//累计器
 	int currentNum=0;//当前调度线路
+	int timeCycle=0;
 	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
 	int goTimeI[3]={0,0,0};
     setTrainInfo Info[3];//记录三条线调度的相关参数
@@ -665,16 +720,16 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	while(1)
 	{
 		//debug精灵
-		// debugElf(15,160,WHITE,LIGHTBLUE,accum,ACCUMTIME,2);
+		// debugElf(15,160,WHITE,LIGHTBLUE,timeCycle,rand(),clock());
 		changeStationPN(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 		//一号线
-		controlGoTime(&Info[0],&goTimeI[0],&accum);
+		controlGoTime(&Info[0],&goTimeI[0],&accum,&timeCycle);
 		// changeDot(&Info[0]);
 		//二号线
-		controlGoTime(&Info[1],&goTimeI[1],&accum);
+		controlGoTime(&Info[1],&goTimeI[1],&accum,&timeCycle);
 		// changeDot(&Info[1]);
 		//四号线
-		controlGoTime(&Info[2],&goTimeI[2],&accum);
+		controlGoTime(&Info[2],&goTimeI[2],&accum,&timeCycle);
 		// changeDot(&Info[2]);
 		if(accum>=ACCUMTIME)
 		{

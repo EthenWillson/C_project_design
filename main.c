@@ -21,7 +21,7 @@ void main()
 	
 	
 
-
+	// clock();
 	initgraph(&driver, &mode, "../BORLANDC\\bgi");  
 	cleardevice();
 	if ((head = (setuser *)malloc(sizeof(setuser))) == NULL)
