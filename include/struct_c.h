@@ -10,7 +10,7 @@ typedef struct User
 	char money[6];  //用户余额
 	char score[6];
 	unsigned long int spend;//用户消费
-	char record[100];//出行记录
+	char record[200];//出行记录
 	struct User *next;  //指向下一个用户的指针
 }setuser;
 

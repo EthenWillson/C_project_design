@@ -87,6 +87,11 @@ void station_information_j(all_lines_stations *all)
     
     //all->line4[8].distance=0;
 }
+/**********************************************************
+Function:  DrawCircles
+Description£º	»­Ô²È¦
+Attention:  ÎÞ
+**********************************************************/
 void DrawCircles_j()
 {
     int i;
@@ -94,15 +99,10 @@ void DrawCircles_j()
     setcolor(LIGHTMAGENTA);
     for(i=0;i<=7;i++)
     {
-
             circle(80+60*i,100,5);
             circle(80+60*i,100,4);
             circle(80+60*i,380,5);
             circle(80+60*i,380,4);
-            //circle(80+60*i,235,8);
-            //circle(80+60*i,235,7);
-            //circle(80+60*i,380,8);
-            //circle(80+60*i,380
             
     }
     for(i=0;i<=3;i++)
@@ -115,6 +115,11 @@ void DrawCircles_j()
     circle(240,410,5);
     circle(240,410,4);
 }
+/**********************************************************
+Function:  DrawStation1
+Description£º	»­1ºÅÏß
+Attention:  ÎÞ
+**********************************************************/
 void Drawstation1_j()
 {
     int i;
@@ -134,7 +139,11 @@ void Drawstation1_j()
         line(85+60*i,100,135+60*i,100);
     }
 }
-
+/**********************************************************
+Function:  DrawStation2
+Description£º	»­2ºÅÏß
+Attention:  ÎÞ
+**********************************************************/
 void Drawstation2_j()
 {
     int i;
@@ -156,6 +165,11 @@ void Drawstation2_j()
     line(203,383,237,407);
     line(205,377,255,377);
 }
+/**********************************************************
+Function:  DrawStation4_j
+Description£º	»­Ô²È¦
+Attention:  ÎÞ
+**********************************************************/
 void Drawstation4_j()
 {
     int i;
@@ -398,6 +412,11 @@ float cal_distance_j(all_lines_stations *all,int *start_name,int *end_name)//¼ÆË
     }
     
 }
+/**********************************************************
+Function:  cal_price_j
+Description£º	¸ù¾Ý·Ö¶Îº¯Êý¼ÆËã¼Û¸ñ
+Attention:  ÎÞ
+**********************************************************/
 int cal_price_j(float distance)
 {
     int price=0;
@@ -408,14 +427,22 @@ int cal_price_j(float distance)
     else return 0;
     return price;
 }
-
+/**********************************************************
+Function:  transform1
+Description£º	ÕûÊý²¿·Ö×ª»¯³É×Ö·û´®
+Attention:  ÎÞ
+**********************************************************/
 void transform1(float num,char* str)
 {
     int n;
 	n=(int)num;
 	itoa(n,str,10);
 }
-
+/**********************************************************
+Function:  transform2
+Description£º	Ð¡Êý²¿·Ö×ª»¯³É×Ö·û´®
+Attention:  1.99999999999999999987µÄÇé¿ö£¬ËùÒÔ¼ÓÉÏ0.5ÔÙÈ¡Õû
+**********************************************************/
 void transform2(float num,char *str)
 {
     int n;
@@ -427,9 +454,13 @@ void transform2(float num,char *str)
     // printf("num=%f\n",num);
     // printf("%d\n%f\n%f",(int)num,(((num)-(int)num)*10),((((num)-(int)num)*10)+0.5));
     // printf("str=%s",str);
-    // getch();
-    
+    // getch(); 
 }
+/**********************************************************
+Function:  Draw_start_sta_j
+Description£º	ÏÔÊ¾Æðµã£¬°ÑÆðµãÐÅÏ¢´æÆðÀ´,¸Ä±äflag=1±íÊ¾ÒÑ¾­µã»÷¹ýÒ»´ÎÁË
+Attention:  ÎÞ
+**********************************************************/
 void Draw_start_sta_j(int x,int y,station *sta,int *sta_checkclick,int *start_station,int *flag)
 {
     puthz(30,130,"Æðµã£º",16,16,RED);
@@ -440,9 +471,12 @@ void Draw_start_sta_j(int x,int y,station *sta,int *sta_checkclick,int *start_st
     *sta_checkclick=1;
     *start_station=sta->simple_name;//Æðµã¼òÒ×´úÂë
     *flag=1;
-    
 }
-
+/**********************************************************
+Function:  Draw_end_sta
+Description£º	ÏÔÊ¾ÖÕµã£¬¾àÀë£¬¼Û¸ñ,¸Ä±äflag=2±íÊ¾ÒÑ¾­µã»÷ÁËÆðµãºÍÖÕµã
+Attention:  ÎÞ
+**********************************************************/
 void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_checkclick,int *start_station,int *end_station,int *flag,int *price)
 {
     float distance=0;
@@ -459,31 +493,14 @@ void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_che
         setcolor(RED);
         circle(x,y,5);
         circle(x,y,4);
-        /*
-        closegraph();
-        printf("%d  %d\n",x,y);
-        printf("%d  %d\n",sta.distance.dx,sta.distance.dx);
-        printf("\n%s",sta.station_name);
-        getch();//·ñÔòÒ»ÉÁ¶ø¹ý
-        */
+       
         *sta_checkclick=1;//´ú±íÕâÕ¾Ò²µã¹ýÁË
         distance=cal_distance_j(all,start_station,end_station);
         *price=cal_price_j(distance);
         itoa(*price,price_string,10);//½«¼Û¸ñÊý×ª»¯³É×Ö·û´®£¬±ãÓÚÊä³ö
         transform1(distance,distance_string1);
         transform2(distance,distance_string2);
-        /*
-        closegraph();
-        printf("%f\n",distance);
-        getch();
-        */
-        /*
-        printf("%d\n",price);
-        printf("%s\n",distance_string1);
-        printf("%s\n",distance_string2);
-        printf("%s\n",price_string);
-        getch();
-        */
+    
         settextstyle(0,0,2);
         puthz(30,190,"¾àÀë£º",16,16,RED);
         outtextxy(80,190,distance_string1);//Êä³ö¾àÀë
@@ -493,26 +510,8 @@ void Draw_end_sta_j(all_lines_stations *all,int x,int y,station sta,int *sta_che
         puthz(30,220,"Æ±¼Û£º",16,16,RED);
         outtextxy(80,220,price_string);//Êä³öÆ±¼Û
         puthz(95,220,"Ôª",16,16,RED);
+
         *flag=2;
     }
     
 }
-/*
-int judge_sta_checkclick_j(int** sta_checkclick)//±êÖ¾Êý×é¶¼ÊÇ0£¬·µ»Ø1£¬´ú±í¡°»¹Ã»µã»÷¡±
-{
-    int i,j;
-    int flag=1;
-    for(i=0;i<5;i++)
-    {
-        for(j=0;j<10;j++)
-        {
-            if(sta_checkclick[i][j])
-            {
-                flag=0;
-                break;
-            }
-        }
-    }
-    return flag;
-}
-*/
