@@ -45,6 +45,8 @@ typedef struct station{
 	int dis;
     char station_name[20];//站名
 	int simple_name;//站点的简称
+	//cjw
+	long int peopleNum;//站点客流量
 }station;
 
 /*线路结构*/

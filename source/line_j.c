@@ -28,6 +28,9 @@ void Initstation_j(station *sta,int x,int y,char* station_name,int code,float dx
     sta->distance.dz=dz;
     strcpy(sta->station_name,station_name);//站点名
     sta->simple_name=code;//站点的简易编码，便于文件读取操作
+    //cjw
+    srand(clock()+time(NULL));
+    sta->peopleNum=rand()%2000;
 }
 /**********************************************************
  Function:  station_information
@@ -68,8 +71,8 @@ void station_information_j(all_lines_stations *all)
     Initstation_j(&(all->line2[2]),260,100,"循礼门",10,2.8,1.5,0);
     Initstation_j(&(all->line2[3]),260,156,"江汉路",23,0,4.1,0);
     Initstation_j(&(all->line2[4]),260,212,"积玉桥",24,0,7.5,0);
-    Initstation_j(&(all->line2[5]),260,278,"螃蟹岬",25,0,9.1,0);
-    Initstation_j(&(all->line2[6]),260,334,"小龟山",26,0,10.0,0);
+    Initstation_j(&(all->line2[5]),260,268,"螃蟹岬",25,0,9.1,0);//修改278->268
+    Initstation_j(&(all->line2[6]),260,324,"小龟山",26,0,10.0,0);//修改334->224
     Initstation_j(&(all->line2[7]),260,380,"洪山广场",20,0,11.3,3.0);
     Initstation_j(&(all->line2[8]),200,380,"中南路",30,0,12.2,2.1);
     Initstation_j(&(all->line2[9]),240,410,"宝通寺",29,0,13.6,0);

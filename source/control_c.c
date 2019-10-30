@@ -6,14 +6,28 @@
 #define DISTANCEUNIT 300 //距离单位
 #define DAULTSPEED 1
 #define DAULTWAIT 10
-#define DAULTGOTIME 120
+#define DAULTGOTIME 60
 #define MAXSPEED 8
 #define MINSPEED 0
 #define MAXWAIT 35
 #define MINWAIT 10
 #define MAXGOTIME 250
-#define MINGOTIME 50
+#define MINGOTIME 30
 #define ACCUMTIME 1300
+/**********************************************************
+Function:  addPN_c
+Description：	增加客流量
+Attention:  无
+**********************************************************/
+void addPN_c(setTrainInfo *Info)
+{
+	int i;
+	for(i=1;i<=Info->stationNum;i++)
+	{
+		srand(clock()+time(NULL));
+		(Info->lineHead->station+i)->peopleNum+=(rand()%10);
+	}
+}
 /**********************************************************
 Function:  drawControlFrame
 Description：	绘制控制框
@@ -150,7 +164,7 @@ int otherEvent(int *mx,int *my,int *buttons)
     newxy(mx, my, buttons);
 	if(*buttons)//点击事件
 	{
-		if (*mx >= 10 && *mx <= 70 && *my >= 210&& *my <= 270)//退出按钮点击退出
+		if (*mx >= 10 && *mx <= 45 && *my >= 10&& *my <= 45)//退出按钮点击退出
 		{
 			return 0;
 		}
@@ -200,6 +214,7 @@ Attention:  无
 **********************************************************/
 void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum)
 {
+	addPN_c(Info);
 	*accum=*accum+1;
 	if(*GotimeI>=(Info->goTime)*TIMEUNIT)
 	{
@@ -213,6 +228,7 @@ void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum)
 		*GotimeI=*GotimeI+1;
 		changeDot(Info);
 	}
+	// changeStationPN(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 	delay(5);
 }
 /**********************************************************
@@ -396,6 +412,7 @@ void changeDot(setTrainInfo *Info)
 		{
 			if(fT->count==1)//准备开车时
 			{
+				line[fT->k].peopleNum=line[fT->k].peopleNum/2;
 				if(Info->lineHead->number==1)//一号线
 				{
 					distance=(line[fT->k+1].distance.dx)-(line[fT->k].distance.dx);
@@ -472,6 +489,7 @@ void changeDot(setTrainInfo *Info)
 		{
 			if(rT->count==1)//准备开车时
 			{
+				line[fT->k].peopleNum=line[fT->k].peopleNum/2;
 				if(Info->lineHead->number==1)//一号线
 				{
 					distance=(line[rT->k].distance.dx)-(line[rT->k-1].distance.dx);
@@ -516,6 +534,64 @@ void changeValue(int *para)
 	outtextxy(528,265,temp);
 }
 /**********************************************************
+Function:  clickStation
+Description：	点击站点变化
+Attention:  无
+**********************************************************/
+void clickStation(int x,int y,station *sta,station **currentStation,int *mx,int *my)
+{
+	mousehide(*mx, *my);
+	*currentStation=sta;
+	DrawCircles_j();
+    // puthz(30,130,"站点名称：",16,16,RED);
+	setcolor(DARKGRAY);
+	setfillstyle(1,DARKGRAY);
+	bar(110,187,210,207);
+    puthz(115,190,(*currentStation)->station_name,16,16,LIGHTCYAN);
+    setcolor(RED);
+    circle(x,y,5);
+    circle(x,y,4);
+	getMousebk(*mx, *my);
+}
+/**********************************************************
+Function:  drawStationDetail
+Description：	画显示站点信息模块
+Attention:  无
+**********************************************************/
+void drawStationDetail(int x,int y,int bkcolor,int ccolor,station *currentStation)
+{
+	char strtemp[10];
+	setcolor(bkcolor);
+	setfillstyle(1,bkcolor);
+	bar(x,y,x+200,y+130);
+	puthz(x,y,"站点名：",16,16,ccolor);
+	puthz(x+80,y,currentStation->station_name,16,16,ccolor);
+	puthz(x,y+40,"客流量：",16,16,ccolor);
+	itoa(currentStation->peopleNum,strtemp,10);
+	puthz(x+80,y+40,strtemp,16,16,ccolor);
+	setcolor(RED);
+	circle(currentStation->x,currentStation->y,5);
+    circle(currentStation->x,currentStation->y,4);
+}
+/**********************************************************
+Function:  changeStationPN
+Description：	改变站点客流量
+Attention:  无
+**********************************************************/
+void changeStationPN(int x,int y,int bkcolor,int ccolor,station *currentStation)
+{
+	char strtemp[10];
+	setcolor(bkcolor);
+	setfillstyle(1,bkcolor);
+	bar(x+77,y+37,x+177,y+57);
+	itoa(currentStation->peopleNum,strtemp,10);
+	puthz(x+80,y+40,strtemp,16,16,ccolor);
+	setcolor(RED);
+	circle(currentStation->x,currentStation->y,5);
+    circle(currentStation->x,currentStation->y,4);
+	delay(5);
+}
+/**********************************************************
 Function:  drawControlScreen
 Description：	画调度页面，实现动画
 Attention:  无
@@ -530,16 +606,19 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
 	int goTimeI[3]={0,0,0};
     setTrainInfo Info[3];//记录三条线调度的相关参数
+	station *currentStation;//记录当前查看站点的地址
 	// 初始化
 	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(DARKGRAY);
 	initTranInfo(Info,all);
+	currentStation=&all->line1[1];
 
 	//绘制界面
 	//绘制返回按钮
-	returnBtn_c(15,210,LIGHTBLUE);
+	// returnBtn_c(15,210,LIGHTBLUE);
+	returnBtn_small_c(15,15,LIGHTBLUE);
 	//绘制基本界面
 	setcolor(GREEN);
 	settextstyle(SMALL_FONT,HORIZ_DIR,5);
@@ -573,8 +652,9 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	setfillstyle(1,WHITE);
 	pieslice(620,12,0,360,2);
 	//调整模块
-	//等待时间调整模块
 	drawControlFrame(410,190);
+	//站点信息模块
+	drawStationDetail(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 
 	createTrain(&Info[0],0);
 	createTrain(&Info[0],1);
@@ -584,8 +664,9 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	createTrain(&Info[2],1);
 	while(1)
 	{
-		//debug
-		debugElf(15,160,WHITE,LIGHTBLUE,accum,ACCUMTIME,2);
+		//debug精灵
+		// debugElf(15,160,WHITE,LIGHTBLUE,accum,ACCUMTIME,2);
+		changeStationPN(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 		//一号线
 		controlGoTime(&Info[0],&goTimeI[0],&accum);
 		// changeDot(&Info[0]);
@@ -599,9 +680,9 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 		{
 			accum=0;
 			Drawstation1_j();
-    	    Drawstation2_j();
-    		Drawstation4_j();
-    		DrawCircles_j();
+			Drawstation2_j();
+			Drawstation4_j();
+			DrawCircles_j();
 		}
 		switch(otherEvent(&mx,&my,&buttons))
 		{
@@ -717,7 +798,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 			case 8:
 				if(para[2]>=MINGOTIME&&para[2]<MAXGOTIME)
 				{
-					para[2]++;
+					para[2]+=10;
 					Info[currentNum].goTime=para[2];
 					changeValue(para);
 				}
@@ -726,11 +807,106 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 			case 9:
 				if(para[2]>MINGOTIME&&para[2]<=MAXGOTIME)
 				{
-					para[2]--;
+					para[2]-=10;
 					Info[currentNum].goTime=para[2];
 					changeValue(para);
 				}
 				break;
 		}
+		//点击不同站
+		//三条线的圈圈
+        //1号线的
+        if (mx >= 75 && mx <= 85 && my >= 95 && my <= 105 && buttons) //第一次点击
+        {
+            clickStation(80, 100, &all->line1[1],&currentStation,&mx,&my);
+        }
+        if (mx >= 135 && mx <= 145 && my >= 95 && my <= 105 && buttons)
+        {
+            clickStation(140, 100, &all->line1[2],&currentStation,&mx,&my);
+        }
+        if (mx >= 195 && mx <= 205 && my >= 95 && my <= 105 && buttons)
+        {
+            clickStation(200, 100, &all->line1[3],&currentStation,&mx,&my);
+        }
+        if (mx >= 255 && mx <= 265 && my >= 95 && my <= 105 && buttons) //这个是循礼门站
+        {
+            clickStation(260, 100, &all->line1[4],&currentStation,&mx,&my);
+        }
+        if (mx >= 315 && mx <= 325 && my >= 95 && my <= 105 && buttons)
+        {
+            clickStation(320, 100, &all->line1[5], &currentStation,&mx,&my);
+        }
+        if (mx >= 375 && mx <= 385 && my >= 95 && my <= 105 && buttons)
+        {
+            clickStation(380, 100, &all->line1[6], &currentStation,&mx,&my);
+        }
+        if (mx >= 435 && mx <= 445 && my >= 95 && my <= 105 && buttons)
+        {
+            clickStation(440, 100, &all->line1[7], &currentStation,&mx,&my);
+        }
+        if (mx >= 495 && mx <= 505 && my >= 95 && my <= 105 && buttons)
+        {
+            clickStation(500, 100, &all->line1[8], &currentStation,&mx,&my);
+        }
+        //2号线的
+        if (mx >= 295 && mx <= 305 && my >= 65 && my <= 75 && buttons) 
+        {
+            clickStation(300, 70, &all->line2[1], &currentStation,&mx,&my);
+        }
+        if (mx >= 255 && mx <= 265 && my >= 151 && my <= 161 && buttons)
+        {
+            clickStation(260, 156, &all->line2[3], &currentStation,&mx,&my);
+        }
+        if (mx >= 255 && mx <= 265 && my >= 207 && my <= 217 && buttons)
+        {
+            clickStation(260, 212, &all->line2[4], &currentStation,&mx,&my);
+        }
+        if (mx >= 255 && mx <= 265 && my >= 263 && my <= 273 && buttons)
+        {
+            clickStation(260, 268, &all->line2[5], &currentStation,&mx,&my);
+        }
+        if (mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons)
+        {
+            clickStation(260, 324, &all->line2[6], &currentStation,&mx,&my); 
+        }                                                                                                     //这两个draw距离其实是66
+        if (mx >= 255 && mx <= 265 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(260, 380, &all->line2[7], &currentStation,&mx,&my);
+        }
+        if (mx >= 195 && mx <= 205 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(200, 380, &all->line2[8], &currentStation,&mx,&my);
+        }
+        if (mx >= 235 && mx <= 245 && my >= 405 && my <= 415 && buttons)
+        {
+            clickStation(240, 410, &all->line2[9], &currentStation,&mx,&my);
+        }
+        //4号线的
+        if (mx >= 75 && mx <= 85 && my >= 375 && my <= 385 && buttons) //第一次点击
+        {
+            clickStation(80, 380, &all->line4[1], &currentStation,&mx,&my);
+        }
+        if (mx >= 135 && mx <= 145 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(140, 380, &all->line4[2], &currentStation,&mx,&my);
+        }
+        if (mx >= 315 && mx <= 325 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(320, 380, &all->line4[5], &currentStation,&mx,&my);
+        }
+        if (mx >= 375 && mx <= 385 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(380, 380, &all->line4[6], &currentStation,&mx,&my);
+        }
+        if (mx >= 435 && mx <= 445 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(440, 380, &all->line4[7], &currentStation,&mx,&my);
+        }
+        if (mx >= 495 && mx <= 505 && my >= 375 && my <= 385 && buttons)
+        {
+            clickStation(500, 380, &all->line4[8], &currentStation,&mx,&my);
+		}
+
+
 	}
 }

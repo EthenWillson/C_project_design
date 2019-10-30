@@ -10,6 +10,9 @@ void deleteTrain(setTrain *before,setTrain *current);
 int otherEvent(int *mx,int *my,int *buttons);
 void changeDot(setTrainInfo *Info);
 void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum);
+void changeStationPN(int x,int y,int bkcolor,int ccolor,station *currentStation);
+void drawStationDetail(int x,int y,int bkcolor,int ccolor,station *currentStation);
+void clickStation(int x,int y,station *sta,station **currentStation,int *mx,int *my);
 
 
 #endif
