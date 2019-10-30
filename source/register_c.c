@@ -31,6 +31,7 @@ void register_c(setManager managertemp,setuser *head)//注册函数：把注册�
     strcpy(p->code,managertemp.code);
     strcpy(p->class,managertemp.class);
     strcpy(p->money,"00000");
+    strcpy(p->score,"00000");
     p->next=NULL;
 
     //文件操作
@@ -46,6 +47,8 @@ void register_c(setManager managertemp,setuser *head)//注册函数：把注册�
     fputc('#',fp);//#标志用户的权限码
     fputs(managertemp.class,fp);
     fputc('$',fp);//$标志用户余额
+    fputs("00000",fp);
+    fputc('(',fp);//(标志用户积分
     fputs("00000",fp);
     fclose(fp);
 }
@@ -94,6 +97,8 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
             strcpy(person->code,p->code);
             strcpy(person->class,p->class);
             strcpy(person->money,p->money);
+            strcpy(person->score,p->score);
+            strcpy(person->record,p->record);
             person->spend=p->spend;
             return 1;//验证成功返回1
         }
@@ -136,6 +141,8 @@ int changePass_c(setChangePass *managerTemp,char *accounts,setuser *head)
         fputs(ph->class,fp);
         fputc('$',fp);//$标志用户余额
         fputs(ph->money,fp);
+        fputc('(',fp);//(标志用户积分
+        fputs(ph->score,fp);
         fputc('^',fp);//标志出行记录的开头
         fputs(ph->record,fp);
         fputc('&',fp);//结束符
@@ -203,12 +210,18 @@ void createuserlist_c(setuser *head)//创建用户链表
             p=now->money;
             // fprintf(fp,"%d",now->money);     
         }
+        else if(cha=='(')
+        {
+            *p='\0';
+            p=now->score;
+        }
         else if(cha=='^') 
         {     //表示金额的结束，出行记录的开始
 	        *p='\0';   
             p=now->record;
             // fprintf(fp,"%d",now->money);     
         }
+       
 	    else if(cha!=' '&&cha!='\n')       //将对应的账户串或密码串装入链表中
         {
 	        *p=cha;
@@ -220,6 +233,7 @@ void createuserlist_c(setuser *head)//创建用户链表
         }
     }
     now->next=NULL;
+                
     // closegraph();
     // printf("%s\n%s\n%s\n\n",now->accounts,now->code,now->class);
 }

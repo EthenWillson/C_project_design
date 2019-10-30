@@ -115,6 +115,11 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					return;
 				}
 			}
+			else if(mx>=398&&mx<=465&&my>=433&&my<=453&&buttons)
+			{
+				*judge=12;
+				return;
+			}
 			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82 && buttons)//点击管理员按钮
 			{
 				manager=1;

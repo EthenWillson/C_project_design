@@ -32,6 +32,7 @@ void main()
 		return ;
 	}
 	createuserlist_c(head);//创建用户链表，记得要释放
+	
 	station_information_j(&all);
 	// closegraph();
 	// for(pt=head->next;pt=pt->next;pt->next==NULL)
@@ -69,7 +70,7 @@ void main()
 		case 5://购票界面
 			DrawbuyScreen_j(&person,&judge,head,&all);//这个地方少传一个参数竟然不会报错！
 			break;
-		case 6://余额查询
+		case 6://账户查询
 			DrawcheckScreen_j(&person,&judge,head);
 			break;
 		case 7://充值
@@ -83,9 +84,14 @@ void main()
 		case 9:
 		    DrawrecordScreen_j(&person,&judge,&all);
 			break;
-
+		case 10:
+		    DrawscoreScreen_j(&person,&judge,head);	
+            break;
 		case 11://调度界面 
 			//drawControlScreen(&person,&judge,head,&all);
+			break;
+		case 12:
+		    Draw_about_us_Screen_j(&judge);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

@@ -19,7 +19,7 @@ void DrawpriceScreen_j(setuser* person,int* judge)
     puthz(60,120,"（1）行程4公里以内（含4公里），2元；",16,16,LIGHTMAGENTA);
     puthz(60,150,"（2）行程4——12公里（含12公里），1元每4公里；",16,16,LIGHTMAGENTA);
     puthz(60,180,"（3）行程12——24公里（含24公里），1元每6公里；",16,16,LIGHTMAGENTA);
-    puthz(60,210,"附距离表如下：",16,16,LIGHTMAGENTA);
+    puthz(60,210,"距离可在地图上查询",16,16,LIGHTMAGENTA);
     while (1)
     {
         newxy(&mx, &my, &buttons);
@@ -131,7 +131,45 @@ void DrawrecordScreen_j(setuser *person,int *judge,all_lines_stations* all)
         {
             if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
             {
-                *judge = turnTo_c(person, 3);
+                *judge = turnTo_c(person, 6);
+                return;
+            }
+        }
+    }   
+}
+
+void Draw_about_us_Screen_j(int *judge)
+{
+    int buttons, mx, my;         //鼠标相关变量
+    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
+    mouseInit(&mx, &my, &buttons);
+    cleardevice();
+    setbkcolor(WHITE);
+    DrawBeautifulFrame_c();
+    returnBtn_c(550, 210, GREEN);//返回按钮
+
+    puthz(60,60,"武汉地铁交通模拟系统 HUST AUTO Version 1-0-1",16,16,LIGHTMAGENTA);
+    puthz(60,90,"designed by 陈俊玮，江明轩 from HUST",16,16,LIGHTMAGENTA);
+    puthz(60,120,"本系统分为以下两块：",16,16,LIGHTMAGENTA);
+    puthz(60,150,"A普通用户  B管理员",16,16,LIGHTMAGENTA);
+    puthz(60,180,"普通用户:",16,16,CYAN);
+    puthz(60,210,"可实现：创建账号，更改密码，购票，余额充值，账户查询，积分兑换",16,16,CYAN);
+    puthz(60,240,"B.管理员:",16,16,CYAN);
+    puthz(60,270,"可实现：用户端功能，地铁调度",16,16,CYAN);
+    puthz(200,400,"《HUST AUTO许可及服务协议》",16,16,RED);
+    puthz(200,430,"HUST版权所有",16,16,RED);
+    puthz(100,460,"Copyright @2019-2020 All Rights Reserved",16,16,RED);
+
+
+
+    while (1)
+    {
+        newxy(&mx, &my, &buttons);
+        if(buttons)
+        {
+            if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
+            {
+                *judge = 1;
                 return;
             }
         }

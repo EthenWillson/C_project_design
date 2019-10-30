@@ -11,7 +11,8 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head);
 void DrawchargeScreen_j(setuser *person, int *judge, setuser *head);
 //void Drawtipframe();
 void changemoney_j(int n, setuser *person, int radix, setuser *head);
-void changerecord_j( setuser *person,  setuser *head,int start_name,int end_name,int price);
+void changescore_j(int n, setuser *person, setuser *head);
+void changerecord_j(setuser *person, setuser *head, int start_name, int end_name, int price);
 
 /**********************************************************
 Function:  Drawtipframe
@@ -83,36 +84,30 @@ void changemoney_j(int n, setuser *person, int radix, setuser *head) //文件操作
         fputs(ph->class, fp);
         fputc('$', fp); //$标志用户余额
         fputs(ph->money, fp);
-        fputc('^',fp);//出行记录
-        fputs(ph->record,fp);
+        fputc('(', fp); //(标志用户积分
+        fputs(ph->score, fp);
+        fputc('^', fp); //出行记录
+        fputs(ph->record, fp);
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
     rename("data_c\\user\\usernew.txt", "data_c\\user\\userinf.txt");
     return 0;
 }
-void changerecord_j(setuser *person, setuser *head,int start_name,int end_name,int price ) //文件操作
+void changescore_j(int n, setuser *person, setuser *head)
 {
     int number;
     FILE *fp = NULL; //打开文件的指针
     setuser *ph = head->next;
-    char start_str[3];
-    char end_str[3];
-    char price_str[2];
-    itoa(start_name,start_str,10);
-    itoa(end_name,end_str,10);
-    itoa(price,price_str,10);
+
+    number = atoi(person->score);
+    itoa(n + number, person->score, 10); //用于修改person->score的值，字符串与整型之间的转换
 
     for (ph = head->next; ph != NULL; ph = ph->next)
     {
         if (strcmp(ph->accounts, person->accounts) == 0)
         {
-            strcat(ph->record,start_str); 
-            strcat(ph->record,"!");
-            strcat(ph->record,end_str);
-            strcat(ph->record,"!");
-            strcat(ph->record,price_str);
-            strcat(ph->record,"!");
+            strcpy(ph->score, person->score); //修改链表中person->score值
         }
     }
     if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL) //以写的方式新建一个文件
@@ -130,15 +125,65 @@ void changerecord_j(setuser *person, setuser *head,int start_name,int end_name,i
         fputs(ph->class, fp);
         fputc('$', fp); //$标志用户余额
         fputs(ph->money, fp);
-        fputc('^',fp);//出行记录
-        fputs(ph->record,fp);
+        fputc('(', fp); //(标志用户积分
+        fputs(ph->score, fp);
+        fputc('^', fp); //出行记录
+        fputs(ph->record, fp);
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
     rename("data_c\\user\\usernew.txt", "data_c\\user\\userinf.txt");
     return 0;
 }
+void changerecord_j(setuser *person, setuser *head, int start_name, int end_name, int price) //文件操作
+{
+    int number;
+    FILE *fp = NULL; //打开文件的指针
+    setuser *ph = head->next;
+    char start_str[3];
+    char end_str[3];
+    char price_str[2];
+    itoa(start_name, start_str, 10);
+    itoa(end_name, end_str, 10);
+    itoa(price, price_str, 10);
 
+    for (ph = head->next; ph != NULL; ph = ph->next)
+    {
+        if (strcmp(ph->accounts, person->accounts) == 0)
+        {
+            strcat(ph->record, start_str);
+            strcat(ph->record, "!");
+            strcat(ph->record, end_str);
+            strcat(ph->record, "!");
+            strcat(ph->record, price_str);
+            strcat(ph->record, "!");
+        }
+    }
+    if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL) //以写的方式新建一个文件
+    {
+        closegraph();
+        printf("Can't open usernew.txt");
+    }
+    for (ph = head->next; ph != NULL; ph = ph->next)
+    {
+        fputc('@', fp); //@标志一个用户的开头
+        fputs(ph->accounts, fp);
+        fputc('*', fp); //*标志用户密码的开头
+        fputs(ph->code, fp);
+        fputc('#', fp); //#标志用户的权限码
+        fputs(ph->class, fp);
+        fputc('$', fp); //$标志用户余额
+        fputs(ph->money, fp);
+        fputc('(', fp); //(标志用户积分
+        fputs(ph->score, fp);
+        fputc('^', fp); //出行记录
+        fputs(ph->record, fp);
+    }
+    fclose(fp);
+    remove("data_c\\user\\userinf.txt");
+    rename("data_c\\user\\usernew.txt", "data_c\\user\\userinf.txt");
+    return 0;
+}
 
 /**********************************************************
 Function:  DrawbuyScreen
@@ -458,7 +503,13 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
                 //( setuser *person,  setuser *head,int *start_name,int*end_name,int price);
 
                 changemoney_j(-price, person, 10, head);
-                changerecord_j(person,head,start_station,end_station,price);
+                changescore_j(price * 10, person, head);
+                /*
+                closegraph();
+                printf("%s",person->score);
+                getch();
+                */
+                changerecord_j(person, head, start_station, end_station, price);
                 delay(2000);
                 *judge = turnTo_c(person, 3);
                 return;
@@ -493,7 +544,7 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
 
     puthz(90, 28, "您好！尊敬的：", 16, 16, CYAN);
     setcolor(MAGENTA);
-    outtextxy(220, 25, person->accounts);
+    outtextxy(220, 30, person->accounts);
     puthz(400, 435, "关于我们", 16, 16, MAGENTA);
     puthz(540, 435, "帮助", 16, 16, MAGENTA);
 
@@ -505,20 +556,30 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     //画出返回按钮
     returnBtn_c(300, 400, GREEN);
 
-    puthz(90, 95, "您的余额为：", 16, 16, CYAN);
-    changemoney_j(0, person, 10, head);
+    puthz(90, 100, "余额：", 16, 16, CYAN);
+    puthz(250, 100, "积分：", 16, 16, CYAN);
+    //changemoney_j(0, person, 10, head);
     setcolor(MAGENTA);
-    outtextxy(200, 90, person->money);
+    outtextxy(140, 90, person->money);
+    outtextxy(300, 90, person->score);
+    /*
+    closegraph();
+    printf("%s",person->score);
+    printf("%s",person->money);
+    getch();
+    */
 
     puthz(90, 160, "您可以选择：", 16, 16, CYAN);
     setfillstyle(1, LIGHTCYAN);
 
     bar(100, 200, 280, 290);
     bar(330, 200, 510, 290);
-    bar(215, 305, 395, 395);
+    bar(100, 305, 280, 395);
+    bar(330, 305, 510, 395);
     puthz(160, 223, "购票", 32, 32, MAGENTA);
     puthz(357, 223, "账户充值", 32, 32, MAGENTA);
-    puthz(242, 328, "购票记录", 32, 32, MAGENTA);
+    puthz(127, 328, "购票记录", 32, 32, MAGENTA);
+    puthz(357, 328, "积分兑换", 32, 32, MAGENTA);
 
     while (1)
     {
@@ -531,19 +592,24 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
                 *judge = turnTo_c(person, 3);
                 return;
             }
-            if (mx >= 100 && mx <= 280 && my >= 220 && my <= 310 && buttons) //点击购票方框，返回购票界面
+            if (mx >= 100 && mx <= 280 && my >= 200 && my <= 290 && buttons) //点击购票方框，返回购票界面
             {
                 *judge = turnTo_c(person, 5);
                 return;
             }
-            if (mx >= 330 && mx <= 510 && my >= 220 && my <= 310 && buttons) //点击账户充值方框，返回账户充值界面
+            if (mx >= 330 && mx <= 510 && my >= 200 && my <= 290 && buttons) //点击账户充值方框，返回账户充值界面
             {
                 *judge = turnTo_c(person, 7);
                 return;
             }
-            if (mx >= 215 && mx <= 395 && my >= 305 && my <= 395 && buttons)
+            if (mx >= 100 && mx <= 305 && my >= 280 && my <= 395 && buttons)
             {
                 *judge = turnTo_c(person, 9);
+                return;
+            }
+            if (mx >= 330 && mx <= 510 && my >= 305 && my <= 395 && buttons)
+            {
+                *judge = turnTo_c(person, 10);
                 return;
             }
             getMousebk(mx, my);
