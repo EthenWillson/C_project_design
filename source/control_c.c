@@ -1,23 +1,92 @@
 #include"control_c.h"
 #include"common_c.h"
-#define LINENUM 3  //ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½
-#define INITCARNUM 2 //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
-
+#define LINENUM 3  //ÏßÂ·ÌõÊý
+#define INITCARNUM 2 //³õÊ¼³µÁ¾
+#define TIMEUNIT 10 //Ê±¼äµ¥Î»
+#define DISTANCEUNIT 300 //¾àÀëµ¥Î»
+#define DAULTSPEED 1
+#define DAULTWAIT 10
+#define DAULTGOTIME 120
+#define MAXSPEED 8
+#define MINSPEED 0
+#define MAXWAIT 35
+#define MINWAIT 10
+#define MAXGOTIME 250
+#define MINGOTIME 50
+#define ACCUMTIME 1300
+/**********************************************************
+Function:  drawControlFrame
+Description£º	»æÖÆ¿ØÖÆ¿ò
+Attention:  ÎÞ
+**********************************************************/
+void drawControlFrame(int x,int y)
+{
+	char wait[5];
+	char speed[5];
+	char goTime[5];
+	itoa(DAULTSPEED,speed,10);
+	itoa(DAULTWAIT,wait,10);
+	itoa(DAULTGOTIME,goTime,10);
+	puthz(0+x, 0+y, "ÁÐ³µËÙ¶È£º", 16, 16, LIGHTCYAN);
+	puthz(0+x, 40+y, "Í£Õ¾Ê±¼ä£º", 16, 16, LIGHTCYAN);
+	puthz(0+x, 80+y, "·¢³µ¼ä¸ô£º", 16, 16, LIGHTCYAN);
+	setcolor(WHITE);
+	setfillstyle(1, WHITE);
+	//ËÙ¶È
+	setcolor(WHITE);
+	setfillstyle(1, WHITE);
+	pieslice(x+85,y+8,0,360,7);
+	pieslice(x+180,y+8,0,360,7);
+	setcolor(LIGHTBLUE);
+	setfillstyle(1, LIGHTBLUE);
+	bar(x+79,y+7,x+91,y+9);
+	bar(x+174,y+7,x+186,y+9);
+	bar(x+84,y+2,x+86,y+14);
+	setcolor(WHITE);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+	outtextxy(x+118,y-5,speed);
+	//µÈ´ý
+	setcolor(WHITE);
+	setfillstyle(1, WHITE);
+	pieslice(x+85,y+48,0,360,7);
+	pieslice(x+180,y+48,0,360,7);
+	setcolor(LIGHTBLUE);
+	setfillstyle(1, LIGHTBLUE);
+	bar(x+79,y+47,x+91,y+49);
+	bar(x+174,y+47,x+186,y+49);
+	bar(x+84,y+42,x+86,y+54);
+	setcolor(WHITE);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+	outtextxy(x+118,y+35,wait);
+	//·¢³µ
+	setcolor(WHITE);
+	setfillstyle(1, WHITE);
+	pieslice(x+85,y+88,0,360,7);
+	pieslice(x+180,y+88,0,360,7);
+	setcolor(LIGHTBLUE);
+	setfillstyle(1, LIGHTBLUE);
+	bar(x+79,y+87,x+91,y+89);
+	bar(x+174,y+87,x+186,y+89);
+	bar(x+84,y+82,x+86,y+94);
+	setcolor(WHITE);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+	outtextxy(x+118,y+75,goTime);
+}
 /**********************************************************
 Function:  drawDot
-Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-Attention:  ï¿½ï¿½
+Description£º	»­µØÌúµã
+Attention:  ÎÞ
 **********************************************************/
 void drawDot(setTrain *dot,int color)
 {
 	setcolor(color);
 	setfillstyle(1, color);
-	bar(dot->x-2,dot->y-2,dot->x+2,dot->y+2);
+	bar((int)dot->x-2,(int)dot->y-2,(int)dot->x+2,(int)dot->y+2);
 }
 /**********************************************************
 Function:  hideDot
-Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ã²¢ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½
-Attention:  ï¿½ï¿½
+Description£º	Òþ²ØµØÌúµã²¢ÏÔÏÖ±³¾°
+Attention:  ÎÞ
 **********************************************************/
 void hideDot(setTrain *dot)
 {
@@ -26,16 +95,15 @@ void hideDot(setTrain *dot)
 	{
 		for (j = 0;j<6;j++)
 		{
-			putpixel(dot->x -3 + i, dot->y -3 + j, dot->setDotSave[i][j]);
+			putpixel((int)dot->x -3 + i, (int)dot->y -3 + j, dot->setDotSave[i][j]);
 		}
 	}
 }
 /**********************************************************
 Function:  readDotbk
-Descriptionï¿½ï¿½	ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ã±³ï¿½ï¿½
-Attention:  ï¿½ï¿½
+Description£º	¶ÁÈ¡µØÌúµã±³¾°
+Attention:  ÎÞ
 **********************************************************/
-/*
 void readDotbk(setTrain *dot)
 {
 	int i, j;
@@ -47,13 +115,11 @@ void readDotbk(setTrain *dot)
 		}
 	}
 }
-*/
 /**********************************************************
 Function:  initTranInfo
-Descriptionï¿½ï¿½	ï¿½ï¿½Ø½á¹¹ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
-Attention:  ï¿½ï¿½
+Description£º	Ïà¹Ø½á¹¹ÌåµÄ³õÊ¼»¯
+Attention:  ÎÞ
 **********************************************************/
-/*
 void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 {
 	int i,j;
@@ -61,241 +127,610 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 	Info[0].lineHead=&(all->station_line1);
 	Info[1].lineHead=&(all->station_line2);
 	Info[2].lineHead=&(all->station_line4);
-	for(i=0;i<LINENUM;i++)
+	Info[0].stationNum=8;
+	Info[1].stationNum=9;
+	Info[2].stationNum=8;
+	for(i=0;i<3;i++)
 	{
-		Info[i].num=INITCARNUM;//Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
-		Info[i].trainHead=(setTrain*)malloc(sizeof(setTrain));
-		if(Info[i].trainHead==NULL)
-		{
-			closegraph();
-			printf("\nout of memory");
-			exit(1);
-		}
-		Info[i].trainHead->next=NULL;
-		Info[i].trainHead->k=0;
-		Info[i].trainHead->i=0;
-		Info[i].trainHead->x=0.0;
-		Info[i].trainHead->y=0.0;
-		Info[i].trainHead->count=0;
-		Info[i].trainHead->reverse=0;
-		Info[i].trainHead->setDotSave[0][0]=-100;
-		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		for(temp=Info[i].trainHead,j=1;j<INITCARNUM;j++)
-		{
-			temp->next=(setTrain*)malloc(sizeof(setTrain));
-			temp=temp->next;
-			if(temp==NULL)
-			{
-				closegraph();
-				printf("\nout of memory");
-				exit(1);
-			}
-			temp->next=NULL;
-			temp->k=0;
-			temp->i=0;
-			temp->x=0.0;
-			temp->y=0.0;
-			temp->count=0;
-			temp->setDotSave[0][0]=-100;
-			if(j<INITCARNUM/2)//Ç°Ò»ï¿½ë³µï¿½ï¿½ï¿½ï¿½
-			{
-				temp->reverse=0;
-			}
-			else//ï¿½ï¿½Ò»ï¿½ë³µï¿½ï¿½ï¿½ï¿½
-			{
-				temp->reverse=1;
-			}
-			
-		}
+		Info[i].num=0;
+		Info[i].wait=DAULTWAIT;//Í£Õ¾Ê±¼ä
+		Info[i].speed=DAULTSPEED;//ËÙ¶È
+		Info[i].goTime=DAULTGOTIME;//·¢³µ
+		Info[i].trainHead=NULL;//ÕýÏò³µÁ´±í
+		Info[i].rtrainHead=NULL;//ÄæÏò³µÁ´±í
 	}
 }
-*/
 /**********************************************************
 Function:  otherEvent
-Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ÂºÍµï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½
-Attention:  ï¿½ï¿½
+Description£º	ÆäËüÊÂ¼þ£¬ÈçÊó±êµÄ¸üÐÂºÍµã»÷ÊÂ¼þµÈ
+Attention:  ÎÞ
 **********************************************************/
-/*
 int otherEvent(int *mx,int *my,int *buttons)
 {
     newxy(mx, my, buttons);
-	if(*buttons)//ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+	if(*buttons)//µã»÷ÊÂ¼þ
 	{
-		if (*mx >= 550 && *mx <= 610 && *my >= 210&& *my <= 270)//ï¿½Ë³ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½Ë³ï¿½
+		if (*mx >= 10 && *mx <= 70 && *my >= 210&& *my <= 270)//ÍË³ö°´Å¥µã»÷ÍË³ö
 		{
 			return 0;
 		}
-	}
-	return 1;
-}
-*/
-/**********************************************************
-Function:  changePlace
-Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-Attention:  ï¿½ï¿½
-**********************************************************/
-/*
-void changePlace(setTrain *dot,station *line,int speed,int length,int wait)
-{
-	float xnew,ynew;
-	int i;
-	if(dot->count==0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾Ì¨
-	{
-		if(dot->reverse==0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»
+		else if(*mx >= 430 && *mx <= 640 && *my >= 0&& *my <= 25)//µã»÷Ò»ºÅÏßÇÐ»»µã
 		{
-			xnew=(line[dot->k+1].x)+((float)((line[dot->k+2].x)-(line[dot->k+1].x)))/(line[dot->k+1].distance)*speed*(dot->i);
-			ynew=(line[dot->k+1].y)+((float)((line[dot->k+2].y)-(line[dot->k+1].y)))/(line[dot->k+1].distance)*speed*(dot->i);
-			if(dot->setDotSave[0][0]!=-100)//ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½Çµï¿½Ò»ï¿½Î¼ï¿½ï¿½ï¿½
-			{
-				hideDot(dot);
-			}
-			dot->x=xnew;
-			dot->y=ynew;
-			readDotbk(dot);
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
-			setcolor(BLUE);
-			setfillstyle(1, BLUE);
-			drawDot(dot,BLUE);
-			//Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
-			dot->i++;
-			if(dot->i==(line[dot->k+1].distance)/speed)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾
-			{
-				dot->i=0;
-				dot->k++;
-				dot->count=wait;
-			}
-			if(dot->k==length-1)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½Õ¾
-			{
-				dot->reverse=1;
-			}
-			delay(20);
+			return 1;
 		}
-		else//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»
+		else if(*mx >= 430 && *mx <= 640 && *my >= 25&& *my <= 45)//µã»÷¶þºÅÏßÇÐ»»µã
 		{
-			xnew=(line[dot->k+1].x)-((float)((line[dot->k+1].x)-(line[dot->k].x)))/(line[dot->k].distance)*speed*(dot->i);
-			ynew=(line[dot->k+1].y)-((float)((line[dot->k+1].y)-(line[dot->k].y)))/(line[dot->k].distance)*speed*(dot->i);
-			if(dot->setDotSave[0][0]!=-100)//ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½Çµï¿½Ò»ï¿½Î¼ï¿½ï¿½ï¿½
-			{
-				hideDot(dot);
-			}
-			dot->x=xnew;
-			dot->y=ynew;
-			readDotbk(dot);
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
-			setcolor(RED);
-			setfillstyle(1, RED);
-			drawDot(dot,RED);
-			//Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
-			dot->i++;
-			if(dot->i==(line[dot->k].distance)/speed)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾
-			{
-				dot->i=0;
-				dot->k--;
-				dot->count=wait;
-			}
-			if(dot->k==0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Õ¾
-			{
-				dot->reverse=0;
-			}
-			delay(20);
+			return 2;
+		}
+		else if(*mx >= 430 && *mx <= 640 && *my >= 45&& *my <= 70)//µã»÷ËÄºÅÏßÇÐ»»µã
+		{
+			return 3;
+		}
+		else if(*mx >= 488 && *mx <= 502 && *my >= 191&& *my <= 205)//µã»÷ËÙ¶È+ºÅ
+		{
+			return 4;
+		}
+		else if(*mx >= 583 && *mx <= 597 && *my >= 191&& *my <= 205)//µã»÷ËÙ¶È-ºÅ
+		{
+			return 5;
+		}
+		else if(*mx >= 488 && *mx <= 502 && *my >= 231&& *my <= 245)//µã»÷Í£Õ¾+ºÅ
+		{
+			return 6;
+		}
+		else if(*mx >= 583 && *mx <= 597 && *my >= 231&& *my <= 245)//µã»÷Í£Õ¾-ºÅ
+		{
+			return 7;
+		}
+		else if(*mx >= 488 && *mx <= 502 && *my >= 271&& *my <= 285)//µã»÷·¢³µ+ºÅ
+		{
+			return 8;
+		}
+		else if(*mx >= 583 && *mx <= 597 && *my >= 271&& *my <= 285)//µã»÷·¢³µ-ºÅ
+		{
+			return 9;
+		}
+	}
+	return -1;
+}
+/**********************************************************
+Function:  controlGoTime
+Description£º	¿ØÖÆ·¢³µÊ±¼ä
+Attention:  ÎÞ
+**********************************************************/
+void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum)
+{
+	*accum=*accum+1;
+	if(*GotimeI>=(Info->goTime)*TIMEUNIT)
+	{
+		*GotimeI=0;
+		createTrain(Info,0);
+		createTrain(Info,1);
+		changeDot(Info);
+	}
+	else
+	{
+		*GotimeI=*GotimeI+1;
+		changeDot(Info);
+	}
+	delay(5);
+}
+/**********************************************************
+Function:  judgeCrash
+Description£º	¼à²âµØÌú¡°Åö×²¡±ÊÂ¼þ
+Input:  Info Ò»ÌõÏßÏà¹Ø²ÎÊý
+Attention:  ÎÞ
+**********************************************************/
+// void judgeCrash(setTrainInfo Info)
+// {
+
+// }
+/**********************************************************
+Function:  debugElf
+Description£º	debug¾«Áé
+Attention:  ÎÞ
+**********************************************************/
+void debugElf(int x,int y,int bkcolor,int ccolor,int a,int b,int c)
+{
+	char ac[10],bc[10],cc[10];
+	itoa(a,ac,10);
+	itoa(b,bc,10);
+	itoa(c,cc,10);
+	setcolor(bkcolor);
+	setfillstyle(1,bkcolor);
+	bar(x,y,x+200,y+130);
+	setcolor(ccolor);
+	outtextxy(x+2,y+2,ac);
+	outtextxy(x+2,y+32,bc);
+	outtextxy(x+2,y+62,cc);
+	delay(5);
+}
+/**********************************************************
+Function:  deleteTrain
+Description£º	É¾³ýµØÌú
+Attention:  ÎÞ
+**********************************************************/
+void deleteTrain(setTrain *before,setTrain *current)
+{
+	before->next=current->next;
+	free(current);
+}
+/**********************************************************
+Function:  createTrain
+Description£º	Éú³ÉµØÌú
+Attention:  reverseÎª0ÕýÏò£¬reverseÎª1·´Ïò
+**********************************************************/
+void createTrain(setTrainInfo *Info,int reverse)
+{
+	setTrain *T,*Tb;
+	//ÕýÏò³µ³õÊ¼»¯
+	if(reverse==0)
+	{
+		for(T=Info->trainHead,Tb=Info->trainHead;T!=NULL;T=T->next)
+		{
+			Tb=T;
+		}
+		T=(setTrain*)malloc(sizeof(setTrain));
+		if(T==NULL)
+		{
+			printf("No memory.");
+			getch();
+		}
+		if(Tb==NULL)
+		{
+			Info->trainHead=T;
+		}
+		else
+		{
+			Tb->next=T;
 		}
 		
+		//³õÊ¼»¯
+		T->count=1;
+		T->setDotSave[0][0]=-100;
+		T->next=NULL;
+		T->i=0;
+		T->x=Info->lineHead->station[1].x;
+		T->y=Info->lineHead->station[1].y;
+		T->reverse=0;
+		T->k=1;
+		T->Ti=0;
 	}
-	else//ï¿½ï¿½ï¿½ï¿½Õ¾Ì¨
+	//ÄæÏò³µ³õÊ¼»¯
+	if(reverse==1)
 	{
-		dot->count--;
-		delay(20);
+		for(T=Info->rtrainHead,Tb=Info->rtrainHead;T!=NULL;T=T->next)
+		{
+			Tb=T;
+		}
+		T=(setTrain*)malloc(sizeof(setTrain));
+		if(Tb==NULL)
+		{
+			Info->rtrainHead=T;
+		}
+		else
+		{
+			Tb->next=T;
+		}
+		
+		//³õÊ¼»¯
+		T->count=1;
+		T->setDotSave[0][0]=-100;
+		T->next=NULL;
+		T->i=0;
+		T->x=Info->lineHead->station[Info->stationNum].x;
+		T->y=Info->lineHead->station[Info->stationNum].y;
+		T->reverse=0;
+		T->k=Info->stationNum;
+		T->Ti=0;
 	}
-	
 }
-*/
+/**********************************************************
+Function:  changeDot
+Description£º	µØÌúÇ°½ø¶¯»­
+Attention:  ÎÞ
+**********************************************************/
+void changeDot(setTrainInfo *Info)
+{
+	//¾Ö²¿±äÁ¿
+	int i,j;
+	setTrain *fT,*fTb,*rT,*rTb;//fTÕýÏò£¬rTÄæÏò
+	station *line=Info->lineHead->station;
+	float xnew,ynew,distance;
+	int speed=Info->speed,wait=Info->wait,goTime=Info->goTime;
+	//³õÊ¼»¯
+	fT=Info->trainHead;
+	rT=Info->rtrainHead;
+	//ÕýÏò
+	for(fT=Info->trainHead,fTb=Info->trainHead;fT!=NULL;fTb=fT,fT=fT->next)
+	{
+		if(fT->count==0)//³µ²»ÔÚÕ¾Ì¨
+		{
+			if(fT->setDotSave[0][0]!=-100)//ÅÐ¶ÏÊÇ²»ÊÇµÚÒ»´Î¼ÓÔØ
+			{
+				hideDot(fT);
+			}
+			fT->i+=speed;//¼ÓÉÏspeed
+			xnew=(line[fT->k].x)+((float)((line[fT->k+1].x)-(line[fT->k].x)))/(fT->Ti)*(fT->i);
+			ynew=(line[fT->k].y)+((float)((line[fT->k+1].y)-(line[fT->k].y)))/(fT->Ti)*(fT->i);
+			if(Info->lineHead->number==1)//Ò»ºÅÏß
+			{
+				fT->x=xnew;
+				fT->y=ynew-3;
+			}
+			else if(Info->lineHead->number==2)//¶þºÅÏß
+			{
+				fT->x=xnew-3;
+				fT->y=ynew;
+			}
+			else if(Info->lineHead->number==4)//ËÄºÅÏß
+			{
+				fT->x=xnew;
+				fT->y=ynew-3;
+			}
+			readDotbk(fT);
+			//ÕýÏò³µÓÃÀ¶É«
+			setcolor(BLUE);
+			setfillstyle(1, BLUE);
+			drawDot(fT,BLUE);
+			if(fT->Ti<=fT->i)//µ½Õ¾
+			{
+				if(fT->k!=Info->stationNum+1)//·ÇÖÕµãÕ¾
+				{
+					fT->i=0;
+					fT->k++;
+					fT->count=(Info->wait)*TIMEUNIT;
+				}
+				else//ÖÕµãÕ¾
+				{
+					// deleteTrain(fTb,fT);
+					// fT=fTb;
+					Info->trainHead=fT->next;
+					free(fT);
+				}
+				
+			}
+			// delay(5);
+		}
+		else//³µÔÚÕ¾Ì¨
+		{
+			if(fT->count==1)//×¼±¸¿ª³µÊ±
+			{
+				if(Info->lineHead->number==1)//Ò»ºÅÏß
+				{
+					distance=(line[fT->k+1].distance.dx)-(line[fT->k].distance.dx);
+				}
+				else if(Info->lineHead->number==2)//¶þºÅÏß
+				{
+					distance=(line[fT->k+1].distance.dy)-(line[fT->k].distance.dy);
+				}
+				else if(Info->lineHead->number==4)//ËÄºÅÏß
+				{
+					distance=(line[fT->k+1].distance.dz)-(line[fT->k].distance.dz);
+				}
+				distance=distance*DISTANCEUNIT;
+				fT->Ti=(int)(distance);
+			}
+			fT->count--;
+			// delay(5);
+		}
+		
+		
+	}
+	//ÄæÏò
+	for(rT=Info->rtrainHead,rTb=Info->rtrainHead;rT!=NULL;rTb=rT,rT=rT->next)
+	{
+		if(rT->count==0)//³µ²»ÔÚÕ¾Ì¨
+		{
+			if(rT->setDotSave[0][0]!=-100)//ÅÐ¶ÏÊÇ²»ÊÇµÚÒ»´Î¼ÓÔØ
+			{
+				hideDot(rT);
+			}
+			rT->i+=speed;//¼ÓÉÏspeed
+			xnew=(line[rT->k].x)-((float)((line[rT->k].x)-(line[rT->k-1].x)))/(rT->Ti)*(rT->i);
+			ynew=(line[rT->k].y)-((float)((line[rT->k].y)-(line[rT->k-1].y)))/(rT->Ti)*(rT->i);
+			if(Info->lineHead->number==1)//Ò»ºÅÏß
+			{
+				rT->x=xnew;
+				rT->y=ynew+3;
+			}
+			else if(Info->lineHead->number==2)//¶þºÅÏß
+			{
+				rT->x=xnew+3;
+				rT->y=ynew;
+			}
+			else if(Info->lineHead->number==4)//ËÄºÅÏß
+			{
+				rT->x=xnew;
+				rT->y=ynew+3;
+			}
+			readDotbk(rT);
+			//ÄæÏò³µÓÃºìÉ«
+			setcolor(RED);
+			setfillstyle(1, RED);
+			drawDot(rT,RED);
+			if(rT->Ti<=rT->i)//µ½Õ¾
+			{
+				if(rT->k!=1)//·ÇÆðµãÕ¾
+				{
+					rT->i=0;
+					rT->k--;
+					rT->count=(Info->wait)*TIMEUNIT;
+				}
+				else//ÆðµãÕ¾
+				{
+					// deleteTrain(rTb,rT);
+					// rT=rTb;
+					Info->rtrainHead=rT->next;
+					free(rT);
+				}
+				
+			}
+			// delay(5);
+		}
+		else//³µÔÚÕ¾Ì¨
+		{
+			if(rT->count==1)//×¼±¸¿ª³µÊ±
+			{
+				if(Info->lineHead->number==1)//Ò»ºÅÏß
+				{
+					distance=(line[rT->k].distance.dx)-(line[rT->k-1].distance.dx);
+				}
+				else if(Info->lineHead->number==2)//¶þºÅÏß
+				{
+					distance=(line[rT->k].distance.dy)-(line[rT->k-1].distance.dy);
+				}
+				else if(Info->lineHead->number==4)//ËÄºÅÏß
+				{
+					distance=(line[rT->k].distance.dz)-(line[rT->k-1].distance.dz);
+				}
+				distance=distance*DISTANCEUNIT;
+				rT->Ti=(int)(distance);
+			}
+			rT->count--;
+			// delay(5);
+		}
+		
+		
+	}
+}
+/**********************************************************
+Function:  changeValue
+Description£º	ÊýÖµ±ä¶¯º¯Êý
+Attention:  ÎÞ
+**********************************************************/
+void changeValue(int *para)
+{
+	char temp[4];
+	//Í¿µôÔ­ÏÈµÄÊý
+	setcolor(DARKGRAY);
+	setfillstyle(1,DARKGRAY);
+	bar(515,180,572,390);
+	setcolor(WHITE);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+	itoa(para[0],temp,10);
+	outtextxy(528,185,temp);
+	itoa(para[1],temp,10);
+	outtextxy(528,225,temp);
+	itoa(para[2],temp,10);
+	outtextxy(528,265,temp);
+}
 /**********************************************************
 Function:  drawControlScreen
-Descriptionï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½æ£¬Êµï¿½Ö¶ï¿½ï¿½ï¿½
-Attention:  ï¿½ï¿½
+Description£º	»­µ÷¶ÈÒ³Ãæ£¬ÊµÏÖ¶¯»­
+Attention:  ÎÞ
 **********************************************************/
-/*
 void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_stations *all)
 {
-    int buttons,mx,my;//ï¿½ï¿½ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½
-	char temp[2]={'\0','\0'};//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
-	int i;//ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    setTrainInfo Info[3];//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½Èµï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
-	// ï¿½ï¿½Ê¼ï¿½ï¿½
-	// ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+    int buttons,mx,my;//Êó±êÏà¹Ø±äÁ¿
+	char temp[2]={'\0','\0'};//ÓÃÓÚÎüÊÕ¼üÅÌ»º³åÇøµÄ±äÁ¿
+	int i;//»®ÏßÑ­»·±äÁ¿
+	long int accum=0;//ÀÛ¼ÆÆ÷
+	int currentNum=0;//µ±Ç°µ÷¶ÈÏßÂ·
+	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//µ±Ç°²ÎÊý´æ´¢  0£ºËÙ¶È  1£ºÍ£Õ¾Ê±¼ä  2£º·¢³µ¼ä¸ô 
+	int goTimeI[3]={0,0,0};
+    setTrainInfo Info[3];//¼ÇÂ¼ÈýÌõÏßµ÷¶ÈµÄÏà¹Ø²ÎÊý
+	// ³õÊ¼»¯
+	// Êó±ê³õÊ¼»¯
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
+	setbkcolor(DARKGRAY);
 	initTranInfo(Info,all);
 
-
-	// closegraph();
-	// printf("\n%d\n%d",Info[0].trainHead->k,Info[0].trainHead->i);
-	// printf("\n%d\n%d",Info[1].trainHead->k,Info[1].trainHead->i);
-	// printf("\n%d\n%d",Info[2].trainHead->k,Info[2].trainHead->i);
-	// printf("\n%d\n%d",Info[0].trainHead->next->k,Info[0].trainHead->next->i);
-	// getch() ;
-
-	//ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
-	//ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Ø°ï¿½Å¥
-	returnBtn_c(550,210,GREEN);
-	//ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Â·
+	//»æÖÆ½çÃæ
+	//»æÖÆ·µ»Ø°´Å¥
+	returnBtn_c(15,210,LIGHTBLUE);
+	//»æÖÆ»ù±¾½çÃæ
+	setcolor(GREEN);
+	settextstyle(SMALL_FONT,HORIZ_DIR,5);
 	line(460,0,460,75);
     line(460,75,640,75);
-
     setlinestyle(0,0,3);
     setcolor(LIGHTCYAN);
     line(500,10,550,10);
-    outtextxy(560,0,"1");
-    puthz(570,5,"ï¿½ï¿½ï¿½ï¿½",16,16,LIGHTBLUE);
+    outtextxy(560,5,"1");
+    puthz(570,5,"ºÅÏß",16,16,CYAN);
     setcolor(LIGHTGREEN);
     line(500,30,550,30);
-    outtextxy(560,20,"2");
-    puthz(570,25,"ï¿½ï¿½ï¿½ï¿½",16,16,LIGHTGREEN);
+    outtextxy(560,25,"2");
+    puthz(570,25,"ºÅÏß",16,16,LIGHTGREEN);
     setcolor(YELLOW);
     line(500,50,550,50);
-    outtextxy(560,40,"3");
-    puthz(570,45,"ï¿½ï¿½ï¿½ï¿½",16,16,YELLOW);
-    puthz(180,0,"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½",32,32,BROWN);
-
+    outtextxy(560,45,"4");
+    puthz(570,45,"ºÅÏß",16,16,YELLOW);
+    puthz(180,0,"µØÌúµ÷¶ÈÒ»ÀÀ",32,32,BROWN);
+	//»æÖÆµØÌúÏßÂ·
     Drawstation1_j();
     Drawstation2_j();
     Drawstation4_j();
     DrawCircles_j();
+	//µ÷¶ÈÏà¹Ø»æÖÆ
+	//Ñ¡È¡µØÌúÏßÔ²
+	setcolor(LIGHTBLUE);
+	setfillstyle(1,LIGHTBLUE);
+	pieslice(620,12,0,360,6);
+	setcolor(WHITE);
+	setfillstyle(1,WHITE);
+	pieslice(620,12,0,360,2);
+	//µ÷ÕûÄ£¿é
+	//µÈ´ýÊ±¼äµ÷ÕûÄ£¿é
+	drawControlFrame(410,190);
 
-	// closegraph();
-	// printf("\n%d",Info[0].trainHead->reverse);
-	// printf("\n%d",Info[1].trainHead->reverse);
-	// printf("\n%d",Info[2].trainHead->reverse);
-	// printf("\n%d",Info[0].trainHead->next->reverse);
-	// printf("\n%d",Info[1].trainHead->next->reverse);
-	// printf("\n%d",Info[2].trainHead->next->reverse);
-	// getch();
-
-	// closegraph();
-	// printf("\n%d",Info[0].trainHead->k);
-	// printf("\n%f\n%f",line[dot->k+1].x,line[dot->k+2].x);
-	// printf("\n%f\n%f",line[dot->k+1].x,((float)((line[dot->k+1].x)-(line[dot->k+2].x))));
-	// printf("\n%f\n%f",xnew,ynew);
-	// getch() ;
-
-
-
-	
+	createTrain(&Info[0],0);
+	createTrain(&Info[0],1);
+	createTrain(&Info[1],0);
+	createTrain(&Info[1],1);
+	createTrain(&Info[2],0);
+	createTrain(&Info[2],1);
 	while(1)
 	{
-		// changePlace(&Info[0].lineHead[0],Info[0].lineHead->station,1,8,200);
-		//Ò»ï¿½ï¿½ï¿½ï¿½
-		changePlace(Info[0].trainHead,Info[0].lineHead->station,1,8,200);
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		changePlace(Info[1].trainHead,Info[1].lineHead->station,1,8,200);
-		//ï¿½Äºï¿½ï¿½ï¿½
-		changePlace(Info[2].trainHead,Info[2].lineHead->station,1,8,200);
-		if(otherEvent(&mx,&my,&buttons)==0)
+		//debug
+		debugElf(15,160,WHITE,LIGHTBLUE,accum,ACCUMTIME,2);
+		//Ò»ºÅÏß
+		controlGoTime(&Info[0],&goTimeI[0],&accum);
+		// changeDot(&Info[0]);
+		//¶þºÅÏß
+		controlGoTime(&Info[1],&goTimeI[1],&accum);
+		// changeDot(&Info[1]);
+		//ËÄºÅÏß
+		controlGoTime(&Info[2],&goTimeI[2],&accum);
+		// changeDot(&Info[2]);
+		if(accum>=ACCUMTIME)
 		{
-			*judge=turnTo_c(person,2);
-			return;
+			accum=0;
+			Drawstation1_j();
+    	    Drawstation2_j();
+    		Drawstation4_j();
+    		DrawCircles_j();
+		}
+		switch(otherEvent(&mx,&my,&buttons))
+		{
+			case 0:
+				*judge=turnTo_c(person,2);
+				return;
+			//µã»÷Ò»ºÅÏßÇÐ»»µã
+			case 1:
+				mousehide(mx,my);
+				//Í¿µôÔ­ÏÈµÄµã
+				setcolor(DARKGRAY);
+				setfillstyle(1,DARKGRAY);
+				bar(605,0,640,60);
+				//»æÖÆµã
+				setcolor(LIGHTBLUE);
+				setfillstyle(1,LIGHTBLUE);
+				pieslice(620,12,0,360,6);
+				setcolor(WHITE);
+				setfillstyle(1,WHITE);
+				pieslice(620,12,0,360,2);
+				//¿ØÖÆ
+				currentNum=0;
+				para[0]=Info[currentNum].speed;
+				para[1]=Info[currentNum].wait;
+				para[2]=Info[currentNum].goTime;
+				changeValue(para);
+
+				getMousebk(mx,my);
+				break;
+			//µã»÷¶þºÅÏßÇÐ»»µã
+			case 2:
+				mousehide(mx,my);
+				//Í¿µôÔ­ÏÈµÄµã
+				setcolor(DARKGRAY);
+				setfillstyle(1,DARKGRAY);
+				bar(605,0,640,60);
+				//»æÖÆµã
+				setcolor(LIGHTBLUE);
+				setfillstyle(1,LIGHTBLUE);
+				pieslice(620,32,0,360,6);
+				setcolor(WHITE);
+				setfillstyle(1,WHITE);
+				pieslice(620,32,0,360,2);
+				//¿ØÖÆ
+				currentNum=1;
+				para[0]=Info[currentNum].speed;
+				para[1]=Info[currentNum].wait;
+				para[2]=Info[currentNum].goTime;
+				changeValue(para);
+
+				getMousebk(mx,my);
+				break;
+			//µã»÷ËÄºÅÏßÇÐ»»µã
+			case 3:
+				mousehide(mx,my);
+				//Í¿µôÔ­ÏÈµÄµã
+				setcolor(DARKGRAY);
+				setfillstyle(1,DARKGRAY);
+				bar(605,0,640,60);
+				//»æÖÆµã
+				setcolor(LIGHTBLUE);
+				setfillstyle(1,LIGHTBLUE);
+				pieslice(620,52,0,360,6);
+				setcolor(WHITE);
+				setfillstyle(1,WHITE);
+				pieslice(620,52,0,360,2);
+				//¿ØÖÆ
+				currentNum=2;
+				para[0]=Info[currentNum].speed;
+				para[1]=Info[currentNum].wait;
+				para[2]=Info[currentNum].goTime;
+				changeValue(para);
+
+				getMousebk(mx,my);
+				break;
+			//µã»÷ËÙ¶È+
+			case 4:
+				if(para[0]>=MINSPEED&&para[0]<MAXSPEED)
+				{
+					para[0]++;
+					Info[currentNum].speed=para[0];
+					changeValue(para);
+				}
+				break;
+			//µã»÷ËÙ¶È-
+			case 5:
+				if(para[0]>MINSPEED&&para[0]<=MAXSPEED)
+				{
+					para[0]--;
+					Info[currentNum].speed=para[0];
+					changeValue(para);
+				}
+				break;
+			//µã»÷Í£Õ¾+
+			case 6:
+				if(para[1]>=MINWAIT&&para[1]<MAXWAIT)
+				{
+					para[1]++;
+					Info[currentNum].wait=para[1];
+					changeValue(para);
+				}
+				break;
+			//µã»÷Í£Õ¾-
+			case 7:
+				if(para[1]>MINWAIT&&para[1]<=MAXWAIT)
+				{
+					para[1]--;
+					Info[currentNum].wait=para[1];
+					changeValue(para);
+				}
+				break;
+			//µã»÷·¢³µ+
+			case 8:
+				if(para[2]>=MINGOTIME&&para[2]<MAXGOTIME)
+				{
+					para[2]++;
+					Info[currentNum].goTime=para[2];
+					changeValue(para);
+				}
+				break;
+			//µã»÷·¢³µ-
+			case 9:
+				if(para[2]>MINGOTIME&&para[2]<=MAXGOTIME)
+				{
+					para[2]--;
+					Info[currentNum].goTime=para[2];
+					changeValue(para);
+				}
+				break;
 		}
 	}
 }
-*/
