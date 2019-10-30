@@ -1,6 +1,7 @@
 #include"line_j.h"
 #include"common_c.h"
-void Initstation_j(station *sta,int x,int y,char* station_name,int code,float dx,float dy,float dz);
+#define MAXINITPN 100
+void Initstation_j(station *sta,int x,int y,char* station_name,int code,float dx,float dy,float dz,int level);
 void station_information_j(all_lines_stations *all);
 void DrawCircles_j();
 void Drawstation1_j();
@@ -16,18 +17,25 @@ void transform2(float num,char* str);
 //int judge_sta_checkclick_j(int** sta_checkclick);
 /**********************************************************
  Function:  Initstation
- Description:  给站点赋值（图里的坐标x、y，距离三元组，站名，简易站名代码）
+ Description:  给站点赋值（图里的坐标x、y，距离三元组，站名，简易站名代码，站的等级）
  Attention:  注意->与.的区别
 **********************************************************/
-void Initstation_j(station *sta,int x,int y,char* station_name,int code,float dx,float dy,float dz)
+void Initstation_j(station *sta,int x,int y,char* station_name,int code,float dx,float dy,float dz,int level)
 {
+    int randomS;
     sta->x=x;//确认站点中心在图上的坐标
     sta->y=y;
     sta->distance.dx=dx;
     sta->distance.dy=dy;
     sta->distance.dz=dz;
+    sta->level=level;
     strcpy(sta->station_name,station_name);//站点名
     sta->simple_name=code;//站点的简易编码，便于文件读取操作
+    //cjw
+    randomS=(int)(sta->station_name[time(NULL)%18]);//*exp((double)rand%20)
+	srand(randomS*clock()+randomS*time(NULL));
+    srand(clock()+time(NULL));
+    sta->peopleNum=rand()%MAXINITPN;
 }
 /**********************************************************
  Function:  station_information
@@ -44,11 +52,11 @@ void station_information_j(all_lines_stations *all)
     all->station_line2.station=all->line2;
     all->station_line4.station=all->line4;
     //循礼门站为1号与2号线的交点，编码为“1”；类似地，洪山广场站编码为2，中南路站编码为3
-    Initstation_j(&(all->line1[0]),0,0,"0",00,0,0,0);
-    Initstation_j(&(all->line1[1]),80,100,"崇仁路",11,0,0,0);
-    Initstation_j(&(all->line1[2]),140,100,"利济北路",12,0.9,0,0);
-    Initstation_j(&(all->line1[3]),200,100,"友谊路",13,1.8,0,0);
-    Initstation_j(&(all->line1[4]),260,100,"循礼门",10,2.8,1.5,0);
+    Initstation_j(&(all->line1[0]),0,0,"0",00,0,0,0,0);
+    Initstation_j(&(all->line1[1]),80,100,"崇仁路",11,0,0,0,0);
+    Initstation_j(&(all->line1[2]),140,100,"利济北路",12,0.9,0,0,0);
+    Initstation_j(&(all->line1[3]),200,100,"友谊路",13,1.8,0,0,1);
+    Initstation_j(&(all->line1[4]),260,100,"循礼门",10,2.8,1.5,0,2);
     /*
     closegraph();
     printf("%f\n",all->line1[4].distance.dx);
@@ -56,34 +64,34 @@ void station_information_j(all_lines_stations *all)
     printf("%f\n",all->line1[4].distance.dz);
     getch();
     */
-    Initstation_j(&(all->line1[5]),320,100,"大智路",15,3.9,0,0);
-    Initstation_j(&(all->line1[6]),380,100,"三阳路",16,6.6,0,0);
-    Initstation_j(&(all->line1[7]),440,100,"黄浦路",17,7.8,0,0);
-    Initstation_j(&(all->line1[8]),500,100,"头道街",18,9.0,0,0);
+    Initstation_j(&(all->line1[5]),320,100,"大智路",15,3.9,0,0,1);
+    Initstation_j(&(all->line1[6]),380,100,"三阳路",16,6.6,0,0,0);
+    Initstation_j(&(all->line1[7]),440,100,"黄浦路",17,7.8,0,0,0);
+    Initstation_j(&(all->line1[8]),500,100,"头道街",18,9.0,0,0,0);
 
     //all->line1[8].distance=0;//最后一站距离默认为0
 
-    Initstation_j(&(all->line2[0]),0,0,"0",00,0,0,0);
-    Initstation_j(&(all->line2[1]),300,70,"中山公园",21,0,0,0);
-    Initstation_j(&(all->line2[2]),260,100,"循礼门",10,2.8,1.5,0);
-    Initstation_j(&(all->line2[3]),260,156,"江汉路",23,0,4.1,0);
-    Initstation_j(&(all->line2[4]),260,212,"积玉桥",24,0,7.5,0);
-    Initstation_j(&(all->line2[5]),260,278,"螃蟹岬",25,0,9.1,0);
-    Initstation_j(&(all->line2[6]),260,334,"小龟山",26,0,10.0,0);
-    Initstation_j(&(all->line2[7]),260,380,"洪山广场",20,0,11.3,3.0);
-    Initstation_j(&(all->line2[8]),200,380,"中南路",30,0,12.2,2.1);
-    Initstation_j(&(all->line2[9]),240,410,"宝通寺",29,0,13.6,0);
+    Initstation_j(&(all->line2[0]),0,0,"0",00,0,0,0,0);
+    Initstation_j(&(all->line2[1]),300,70,"中山公园",21,0,0,0,2);
+    Initstation_j(&(all->line2[2]),260,100,"循礼门",10,2.8,1.5,0,2);
+    Initstation_j(&(all->line2[3]),260,156,"江汉路",23,0,4.1,0,1);
+    Initstation_j(&(all->line2[4]),260,212,"积玉桥",24,0,7.5,0,0);
+    Initstation_j(&(all->line2[5]),260,268,"螃蟹岬",25,0,9.1,0,2);//修改278->268
+    Initstation_j(&(all->line2[6]),260,324,"小龟山",26,0,10.0,0,0);//修改334->324
+    Initstation_j(&(all->line2[7]),260,380,"洪山广场",20,0,11.3,3.0,3);
+    Initstation_j(&(all->line2[8]),200,380,"中南路",30,0,12.2,2.1,3);
+    Initstation_j(&(all->line2[9]),240,410,"宝通寺",29,0,13.6,0,2);
     //all->line2[9].distance=0;
 
-    Initstation_j(&(all->line4[0]),0,0,"0",00,0,0,0);
-    Initstation_j(&(all->line4[1]),80,380,"武昌火车站",41,0,0,0);
-    Initstation_j(&(all->line4[2]),140,380,"梅苑小区",42,0,0,1.0);
-    Initstation_j(&(all->line4[3]),200,380,"中南路",30,0,12.2,2.1);
-    Initstation_j(&(all->line4[4]),260,380,"洪山广场",20,0,11.3,3.0);
-    Initstation_j(&(all->line4[5]),320,380,"楚河汉街",45,0,0,4.1);
-    Initstation_j(&(all->line4[6]),380,380,"青鱼嘴",46,0,0,5.5);
-    Initstation_j(&(all->line4[7]),440,380,"东亭",47,0,0,6.4);
-    Initstation_j(&(all->line4[8]),500,380,"岳家嘴",48,0,0,7.4);
+    Initstation_j(&(all->line4[0]),0,0,"0",00,0,0,0,0);
+    Initstation_j(&(all->line4[1]),80,380,"武昌火车站",41,0,0,0,3);
+    Initstation_j(&(all->line4[2]),140,380,"梅苑小区",42,0,0,1.0,1);
+    Initstation_j(&(all->line4[3]),200,380,"中南路",30,0,12.2,2.1,3);
+    Initstation_j(&(all->line4[4]),260,380,"洪山广场",20,0,11.3,3.0,3);
+    Initstation_j(&(all->line4[5]),320,380,"楚河汉街",45,0,0,4.1,2);
+    Initstation_j(&(all->line4[6]),380,380,"青鱼嘴",46,0,0,5.5,0);
+    Initstation_j(&(all->line4[7]),440,380,"东亭",47,0,0,6.4,0);
+    Initstation_j(&(all->line4[8]),500,380,"岳家嘴",48,0,0,7.4,0);
     
     //all->line4[8].distance=0;
 }

@@ -46,6 +46,9 @@ typedef struct station{
 	int dis;
     char station_name[20];//站名
 	int simple_name;//站点的简称
+	//cjw
+	long int peopleNum;//站点客流量
+	int level;//车站级别  0:低级，增长速度慢  1：中级，增长速度一般  2：高级，增长速度块  3：特级，增长迅速
 }station;
 
 /*线路结构*/

@@ -21,7 +21,7 @@ void main()
 	
 	
 
-
+	// clock();
 	initgraph(&driver, &mode, "../BORLANDC\\bgi");  
 	cleardevice();
 	if ((head = (setuser *)malloc(sizeof(setuser))) == NULL)
@@ -41,7 +41,7 @@ void main()
 	// 	printf("\n");
 	// }
 	// return ;
-	judge=1;
+	judge=11;
 	while (5)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -88,7 +88,7 @@ void main()
 		    DrawscoreScreen_j(&person,&judge,head);	
             break;
 		case 11://调度界面 
-			//drawControlScreen(&person,&judge,head,&all);
+			drawControlScreen(&person,&judge,head,&all);
 			break;
 		case 12:
 		    Draw_about_us_Screen_j(&judge);
