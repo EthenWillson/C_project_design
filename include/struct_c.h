@@ -8,8 +8,9 @@ typedef struct User
 	char code[13];  //用户的密码 
 	char class[6];  //管理员权限码,用户为00000
 	char money[6];  //用户余额
+	char score[6];
 	unsigned long int spend;//用户消费
-	char record[100];//出行记录
+	char record[200];//出行记录
 	struct User *next;  //指向下一个用户的指针
 }setuser;
 

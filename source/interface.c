@@ -16,11 +16,8 @@ void clear_effect_c(int manager);
 void failConfirm_c(int sign);
 void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
-void DrawUserScreen_j(setuser *person,int *judge);//普通用户界面
 void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
 // void circleBtn(int x,int y,int bkcolor,int charcolor,int radius,char *str)//圆形按钮
-
-
 /**********************************************************
 以下为开始界面的相关函数
 **********************************************************/
@@ -114,6 +111,11 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					*judge=1;
 					return;
 				}
+			}
+			else if(mx>=398&&mx<=465&&my>=433&&my<=453&&buttons)
+			{
+				*judge=12;
+				return;
 			}
 			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82 && buttons)//点击管理员按钮
 			{
@@ -794,100 +796,4 @@ void DrawControlSystem_c(setuser *person,int *judge)
 /**********************************************************
 以下为普通用户界面的相关函数
 **********************************************************/
-void DrawUserScreen_j(setuser *person,int *judge)
-{
-	int buttons,mx,my;//鼠标相关变量
-	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	// 初始化
-	// 鼠标初始化
-	mouseInit(&mx, &my, &buttons);
-	cleardevice();
-	setbkcolor(WHITE);
-	DrawBeautifulFrame_c();
-	puthz(90, 28, "您好！尊敬的：", 16, 16, GREEN);
-	outtextxy(220,25,person->accounts);
-	puthz(400, 435, "关于我们", 16, 16,MAGENTA );
-	puthz(540 ,435, "帮助", 16, 16, MAGENTA);
-	
-	setlinestyle(0, 0, 1);
-	setcolor(LIGHTRED);
-	rectangle(398,433,465,453);//关于我们的位置
-	rectangle(538,433,571,453);//帮助的位置
-	
-	//画出退出按钮
-	setlinestyle(0, 0, 3);
-	setcolor(LIGHTRED);
-	arc(550, 35, 110, 430, 15);
-	line(550, 5, 550, 31);
 
-    //画出三个矩形，填充为黄色
-	setfillstyle(1, YELLOW);
-	bar(170,80,470,150);
-	bar(170,200,470,270);
-	bar(170,320,470,390);
-	setlinestyle(0, 0, 3);
-	setcolor(GREEN);
-	line(170,80,470,80);
-	line(170,80,170,150);
-	line(470,80,470,150);
-	line(170,150,470,150);
-	line(170,200,470,200);
-	line(170,200,170,270);
-	line(470,200,470,270);
-	line(170,270,470,270);
-	line(170,320,470,320);
-	line(170,320,170,390);
-	line(470,320,470,390);
-	line(170,390,470,390);
-	puthz(200, 95, "购票", 32, 32, GREEN);
-	puthz(200, 215, "账户查询", 32, 32, GREEN);
-	puthz(200, 335, "账户充值", 32, 32, GREEN);
-
-	while(1)
-	{
-		newxy(&mx, &my, &buttons);
-		if (mx >= 170 && mx <= 470 && my >= 80&& my <= 150 )
-		{
-			
-			
-			/*
-			line(173,78,473,78);
-			line(173,78,173,148);
-			line(473,78,473,148);
-			line(173,148,473,148);
-			line(173,198,473,198);
-			line(173,198,173,268);
-			line(473,198,473,268);
-			line(173,268,473,268);
-			line(173,318,473,318);
-			line(173,318,173,388);
-			line(473,318,473,388);
-			line(173,388,473,388);
-			*/
-		}
-
-		if(buttons)//点击事件
-		{
-			if (mx >= 535 && mx <= 565 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
-			{
-				*judge=turnTo_c(person,1);
-				return;
-			}
-			if (mx >= 170 && mx <= 470 && my >=80 && my<=150 && buttons)//点入购票界面
-			{
-			    *judge=turnTo_c(person,5);
-				return;
-			}
-			if (mx >= 170 && mx <= 470 && my >= 200&& my <= 270 && buttons)//点入余额查询界面
-			{
-				*judge=turnTo_c(person,6);
-				return;
-			}
-			if (mx >= 170 && mx <= 470 && my >= 320&& my <= 390 && buttons)//点入充值界面
-			{
-				*judge=turnTo_c(person,7);
-				return;
-			}
-		}
-	}
-}
