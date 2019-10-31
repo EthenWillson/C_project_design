@@ -93,8 +93,8 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 			}
 			if ( buttons )
 			{
-			  //进入充值处
-				*judge=turnTo_c(person,7);
+			  //进入账户信息处
+				*judge=turnTo_c(person,6);
 				return;
 			}
 		}
@@ -330,7 +330,7 @@ void Drawxc_auto( int x, int y, int color)
 	setlinestyle(0, 0, 3);
 	Drawbuttons( x+40,  y+235-30, color);
 	Drawxctubiaotwo(x+7-50, y-3-30,  color);
-	puthz(x+360-50,y+313,"账户充值",16,16,color);
+	puthz(x+360-50,y+313,"账户信息",16,16,color);
 }
 /**********************************************************
 FUNCTION:   returnBtn_c

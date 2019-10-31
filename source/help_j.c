@@ -60,12 +60,12 @@ void judgestation_j(int x,int y,int station_name)
     else if(station_name==20) puthz(x,y,"洪山广场",16,16,LIGHTMAGENTA);
     else if(station_name==29) puthz(x,y,"宝通寺",16,16,LIGHTMAGENTA);
     else if(station_name==30) puthz(x,y,"中南路",16,16,LIGHTMAGENTA);
-    else if(station_name==31) puthz(x,y,"武昌火车站",16,16,LIGHTMAGENTA);
-    else if(station_name==32) puthz(x,y,"梅苑小区",16,16,LIGHTMAGENTA);
-    else if(station_name==35) puthz(x,y,"楚河汉街",16,16,LIGHTMAGENTA);
-    else if(station_name==36) puthz(x,y,"青鱼嘴",16,16,LIGHTMAGENTA);
-    else if(station_name==37) puthz(x,y,"东亭",16,16,LIGHTMAGENTA);
-    else if(station_name==38) puthz(x,y,"岳家嘴",16,16,LIGHTMAGENTA);
+    else if(station_name==41) puthz(x,y,"武昌火车站",16,16,LIGHTMAGENTA);
+    else if(station_name==42) puthz(x,y,"梅苑小区",16,16,LIGHTMAGENTA);
+    else if(station_name==45) puthz(x,y,"楚河汉街",16,16,LIGHTMAGENTA);
+    else if(station_name==46) puthz(x,y,"青鱼嘴",16,16,LIGHTMAGENTA);
+    else if(station_name==47) puthz(x,y,"东亭",16,16,LIGHTMAGENTA);
+    else if(station_name==48) puthz(x,y,"岳家嘴",16,16,LIGHTMAGENTA);
 }
 /**********************************************************
 Function:  DrawDistance
@@ -176,7 +176,7 @@ Function:  Draw_about_us_Screen
 Description：关于我们
 Attention:  无
 **********************************************************/
-void Draw_about_us_Screen_j(int *judge)
+void Draw_about_us_j(int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
     char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量

@@ -16,6 +16,39 @@
 #define ACCUMTIME 1300
 #define PNADDCYECLE 20
 /**********************************************************
+Function:  resetInfo
+Description：	重置地铁
+Attention:  无
+**********************************************************/
+void resetInfo(setTrainInfo *Info,all_lines_stations *all)
+{
+	int i;
+	setTrain *p,*pb;
+	station_information_j(all);
+	for(i=0;i<3;i++)
+	{
+		//释放原储存空间
+		for(pb=(Info+i)->trainHead,p=(Info+i)->trainHead;p!=NULL;)
+		{
+			p=p->next;
+			free(pb);
+			pb=p;
+		}
+		for(pb=(Info+i)->rtrainHead,p=(Info+i)->rtrainHead;p!=NULL;)
+		{
+			p=p->next;
+			free(pb);
+			pb=p;
+		}
+		(Info+i)->goTime=DAULTGOTIME;
+		(Info+i)->speed=DAULTSPEED;
+		(Info+i)->wait=DAULTWAIT;
+		(Info+i)->rtrainHead=NULL;
+		(Info+i)->trainHead=NULL;
+	}
+	
+}
+/**********************************************************
 Function:  addPN_c
 Description：	增加客流量
 Attention:  无
@@ -87,14 +120,14 @@ Function:  drawControlFrame
 Description：	绘制控制框
 Attention:  无
 **********************************************************/
-void drawControlFrame(int x,int y)
+void drawControlFrame(int x,int y,int *para)
 {
 	char wait[5];
 	char speed[5];
 	char goTime[5];
-	itoa(DAULTSPEED,speed,10);
-	itoa(DAULTWAIT,wait,10);
-	itoa(DAULTGOTIME,goTime,10);
+	itoa(*para,speed,10);
+	itoa(*(para+1),wait,10);
+	itoa(*(para+2),goTime,10);
 	puthz(0+x, 0+y, "列车速度：", 16, 16, LIGHTCYAN);
 	puthz(0+x, 40+y, "停站时间：", 16, 16, LIGHTCYAN);
 	puthz(0+x, 80+y, "发车间隔：", 16, 16, LIGHTCYAN);
@@ -192,21 +225,24 @@ void initTranInfo(setTrainInfo *Info,all_lines_stations *all)
 {
 	int i,j;
 	setTrain *temp;
-	Info[0].lineHead=&(all->station_line1);
-	Info[1].lineHead=&(all->station_line2);
-	Info[2].lineHead=&(all->station_line4);
-	Info[0].stationNum=8;
-	Info[1].stationNum=9;
-	Info[2].stationNum=8;
+	Info->lineHead=&(all->station_line1);
+	(Info+1)->lineHead=&(all->station_line2);
+	(Info+2)->lineHead=&(all->station_line4);
+	(Info)->stationNum=8;
+	(Info+1)->stationNum=9;
+	(Info+2)->stationNum=8;
 	for(i=0;i<3;i++)
 	{
-		Info[i].num=0;
-		Info[i].wait=DAULTWAIT;//停站时间
-		Info[i].speed=DAULTSPEED;//速度
-		Info[i].goTime=DAULTGOTIME;//发车
-		Info[i].trainHead=NULL;//正向车链表
-		Info[i].rtrainHead=NULL;//逆向车链表
+		(Info+i)->num=0;
+		(Info+i)->wait=DAULTWAIT;//停站时间
+		(Info+i)->speed=DAULTSPEED;//速度
+		(Info+i)->goTime=DAULTGOTIME;//发车
+		(Info+i)->trainHead=NULL;//正向车链表
+		(Info+i)->rtrainHead=NULL;//逆向车链表
 	}
+	// closegraph();
+	// printf("%d %d",Info->lineHead->number,(Info+1)->lineHead->number);
+	// getch();
 }
 /**********************************************************
 Function:  otherEvent
@@ -258,6 +294,10 @@ int otherEvent(int *mx,int *my,int *buttons)
 		{
 			return 9;
 		}
+		else if(*mx >= 560 && *mx <= 620 && *my >= 400&& *my <= 460)//点击reset
+		{
+			return 10;
+		}
 	}
 	return -1;
 }
@@ -266,7 +306,7 @@ Function:  controlGoTime
 Description：	控制发车时间
 Attention:  无
 **********************************************************/
-void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum,int *timeCycle)
+void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum,int *timeCycle,station *line2)
 {
 	addPN_c(Info,timeCycle);
 	*accum=*accum+1;
@@ -275,12 +315,12 @@ void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum,int *timeCycl
 		*GotimeI=0;
 		createTrain(Info,0);
 		createTrain(Info,1);
-		changeDot(Info);
+		changeDot(Info,line2);
 	}
 	else
 	{
 		*GotimeI=*GotimeI+1;
-		changeDot(Info);
+		changeDot(Info,line2);
 	}
 	// changeStationPN(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 	delay(5);
@@ -400,7 +440,7 @@ Function:  changeDot
 Description：	地铁前进动画
 Attention:  无
 **********************************************************/
-void changeDot(setTrainInfo *Info)
+void changeDot(setTrainInfo *Info,station *line2)
 {
 	//局部变量
 	int i,j;
@@ -445,6 +485,7 @@ void changeDot(setTrainInfo *Info)
 			drawDot(fT,BLUE);
 			if(fT->Ti<=fT->i)//到站
 			{
+				// line[fT->k+1].peopleNum=line[fT->k+1].peopleNum/2;
 				if(fT->k!=Info->stationNum+1)//非终点站
 				{
 					fT->i=0;
@@ -466,17 +507,38 @@ void changeDot(setTrainInfo *Info)
 		{
 			if(fT->count==1)//准备开车时
 			{
-				line[fT->k].peopleNum=line[fT->k].peopleNum/2;
+				// line[fT->k].peopleNum=line[fT->k].peopleNum/2;
 				if(Info->lineHead->number==1)//一号线
 				{
+					if(fT->k==4)
+					{
+						line2[2].peopleNum=line[fT->k].peopleNum/2;
+					}
+					else
+					{
+						line[fT->k].peopleNum=line[fT->k].peopleNum/2;
+					}
 					distance=(line[fT->k+1].distance.dx)-(line[fT->k].distance.dx);
 				}
 				else if(Info->lineHead->number==2)//二号线
 				{
 					distance=(line[fT->k+1].distance.dy)-(line[fT->k].distance.dy);
+					line[fT->k].peopleNum=line[fT->k].peopleNum/2;
 				}
 				else if(Info->lineHead->number==4)//四号线
 				{
+					if(fT->k==4)
+					{
+						line2[7].peopleNum=line[fT->k].peopleNum/2;
+					}
+					else if(fT->k==3)
+					{
+						line2[8].peopleNum=line[fT->k].peopleNum/2;
+					}
+					else
+					{
+						line[fT->k].peopleNum=line[fT->k].peopleNum/2;
+					}
 					distance=(line[fT->k+1].distance.dz)-(line[fT->k].distance.dz);
 				}
 				distance=distance*DISTANCEUNIT;
@@ -522,6 +584,7 @@ void changeDot(setTrainInfo *Info)
 			drawDot(rT,RED);
 			if(rT->Ti<=rT->i)//到站
 			{
+				// line[fT->k-1].peopleNum=line[fT->k-1].peopleNum/2;
 				if(rT->k!=1)//非起点站
 				{
 					rT->i=0;
@@ -543,17 +606,37 @@ void changeDot(setTrainInfo *Info)
 		{
 			if(rT->count==1)//准备开车时
 			{
-				line[fT->k].peopleNum=line[fT->k].peopleNum/2;
 				if(Info->lineHead->number==1)//一号线
 				{
+					if(rT->k==4)
+					{
+						line2[2].peopleNum=line[rT->k].peopleNum/2;
+					}
+					else
+					{
+						line[rT->k].peopleNum=line[rT->k].peopleNum/2;
+					}
 					distance=(line[rT->k].distance.dx)-(line[rT->k-1].distance.dx);
 				}
 				else if(Info->lineHead->number==2)//二号线
 				{
 					distance=(line[rT->k].distance.dy)-(line[rT->k-1].distance.dy);
+					line[rT->k].peopleNum=line[rT->k].peopleNum/2;
 				}
 				else if(Info->lineHead->number==4)//四号线
 				{
+					if(rT->k==4)
+					{
+						line2[7].peopleNum=line[rT->k].peopleNum/2;
+					}
+					else if(rT->k==3)
+					{
+						line2[8].peopleNum=line[rT->k].peopleNum/2;
+					}
+					else
+					{
+						line[rT->k].peopleNum=line[rT->k].peopleNum/2;
+					}
 					distance=(line[rT->k].distance.dz)-(line[rT->k-1].distance.dz);
 				}
 				distance=distance*DISTANCEUNIT;
@@ -650,7 +733,7 @@ Function:  drawControlScreen
 Description：	画调度页面，实现动画
 Attention:  无
 **********************************************************/
-void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_stations *all)
+void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_stations *all,setTrainInfo *Info)
 {
     int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
@@ -660,15 +743,18 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	int timeCycle=0;
 	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
 	int goTimeI[3]={0,0,0};
-    setTrainInfo Info[3];//记录三条线调度的相关参数
+    // setTrainInfo Info[3];//记录三条线调度的相关参数
 	station *currentStation;//记录当前查看站点的地址
 	// 初始化
 	// 鼠标初始化
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(DARKGRAY);
-	initTranInfo(Info,all);
+	// initTranInfo(Info,all);
 	currentStation=&all->line1[1];
+	// closegraph();
+	// printf("%d %d\n",Info->trainHead->x,Info->rtrainHead->y);
+	// getch();
 
 	//绘制界面
 	//绘制返回按钮
@@ -699,6 +785,16 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
     Drawstation4_j();
     DrawCircles_j();
 	//调度相关绘制
+	//reset按钮
+	setcolor(LIGHTBLUE);
+	setfillstyle(1,LIGHTBLUE);
+	pieslice(590,430,0,360,27);
+	setcolor(WHITE);
+	setfillstyle(1,WHITE);
+	pieslice(590,430,0,360,25);
+	setcolor(LIGHTRED);
+	settextstyle(SMALL_FONT,HORIZ_DIR,6);
+	outtextxy(567,420,"RESET");
 	//选取地铁线圆
 	setcolor(LIGHTBLUE);
 	setfillstyle(1,LIGHTBLUE);
@@ -707,29 +803,40 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	setfillstyle(1,WHITE);
 	pieslice(620,12,0,360,2);
 	//调整模块
-	drawControlFrame(410,190);
+	drawControlFrame(410,190,para);
 	//站点信息模块
 	drawStationDetail(35,190,DARKGRAY,LIGHTCYAN,currentStation);
+	
 
-	createTrain(&Info[0],0);
-	createTrain(&Info[0],1);
-	createTrain(&Info[1],0);
-	createTrain(&Info[1],1);
-	createTrain(&Info[2],0);
-	createTrain(&Info[2],1);
+	// createTrain(&Info[0],0);
+	// createTrain(&Info[0],1);
+	// createTrain(&Info[1],0);
+	// createTrain(&Info[1],1);
+	// createTrain(&Info[2],0);
+	// createTrain(&Info[2],1);
+	createTrain(Info,0);
+	createTrain(Info,1);
+	createTrain(Info+1,0);
+	createTrain(Info+1,1);
+	createTrain(Info+2,0);
+	createTrain(Info+2,1);
+
 	while(1)
 	{
 		//debug精灵
 		// debugElf(15,160,WHITE,LIGHTBLUE,timeCycle,rand(),clock());
 		changeStationPN(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 		//一号线
-		controlGoTime(&Info[0],&goTimeI[0],&accum,&timeCycle);
+		// controlGoTime(&Info[0],&goTimeI[0],&accum,&timeCycle,Info[1].lineHead->station);
+		controlGoTime(Info,&goTimeI[0],&accum,&timeCycle,Info->lineHead->station);
 		// changeDot(&Info[0]);
 		//二号线
-		controlGoTime(&Info[1],&goTimeI[1],&accum,&timeCycle);
+		// controlGoTime(&Info[1],&goTimeI[1],&accum,&timeCycle,Info[1].lineHead->station);
+		controlGoTime(Info+1,&goTimeI[1],&accum,&timeCycle,(Info+1)->lineHead->station);
 		// changeDot(&Info[1]);
 		//四号线
-		controlGoTime(&Info[2],&goTimeI[2],&accum,&timeCycle);
+		// controlGoTime(&Info[2],&goTimeI[2],&accum,&timeCycle,Info[1].lineHead->station);
+		controlGoTime(Info+2,&goTimeI[2],&accum,&timeCycle,(Info+2)->lineHead->station);
 		// changeDot(&Info[2]);
 		if(accum>=ACCUMTIME)
 		{
@@ -867,6 +974,12 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 					changeValue(para);
 				}
 				break;
+			//点击reset
+			case 10:
+				resetInfo(Info,all);
+				*judge=turnTo_c(person,11);
+				return;
+
 		}
 		//点击不同站
 		//三条线的圈圈
@@ -885,7 +998,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
         }
         if (mx >= 255 && mx <= 265 && my >= 95 && my <= 105 && buttons) //这个是循礼门站
         {
-            clickStation(260, 100, &all->line1[4],&currentStation,&mx,&my);
+            clickStation(260, 100, &all->line2[2],&currentStation,&mx,&my);//所有的只用2号线
         }
         if (mx >= 315 && mx <= 325 && my >= 95 && my <= 105 && buttons)
         {
@@ -926,11 +1039,11 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
         }                                                                                                     //这两个draw距离其实是66
         if (mx >= 255 && mx <= 265 && my >= 375 && my <= 385 && buttons)
         {
-            clickStation(260, 380, &all->line2[7], &currentStation,&mx,&my);
+            clickStation(260, 380, &all->line2[7], &currentStation,&mx,&my);//洪山广场
         }
         if (mx >= 195 && mx <= 205 && my >= 375 && my <= 385 && buttons)
         {
-            clickStation(200, 380, &all->line2[8], &currentStation,&mx,&my);
+            clickStation(200, 380, &all->line2[8], &currentStation,&mx,&my);//中南路
         }
         if (mx >= 235 && mx <= 245 && my >= 405 && my <= 415 && buttons)
         {

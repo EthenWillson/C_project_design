@@ -38,10 +38,10 @@ void Initstation_j(station *sta,int x,int y,char* station_name,int code,float dx
     sta->peopleNum=rand()%MAXINITPN;
 }
 /**********************************************************
- Function:  station_information
- Description:  给all里面所有变量下定义
- Attention:  &(all->line1[0])，三个交点在每条线里的定义是一样的；
-             注意10 20 30 00简易编码，后面文字读取会用到。
+Function:  station_information
+Description:  给all里面所有变量下定义
+Attention:  &(all->line1[0])，三个交点在每条线里的定义是一样的；
+            注意10 20 30 00简易编码，后面文字读取会用到。
 **********************************************************/
 void station_information_j(all_lines_stations *all)
 {
@@ -74,7 +74,7 @@ void station_information_j(all_lines_stations *all)
     Initstation_j(&(all->line2[0]),0,0,"0",00,0,0,0,0);
     Initstation_j(&(all->line2[1]),300,70,"中山公园",21,0,0,0,2);
     Initstation_j(&(all->line2[2]),260,100,"循礼门",10,2.8,1.5,0,2);
-    Initstation_j(&(all->line2[3]),260,156,"江汉路",23,0,4.1,0,1);
+    Initstation_j(&(all->line2[3]),260,156,"江汉路",23,0,4.1,0,3);
     Initstation_j(&(all->line2[4]),260,212,"积玉桥",24,0,7.5,0,0);
     Initstation_j(&(all->line2[5]),260,268,"螃蟹岬",25,0,9.1,0,2);//修改278->268
     Initstation_j(&(all->line2[6]),260,324,"小龟山",26,0,10.0,0,0);//修改334->324
@@ -88,7 +88,7 @@ void station_information_j(all_lines_stations *all)
     Initstation_j(&(all->line4[2]),140,380,"梅苑小区",42,0,0,1.0,1);
     Initstation_j(&(all->line4[3]),200,380,"中南路",30,0,12.2,2.1,3);
     Initstation_j(&(all->line4[4]),260,380,"洪山广场",20,0,11.3,3.0,3);
-    Initstation_j(&(all->line4[5]),320,380,"楚河汉街",45,0,0,4.1,2);
+    Initstation_j(&(all->line4[5]),320,380,"楚河汉街",45,0,0,4.1,3);
     Initstation_j(&(all->line4[6]),380,380,"青鱼嘴",46,0,0,5.5,0);
     Initstation_j(&(all->line4[7]),440,380,"东亭",47,0,0,6.4,0);
     Initstation_j(&(all->line4[8]),500,380,"岳家嘴",48,0,0,7.4,0);

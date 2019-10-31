@@ -11,6 +11,8 @@ void main()
 	int driver = VGA;
 	int mode = VGAHI;
 	all_lines_stations all;
+	setTrainInfo Info[3];//记录三条线调度的相关参数
+	
 	//char *p=NULL;
 	//setuser *pt = NULL;
 	person.accounts[0] = '\0';//初始化
@@ -34,13 +36,12 @@ void main()
 	createuserlist_c(head);//创建用户链表，记得要释放
 	
 	station_information_j(&all);
+	initTranInfo(Info,&all);
+
 	// closegraph();
-	// for(pt=head->next;pt=pt->next;pt->next==NULL)
-	// {
-	// 	printf("accounts:%s\ncode:%s\nclass:%s\n",pt->accounts,pt->code,pt->class);
-	// 	printf("\n");
-	// }
-	// return ;
+	// printf("%d %d\n",Info[0].trainHead->x,Info[0].rtrainHead->y);
+	// getch();
+
 	judge=11;
 	while (5)
 	{
@@ -88,10 +89,10 @@ void main()
 		    DrawscoreScreen_j(&person,&judge,head);	
             break;
 		case 11://调度界面 
-			drawControlScreen(&person,&judge,head,&all);
+			drawControlScreen(&person,&judge,head,&all,&Info);
 			break;
 		case 12:
-		    Draw_about_us_Screen_j(&judge);
+		    Draw_about_us_j(&judge);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

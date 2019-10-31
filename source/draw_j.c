@@ -412,7 +412,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
                 */
                 changerecord_j(person, head, start_station, end_station, price);
                 delay(2000);
-                *judge = turnTo_c(person, 3);
+                *judge = turnTo_c(person, -1);
                 return;
             }
             if (money < price)
@@ -441,6 +441,8 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     cleardevice();
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
+    settextstyle(0,0,2);
+    setcolor(LIGHTMAGENTA);
 
     puthz(90, 28, "您好！尊敬的：", 16, 16, CYAN);
     setcolor(MAGENTA);
@@ -489,7 +491,7 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
             mousehide(mx, my);
             if (mx >= 300 && mx <= 360 && my >= 400 && my <= 460 && buttons) //返回按钮点击返回
             {
-                *judge = turnTo_c(person, 3);
+                *judge = turnTo_c(person, -1);
                 return;
             }
             if (mx >= 100 && mx <= 280 && my >= 200 && my <= 290 && buttons) //点击购票方框，返回购票界面

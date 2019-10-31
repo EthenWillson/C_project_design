@@ -20,5 +20,8 @@
 #include"customer_j.h"
 #include"control_c.h"
 #include"line_j.h"
+#include"draw_j.h"
+#include"help_j.h"
+#include"score_j.h"
 
 #endif
