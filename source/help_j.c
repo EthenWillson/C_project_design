@@ -226,5 +226,3 @@ void Draw_about_us_Screen_j(int *judge,int flag)
         }
     }   
 }
-   
-    

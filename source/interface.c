@@ -98,7 +98,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 		newxy(&mx, &my, &buttons);
 		if(buttons)//点击事件
 		{
-			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
+			if (mx >= 585 && mx <= 615 && my >= 5&& my <= 45)//退出按钮点击退出
 			{
 				page=Choose_c("您是否要退出","", &mx, &my, BROWN);
 				if(page==1)
@@ -112,12 +112,17 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					return;
 				}
 			}
-			else if(mx>=398&&mx<=465&&my>=433&&my<=453&&buttons)
+			else if(mx >= 398 && mx <= 465 &&my >= 433 && my<= 453)//关于我们
 			{
 				*judge=turnTo_c(person,12);
 				return;
 			}
-			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82 && buttons)//点击管理员按钮
+			else if(mx >= 538 && mx <= 571 &&my >= 433 && my<= 453)//帮助
+			{
+				*judge=20;
+				return;
+			}
+			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82)//点击管理员按钮
 			{
 				manager=1;
 				choose=0;
@@ -126,7 +131,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				// getMousebk(mx,my);
 				backgroundChange(mx,my, 500, 50, 600 , 82);
 			}
-			else if(mx >= 400 && mx <= 500 && my >= 50&& my <= 82 && buttons)//点击用户按钮
+			else if(mx >= 400 && mx <= 500 && my >= 50&& my <= 82)//点击用户按钮
 			{
 				manager=0;
 				choose=0;
@@ -135,7 +140,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				backgroundChange(mx,my, 400, 50, 500 , 82);
 				// getMousebk(mx,my);
 			}
-			else if(mx >= 410 && mx <= 590 && my >= 130&& my <= 160 && buttons)//点击账号框
+			else if(mx >= 410 && mx <= 590 && my >= 130&& my <= 160)//点击账号框
 			{
 				choose=1;
 				mousehide(mx,my);
@@ -148,7 +153,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				//outtextxy(410,130,arr);//试验位置
 				
 			}
-			else if(mx >= 410 && mx <= 590 && my >= 200&& my <= 230 && buttons)//点击密码框
+			else if(mx >= 410 && mx <= 590 && my >= 200&& my <= 230)//点击密码框
 			{
 				choose=2;
 				mousehide(mx,my);
@@ -158,7 +163,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				// backgroundChange(mx , my, 410, 200, 590 , 230);
 				// getMousebk(mx,my);
 			}
-			else if(mx >= 510 && mx <= 590 && my >= 235&& my <= 265 && buttons && manager==1)//点击权限码框
+			else if(mx >= 510 && mx <= 590 && my >= 235&& my <= 265 && manager==1)//点击权限码框
 			{
 				choose=3;
 				mousehide(mx,my);
@@ -168,7 +173,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				// backgroundChange(mx , my, 510, 235, 590 , 265);
 				// getMousebk(mx,my);
 			}
-			else if(mx >= 410 && mx <= 590 && my >= 270 && my <= 290 && buttons)//点击登陆按钮
+			else if(mx >= 410 && mx <= 590 && my >= 270 && my <= 290 )//点击登陆按钮
 			//bar(410,270,590,290);//登录框
 			//bar(410,310,590,330);//注册框
 			{
@@ -209,7 +214,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 					
 				}
 			}
-			else if(mx >= 410 && mx <= 590 && my >= 310 && my <= 330 && buttons)//点击注册按钮
+			else if(mx >= 410 && mx <= 590 && my >= 310 && my <= 330)//点击注册按钮
 			{
 				clear_effect_c(manager);//清除加框效果
 				if(strlen(managerTemp.code)<6)
@@ -626,10 +631,11 @@ void DrawControlSystem_c(setuser *person,int *judge)
 	//文字
 	setcolor(WHITE);
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
-	puthz(60, 17, "用户：", 16, 16, WHITE);
-	puthz(250, 17, "身份：调度管理员", 16, 16, WHITE);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+	puthz(60, 17, "账号：", 16, 16, WHITE);
+	puthz(253, 17, "身份：调度管理员", 16, 16, WHITE);
 	// outtextxy(50,238,person->class);
-	outtextxy(110,13,person->accounts);
+	outtextxy(110,12,person->accounts);
 	//画退出系统按钮
 	setlinestyle(0, 0, 3);
 	setcolor(LIGHTRED);
@@ -791,9 +797,4 @@ void DrawControlSystem_c(setuser *person,int *judge)
 // 	pieslice(x,y,0,360,radius);
 // 	puthz(x, y, str, 16, 16, charcolor);
 // }
-
-
-/**********************************************************
-以下为普通用户界面的相关函数
-**********************************************************/
 

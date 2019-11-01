@@ -1,28 +1,240 @@
+/**********************************************************
+Description£º ´ËÎÄ¼þ×¨ÃÅ´æ·Å»ý·ÖÉÌ³ÇÏà¹ØµÄº¯Êý
+Attention:  ±ØÐëÒªÓÃGB2312±àÂë±£´æ£¬²»È»ºº×Ö»áÓÐÂÒÂë
+Author£º³Â¿¡çâ
+**********************************************************/
 #include "score_j.h"
 #include "common_c.h"
 /**********************************************************
+Function:  DrawBag
+Description£º	»­³ö¹ºÎï´ü
+Attention:  ÎÞ
+**********************************************************/
+void DrawBag(int x,int y,int lcolor)
+{
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    setcolor(lcolor);
+    setfillstyle(1,lcolor);
+    line(x+40,y+80,x+140,y+80);
+    line(x+40,y+80,x+40,y+190);
+    line(x+140,y+80,x+140,y+190);
+    line(x+40,y+190,x+140,y+190);
+    line(x+50,y+180,x+130,y+180);
+    ellipse(x+90,y+75,360,180,37,52);
+    ellipse(x+90,y+75,360,180,29,45);
+}
+/**********************************************************
+Function:  DrawTrolly
+Description£º	»­³ö¹ºÎïÍÆ³µ
+Attention:  ÎÞ
+**********************************************************/
+void DrawTrolly(int x,int y,int lcolor)
+{
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    setcolor(lcolor);
+    setfillstyle(1,lcolor);
+    line(x,y+80,x+25,y+80);
+    line(x+31,y+115,x+130,y+115);
+    line(x+25,y+80,x+45,y+170);
+    line(x+130,y+115,x+116,y+170);
+    line(x+45,y+170,x+116,y+170);
+    circle(x+50,y+188,10);
+    circle(x+111,y+188,10);
+}
+/**********************************************************
+Function:  DrawMineGFrame
+Description£º	»­³öÎÒµÄ¶Ò»»Í¼±ê
+Attention:  ÎÞ
+**********************************************************/
+void DrawMineGFrame(int x,int y,int bkcolor,int lcolor)
+{
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    setcolor(bkcolor);
+    setfillstyle(1,bkcolor);
+    bar(x,y,x+180,y+220);
+    DrawBag(x,y,lcolor);
+    
+}
+/**********************************************************
+Function:  DrawStoreFrame
+Description£º	»­³öÉÌ³ÇÍ¼±ê
+Attention:  ÎÞ
+**********************************************************/
+void DrawStoreFrame(int x,int y,int bkcolor,int lcolor)
+{
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    setcolor(bkcolor);
+    setfillstyle(1,bkcolor);
+    bar(x,y,x+180,y+220);
+    DrawTrolly(x+13,y-20,lcolor);
+}
+/**********************************************************
+Function:  DrawAppleFrame
+Description£º	»­³öÆ»¹ûÉÌÆ·¿ò
+Attention:  ÎÞ
+**********************************************************/
+void DrawAppleFrame(int x,int y,int bkcolor)
+{
+    setcolor(bkcolor);
+    setfillstyle(1,bkcolor);
+    bar(x,y,x+120,y+120);
+    DrawApple_c(x+60,y+60);
+}
+/**********************************************************
+Function:  DrawAppleFrame
+Description£º	»­Æ»¹û
+Attention:  ÎÞ
+**********************************************************/
+void DrawApple_c(int x,int y)
+{
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    setcolor(LIGHTRED);
+    setfillstyle(1,LIGHTRED);
+    sector(x,y,0,360,40,33);
+    setcolor(BROWN);
+    line(x-15,y-15,x+15,y-15);
+    line(x,y-15,x+4,y-50);
+}
+/**********************************************************
 Function:  DrawscoreScreen
-Descriptionï¼š	ç”»å‡ºç§¯åˆ†å…‘æ¢ç•Œé¢
-Attention:  æ— 
+Description£º	»­³ö»ý·Ö¶Ò»»½çÃæ
+Attention:  ÎÞ
 **********************************************************/
 void DrawscoreScreen_j(setuser* person,int *judge,setuser* head)
 {
-    int buttons, mx, my;         //é¼ æ ‡ç›¸å…³å˜é‡
-    char temp[2] = {'\0', '\0'}; //ç”¨äºŽå¸æ”¶é”®ç›˜ç¼“å†²åŒºçš„å˜é‡
+    int buttons, mx, my;         //Êó±êÏà¹Ø±äÁ¿
+    char temp[2] = {'\0', '\0'}; //ÓÃÓÚÎüÊÕ¼üÅÌ»º³åÇøµÄ±äÁ¿
+    int mouseover[2]={0,0};
     mouseInit(&mx, &my, &buttons);
     cleardevice();
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
-    returnBtn_c(550, 210, GREEN);
+    returnBtn_c(290, 400, CYAN);//·µ»Ø°´Å¥
+    puthz(260,25,"»ý·ÖÉÌ³Ç",32,32,CYAN);
+    puthz(80, 80, "ÓÃ»§£º", 16, 16, CYAN); 
+    puthz(450, 80, "»ý·Ö£º", 16, 16, CYAN); 
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+    outtextxy(140,76,person->accounts);
+    outtextxy(510,76,person->score);
+    DrawMineGFrame(100,150,DARKGRAY,LIGHTGRAY);
+    DrawStoreFrame(360,150,DARKGRAY,LIGHTGRAY);
 
     while(1)
     {
         newxy(&mx,&my,&buttons);
-        if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //è¿”å›žæŒ‰é’®ç‚¹å‡»è¿”å›ž
+        if (mx >= 100 && mx <= 280 && my >= 150 && my <= 370 && mouseover[0]==0) //Êó±êÒÆÖÁÎÒµÄ¶Ò»»
         {
-            *judge = turnTo_c(person, 6);
-            return;
+            mousehide(mx,my);
+            DrawMineGFrame(100,150,DARKGRAY,LIGHTBLUE);
+            puthz(160, 260, "ÎÒµÄ¶Ò»»", 16, 16, LIGHTBLUE);
+            mouseover[0]=1;
+            getMousebk(mx,my);
+        }
+        if (!(mx >= 100 && mx <= 280 && my >= 150 && my <= 370) && mouseover[0]==1) 
+        {
+            mousehide(mx,my);
+            DrawMineGFrame(100,150,DARKGRAY,LIGHTGRAY);
+            mouseover[0]=0;
+            getMousebk(mx,my);
+        }
+        if (mx >= 360 && mx <= 540 && my >= 150 && my <= 370 && mouseover[1]==0) //Êó±êÒÆÖÁÉÌÆ·¶Ò»»
+        {
+            mousehide(mx,my);
+            DrawStoreFrame(360,150,DARKGRAY,LIGHTBLUE);
+            puthz(423, 263, "ÉÌÆ·¶Ò»»", 16, 16, LIGHTBLUE);
+            mouseover[1]=1;
+            getMousebk(mx,my);
+        }
+        if (!(mx >= 360 && mx <= 540 && my >= 150 && my <= 370) && mouseover[1]==1) 
+        {
+            mousehide(mx,my);
+            DrawStoreFrame(360,150,DARKGRAY,LIGHTGRAY);
+            mouseover[1]=0;
+            getMousebk(mx,my);
+        }
+        if(buttons)
+        {
+            if (mx >= 290 && mx <= 360 && my >= 400 && my <= 460) //·µ»Ø°´Å¥µã»÷·µ»Ø
+            {
+                *judge=turnTo_c(person,-1);
+                return;
+            }
+            else if (mx >= 100 && mx <= 280 && my >= 150 && my <= 370)
+            {
+                *judge=turnTo_c(person,26);
+                return;
+            }
+            else if (mx >= 360 && mx <= 540 && my >= 150 && my <= 370)
+            {
+                *judge=turnTo_c(person,25);
+                return;
+            }
         }
     }
 
+}
+/**********************************************************
+Function:  DrawStoreScreen
+Description£º	»­³öÉÌÆ·¶Ò»»½çÃæ ´úºÅ25
+Attention:  ÎÞ
+**********************************************************/
+void DrawStoreScreen(setuser* person,int *judge,setuser* head)
+{
+    int buttons, mx, my;         //Êó±êÏà¹Ø±äÁ¿
+    cleardevice();
+    setbkcolor(WHITE);
+    mouseInit(&mx, &my, &buttons);
+    DrawBeautifulFrame_c();
+    returnBtn_c(290, 400, CYAN);//·µ»Ø°´Å¥
+    puthz(260,25,"ÉÌÆ·¶Ò»»",32,32,CYAN);
+    puthz(80, 80, "ÓÃ»§£º", 16, 16, CYAN); 
+    puthz(450, 80, "»ý·Ö£º", 16, 16, CYAN); 
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	settextstyle(SMALL_FONT,HORIZ_DIR,7);
+    outtextxy(140,76,person->accounts);
+    outtextxy(510,76,person->score);
+    DrawAppleFrame(60,150,DARKGRAY);
+    while(1)
+    {
+        newxy(&mx,&my,&buttons);
+        if(buttons)
+        {
+            if (mx >= 290 && mx <= 360 && my >= 400 && my <= 460) //·µ»Ø°´Å¥µã»÷·µ»Ø
+            {
+                *judge=turnTo_c(person,10);
+                return;
+            }
+        }
+    }
+}
+/**********************************************************
+Function:  DrawMyChangeScreen
+Description£º	»­³öÎÒµÄ¶Ò»»½çÃæ ´úºÅ26
+Attention:  ÎÞ
+**********************************************************/
+void DrawMyChangeScreen(setuser* person,int *judge,setuser* head)
+{
+    int buttons, mx, my;         //Êó±êÏà¹Ø±äÁ¿
+    cleardevice();
+    setbkcolor(WHITE);
+    mouseInit(&mx, &my, &buttons);
+    DrawBeautifulFrame_c();
+    returnBtn_c(290, 400, CYAN);//·µ»Ø°´Å¥
+    puthz(90,60,"ÄúµÄ¶Ò»»¼ÇÂ¼ÈçÏÂ£º",16,16,CYAN);
+    puthz(150,100,"´úºÅ",16,16,CYAN);
+    puthz(290,100,"ÉÌÆ·Ãû",16,16,CYAN);
+    puthz(430,100,"»¨·Ñ»ý·Ö",16,16,CYAN);
+    while(1)
+    {
+        newxy(&mx,&my,&buttons);
+        if(buttons)
+        {
+            if (mx >= 290 && mx <= 360 && my >= 400 && my <= 460) //·µ»Ø°´Å¥µã»÷·µ»Ø
+            {
+                *judge=turnTo_c(person,10);
+                return;
+            }
+        }
+    }
 }
