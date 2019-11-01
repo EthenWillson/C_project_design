@@ -819,10 +819,11 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	{
 		//debug精灵
 		// debugElf(15,160,WHITE,LIGHTBLUE,timeCycle,rand(),clock());
+		//车站人增加函数
 		changeStationPN(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 		//一号线
 		// controlGoTime(&Info[0],&goTimeI[0],&accum,&timeCycle,Info[1].lineHead->station);
-		controlGoTime(Info,&goTimeI[0],&accum,&timeCycle,Info->lineHead->station);
+		controlGoTime(Info,&goTimeI[0],&accum,&timeCycle,(Info+1)->lineHead->station);
 		// changeDot(&Info[0]);
 		//二号线
 		// controlGoTime(&Info[1],&goTimeI[1],&accum,&timeCycle,Info[1].lineHead->station);
@@ -830,7 +831,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 		// changeDot(&Info[1]);
 		//四号线
 		// controlGoTime(&Info[2],&goTimeI[2],&accum,&timeCycle,Info[1].lineHead->station);
-		controlGoTime(Info+2,&goTimeI[2],&accum,&timeCycle,(Info+2)->lineHead->station);
+		controlGoTime(Info+2,&goTimeI[2],&accum,&timeCycle,(Info+1)->lineHead->station);
 		// changeDot(&Info[2]);
 		if(accum>=ACCUMTIME)
 		{

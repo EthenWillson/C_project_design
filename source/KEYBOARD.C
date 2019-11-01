@@ -65,22 +65,3 @@ char searchKeyValue(int value)
 	else
 		return '\0';
 }
-
-/*int main()      //键值调试主函数
-{
-  char ch;
-  int key;
- /* while(1)          //打印所有按键的键值
-  {
-	key=bioskey(0);
-	if(key==0x11b)break;
-	else printf("0x%x\n",key);
-  }*  /
-  do                  //检测键值数组中数据的正确性
-  {
-	key=bioskey(0);
-	ch=searchKeyValue(key);
-	printf("%c\n",ch);
-
-  } while(key!=0x11b);
-}*/

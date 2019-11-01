@@ -99,7 +99,6 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//登陆函数
             strcpy(person->money,p->money);
             strcpy(person->score,p->score);
             strcpy(person->record,p->record);
-            person->spend=p->spend;
             return 1;//验证成功返回1
         }
         else if(strcmp(managertemp.accounts,p->accounts)==0)
