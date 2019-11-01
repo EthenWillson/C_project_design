@@ -23,5 +23,6 @@
 #include"draw_j.h"
 #include"help_j.h"
 #include"score_j.h"
+#include"help_c.h"
 
 #endif

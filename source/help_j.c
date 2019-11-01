@@ -216,5 +216,3 @@ void Draw_about_us_j(int *judge)
         }
     }   
 }
-   
-    

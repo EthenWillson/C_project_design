@@ -1,18 +1,22 @@
+/**********************************************************
+此文件专门存放调度界面及算法相关的函数
+作者：陈俊玮
+**********************************************************/
 #include"control_c.h"
 #include"common_c.h"
 #define LINENUM 3  //线路条数
 #define INITCARNUM 2 //初始车辆
 #define TIMEUNIT 10 //时间单位
 #define DISTANCEUNIT 300 //距离单位
-#define DAULTSPEED 1
+#define DAULTSPEED 2
 #define DAULTWAIT 10
 #define DAULTGOTIME 60
 #define MAXSPEED 8
 #define MINSPEED 0
 #define MAXWAIT 35
-#define MINWAIT 10
+#define MINWAIT 5
 #define MAXGOTIME 250
-#define MINGOTIME 30
+#define MINGOTIME 40
 #define ACCUMTIME 1300
 #define PNADDCYECLE 20
 /**********************************************************
@@ -326,16 +330,6 @@ void controlGoTime(setTrainInfo *Info,int *GotimeI,long int *accum,int *timeCycl
 	delay(5);
 }
 /**********************************************************
-Function:  judgeCrash
-Description：	监测地铁“碰撞”事件
-Input:  Info 一条线相关参数
-Attention:  无
-**********************************************************/
-// void judgeCrash(setTrainInfo Info)
-// {
-
-// }
-/**********************************************************
 Function:  debugElf
 Description：	debug精灵
 Attention:  无
@@ -512,7 +506,7 @@ void changeDot(setTrainInfo *Info,station *line2)
 				{
 					if(fT->k==4)
 					{
-						line2[2].peopleNum=line[fT->k].peopleNum/2;
+						line2[2].peopleNum=line2[2].peopleNum/2;
 					}
 					else
 					{
@@ -529,11 +523,11 @@ void changeDot(setTrainInfo *Info,station *line2)
 				{
 					if(fT->k==4)
 					{
-						line2[7].peopleNum=line[fT->k].peopleNum/2;
+						line2[7].peopleNum=line2[7].peopleNum/2;
 					}
 					else if(fT->k==3)
 					{
-						line2[8].peopleNum=line[fT->k].peopleNum/2;
+						line2[8].peopleNum=line2[8].peopleNum/2;
 					}
 					else
 					{
@@ -610,7 +604,7 @@ void changeDot(setTrainInfo *Info,station *line2)
 				{
 					if(rT->k==4)
 					{
-						line2[2].peopleNum=line[rT->k].peopleNum/2;
+						line2[2].peopleNum=line2[2].peopleNum/2;
 					}
 					else
 					{
@@ -627,11 +621,11 @@ void changeDot(setTrainInfo *Info,station *line2)
 				{
 					if(rT->k==4)
 					{
-						line2[7].peopleNum=line[rT->k].peopleNum/2;
+						line2[7].peopleNum=line2[7].peopleNum/2;
 					}
 					else if(rT->k==3)
 					{
-						line2[8].peopleNum=line[rT->k].peopleNum/2;
+						line2[8].peopleNum=line2[8].peopleNum/2;
 					}
 					else
 					{
@@ -743,6 +737,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	int timeCycle=0;
 	int para[3]={DAULTSPEED,DAULTWAIT,DAULTGOTIME};//当前参数存储  0：速度  1：停站时间  2：发车间隔 
 	int goTimeI[3]={0,0,0};
+	int reset=0;//判断鼠标移动到reset按钮上
     // setTrainInfo Info[3];//记录三条线调度的相关参数
 	station *currentStation;//记录当前查看站点的地址
 	// 初始化
@@ -758,7 +753,6 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 
 	//绘制界面
 	//绘制返回按钮
-	// returnBtn_c(15,210,LIGHTBLUE);
 	returnBtn_small_c(15,15,LIGHTBLUE);
 	//绘制基本界面
 	setcolor(GREEN);
@@ -778,7 +772,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
     line(500,50,550,50);
     outtextxy(560,45,"4");
     puthz(570,45,"号线",16,16,YELLOW);
-    puthz(180,0,"地铁调度一览",32,32,BROWN);
+    puthz(183,2,"地铁调度控制",32,32,BROWN);
 	//绘制地铁线路
     Drawstation1_j();
     Drawstation2_j();
@@ -976,11 +970,100 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 				break;
 			//点击reset
 			case 10:
-				resetInfo(Info,all);
-				*judge=turnTo_c(person,11);
-				return;
+				if(Choose_c("您正在重置调度模拟","此操作将无法撤销！", &mx, &my, LIGHTBLUE)==1)
+				{
+					resetInfo(Info,all);
+					*judge=turnTo_c(person,11);
+					return;
+				}
+				else
+				{
+					mousehide(mx,my);
+					cleardevice();
+					setbkcolor(DARKGRAY);
+					//绘制返回按钮
+					returnBtn_small_c(15,15,LIGHTBLUE);
+					//绘制基本界面
+					setcolor(GREEN);
+					settextstyle(SMALL_FONT,HORIZ_DIR,5);
+					line(460,0,460,75);
+					line(460,75,640,75);
+					setlinestyle(0,0,3);
+					setcolor(LIGHTCYAN);
+					line(500,10,550,10);
+					outtextxy(560,5,"1");
+					puthz(570,5,"号线",16,16,CYAN);
+					setcolor(LIGHTGREEN);
+					line(500,30,550,30);
+					outtextxy(560,25,"2");
+					puthz(570,25,"号线",16,16,LIGHTGREEN);
+					setcolor(YELLOW);
+					line(500,50,550,50);
+					outtextxy(560,45,"4");
+					puthz(570,45,"号线",16,16,YELLOW);
+					puthz(183,2,"地铁调度控制",32,32,BROWN);
+					//绘制地铁线路
+					Drawstation1_j();
+					Drawstation2_j();
+					Drawstation4_j();
+					DrawCircles_j();
+					//调度相关绘制
+					//reset按钮
+					setcolor(LIGHTBLUE);
+					setfillstyle(1,LIGHTBLUE);
+					pieslice(590,430,0,360,27);
+					setcolor(WHITE);
+					setfillstyle(1,WHITE);
+					pieslice(590,430,0,360,25);
+					setcolor(LIGHTRED);
+					settextstyle(SMALL_FONT,HORIZ_DIR,6);
+					outtextxy(567,420,"RESET");
+					//选取地铁线圆
+					setcolor(LIGHTBLUE);
+					setfillstyle(1,LIGHTBLUE);
+					pieslice(620,12,0,360,6);
+					setcolor(WHITE);
+					setfillstyle(1,WHITE);
+					pieslice(620,12,0,360,2);
+					//调整模块
+					drawControlFrame(410,190,para);
+					//站点信息模块
+					drawStationDetail(35,190,DARKGRAY,LIGHTCYAN,currentStation);
+					getMousebk(mx,my);
+				}
+				
 
 		}
+		if (mx >= 560 && mx <= 620 && my >= 400 && my <= 460 && reset==0) //鼠标移到reset
+        {
+			mousehide(mx,my);
+			setcolor(LIGHTRED);
+			setfillstyle(1,LIGHTRED);
+			pieslice(590,430,0,360,27);
+			setcolor(WHITE);
+			setfillstyle(1,WHITE);
+			pieslice(590,430,0,360,25);
+			setcolor(GREEN);
+			settextstyle(SMALL_FONT,HORIZ_DIR,6);
+			outtextxy(567,420,"RESET");
+			getMousebk(mx,my);
+			reset=1;
+        }
+		if (!(mx >= 560 && mx <= 620 && my >= 400 && my <= 460) && reset==1) //鼠标移出reset
+        {
+            reset=0;
+			mousehide(mx,my);
+			setcolor(LIGHTBLUE);
+			setfillstyle(1,LIGHTBLUE);
+			pieslice(590,430,0,360,27);
+			setcolor(WHITE);
+			setfillstyle(1,WHITE);
+			pieslice(590,430,0,360,25);
+			setcolor(LIGHTRED);
+			settextstyle(SMALL_FONT,HORIZ_DIR,6);
+			outtextxy(567,420,"RESET");
+			getMousebk(mx,my);
+        }
 		//点击不同站
 		//三条线的圈圈
         //1号线的
@@ -1036,7 +1119,7 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
         if (mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons)
         {
             clickStation(260, 324, &all->line2[6], &currentStation,&mx,&my); 
-        }                                                                                                     //这两个draw距离其实是66
+        }                                                                   
         if (mx >= 255 && mx <= 265 && my >= 375 && my <= 385 && buttons)
         {
             clickStation(260, 380, &all->line2[7], &currentStation,&mx,&my);//洪山广场

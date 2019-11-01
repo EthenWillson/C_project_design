@@ -42,7 +42,7 @@ void main()
 	// printf("%d %d\n",Info[0].trainHead->x,Info[0].rtrainHead->y);
 	// getch();
 
-	judge=11;
+	judge=20;
 	while (5)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -93,6 +93,21 @@ void main()
 			break;
 		case 12:
 		    Draw_about_us_j(&judge);
+			break;
+		case 20://帮助界面
+			DrawhelpScreen_c(&judge);
+			break;
+		case 21://登陆帮助界面
+			DrawLoginHelp(&judge);
+			break;
+		case 22://购票帮助界面
+			DrawBuyHelp(&judge);
+			break;
+		case 23:
+			DrawRecordHelp(&judge);
+			break;
+		case 24:
+			DrawManageHelp(&judge);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();
