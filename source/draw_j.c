@@ -167,7 +167,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
         {
             if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
             {
-                *judge = turnTo_c(person, 3);
+                *judge = turnTo_c(person, -1);
                 return;
             }
             if (mx >= 400 && mx <= 510 && my >= 150 && my <= 220 && buttons)
