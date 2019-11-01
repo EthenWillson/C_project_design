@@ -133,6 +133,16 @@ void DrawrecordScreen_j(setuser *person,int *judge,all_lines_stations* all)
 
     for(i=0;person->record[i];i++)//读到结束符为止
     {
+        if(!(person->record[i]>='0'&&person->record[i]<='9'||person->record[i]=='!'))
+        {
+            continue;
+        }
+        /*
+        closegraph();
+        printf("%d\n",i);
+        printf("%s",person->record);
+        getch();
+        */
         m++;
         if(m%8==3||m%8==6)
         {
@@ -176,7 +186,7 @@ Function:  Draw_about_us_Screen
 Description：关于我们
 Attention:  无
 **********************************************************/
-void Draw_about_us_j(int *judge)
+void Draw_about_us_Screen_j(int *judge,int flag)
 {
     int buttons, mx, my;         //鼠标相关变量
     char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量

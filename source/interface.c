@@ -114,7 +114,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 			}
 			else if(mx>=398&&mx<=465&&my>=433&&my<=453&&buttons)
 			{
-				*judge=12;
+				*judge=turnTo_c(person,12);
 				return;
 			}
 			else if(mx >= 500 && mx <= 600 && my >= 50&& my <= 82 && buttons)//点击管理员按钮
@@ -232,7 +232,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				if(strlen(managerTemp.code)>=6 && strlen(managerTemp.accounts)>=6 && ((strlen(managerTemp.class)==5 && manager==1) || manager==0))
 				{
 					if(manager==0){strcpy(managerTemp.class,"00000");}
-					if(strcmp(managerTemp.class,"cjwzs")!=0 && strcmp(managerTemp.class,"00000")!=0)//权限码有误
+					if(strcmp(managerTemp.class,"cjwzs")!=0 && strcmp(managerTemp.class,"jmxzs")!=0&&strcmp(managerTemp.class,"00000")!=0)//权限码有误
 					{
 						click_limit_c(RED);//权限码加红框
 						// getMousebk(mx,my);

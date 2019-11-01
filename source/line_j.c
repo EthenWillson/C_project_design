@@ -431,7 +431,7 @@ int cal_price_j(float distance)
     if(distance<=4) price=2;
     else if(distance>4&&distance<=8) price=3;
     else if(distance>8&&distance<=12) price=4;
-    else if(distance>12&&distance<=18) price=5;
+    else if(distance>12&&distance<=24) price=5;
     else return 0;
     return price;
 }
