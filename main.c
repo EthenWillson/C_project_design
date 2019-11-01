@@ -11,13 +11,14 @@ void main()
 	int driver = VGA;
 	int mode = VGAHI;
 	all_lines_stations all;
+	//int flag_about_us;
 	//char *p=NULL;
 	//setuser *pt = NULL;
 	person.accounts[0] = '\0';//初始化
 	person.code[0] = '\0';//初始化
 	//person.Routes=NULL;
 	//person.size=0;
-
+    
 	
 	
 
@@ -76,22 +77,28 @@ void main()
 		case 7://充值
 			DrawchargeScreen_j(&person,&judge,head);
 			break;
-		case 8:
+		case 8://票价说明
 		    //closegraph();
 			//getch();
 		    DrawpriceScreen_j(&person,&judge); 
 			break;
-		case 9:
+		case 9://购票记录
 		    DrawrecordScreen_j(&person,&judge,&all);
 			break;
-		case 10:
+		case 10://积分商城
 		    DrawscoreScreen_j(&person,&judge,head);	
             break;
 		case 11://调度界面 
 			//drawControlScreen(&person,&judge,head,&all);
 			break;
-		case 12:
+		case 12://关于我们
 		    Draw_about_us_Screen_j(&judge);
+			break;
+		case 13://运营管理员界面
+		    Draw_run_Screen_j(&person,&judge,head);
+			break;
+		case 14://修改密码
+		    changePasswordScreen_c(&person,&judge,head);
 			break;
 		// case 2: //注册	
 		// 	Drawregisterscreen();

@@ -126,6 +126,7 @@ void changerecord_j(setuser *person, setuser *head, int start_name, int end_name
             strcat(ph->record, "!");
             strcat(ph->record, price_str);
             strcat(ph->record, "!");
+            strcpy(person->record,ph->record);//要写在里面，不然会不太正常
         }
     }
     if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL) //以写的方式新建一个文件
@@ -148,6 +149,7 @@ void changerecord_j(setuser *person, setuser *head, int start_name, int end_name
         fputc('^', fp); //出行记录
         fputs(ph->record, fp);
     }
+    
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
     rename("data_c\\user\\usernew.txt", "data_c\\user\\userinf.txt");

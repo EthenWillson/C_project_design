@@ -1,90 +1,89 @@
-#include"common_c.h"
-#include"draw_j.h"
-void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stations *all);//购票界面
-void DrawcheckScreen_j(setuser *person, int *judge, setuser *head);//查询界面
-void DrawchargeScreen_j(setuser *person, int *judge, setuser *head);//充值界面
-void DrawUserScreen_j(setuser *person,int *judge);//普通用户界面
+#include "common_c.h"
+#include "draw_j.h"
+void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stations *all); //购票界面
+void DrawcheckScreen_j(setuser *person, int *judge, setuser *head);                        //查询界面
+void DrawchargeScreen_j(setuser *person, int *judge, setuser *head);                       //充值界面
+void outputcharge_j(setuser *person, int add_money, setuser *head);                        //修改、实时显示用户余额，显示delay正在充值
+void click_charge_j(int color);                                                            //点框框加效果
+void DrawUserScreen_j(setuser *person, int *judge);                                        //普通用户界面
 /***********************************************
 Function：DrawUserScreen
 Description：画普通用户界面
 Attention:
 ***********************************************/
-void DrawUserScreen_j(setuser *person,int *judge)
+void DrawUserScreen_j(setuser *person, int *judge)
 {
-	int buttons,mx,my;//鼠标相关变量
-	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	// 初始化
-	// 鼠标初始化
-	mouseInit(&mx, &my, &buttons);
-	cleardevice();
-	setbkcolor(WHITE);
-	DrawBeautifulFrame_c();
-	puthz(90, 28, "您好！尊敬的：", 16, 16, GREEN);
-	outtextxy(220,25,person->accounts);
-	puthz(400, 435, "关于我们", 16, 16,MAGENTA );
-	puthz(540 ,435, "帮助", 16, 16, MAGENTA);
-	
-	setlinestyle(0, 0, 1);
-	setcolor(LIGHTRED);
-	rectangle(398,433,465,453);//关于我们的位置
-	rectangle(538,433,571,453);//帮助的位置
-	
-	//画出退出按钮
-	setlinestyle(0, 0, 3);
-	setcolor(LIGHTRED);
-	arc(550, 35, 110, 430, 15);
-	line(550, 5, 550, 31);
+    int buttons, mx, my;         //鼠标相关变量
+    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
+    // 初始化
+    // 鼠标初始化
+    mouseInit(&mx, &my, &buttons);
+    cleardevice();
+    setbkcolor(WHITE);
+    DrawBeautifulFrame_c();
+    puthz(90, 28, "您好！尊敬的：", 16, 16, GREEN);
+    settextstyle(0, 0, 2);
+    outtextxy(220, 25, person->accounts);
+    //puthz(400, 435, "关于我们", 16, 16,MAGENTA );
+    //puthz(540 ,435, "帮助", 16, 16, MAGENTA);
+
+    setlinestyle(0, 0, 1);
+    setcolor(LIGHTRED);
+    //rectangle(398,433,465,453);//关于我们的位置
+    //rectangle(538,433,571,453);//帮助的位置
+
+    returnBtn_c(550, 210, GREEN);
 
     //画出三个矩形，填充为黄色
-	setfillstyle(1, YELLOW);
-	bar(170,80,470,150);
-	bar(170,200,470,270);
-	bar(170,320,470,390);
-	setlinestyle(0, 0, 3);
-	setcolor(GREEN);
-	line(170,80,470,80);
-	line(170,80,170,150);
-	line(470,80,470,150);
-	line(170,150,470,150);
-	line(170,200,470,200);
-	line(170,200,170,270);
-	line(470,200,470,270);
-	line(170,270,470,270);
-	line(170,320,470,320);
-	line(170,320,170,390);
-	line(470,320,470,390);
-	line(170,390,470,390);
-	puthz(200, 95, "购票", 32, 32, GREEN);
-	puthz(200, 215, "账户查询", 32, 32, GREEN);
-	puthz(200, 335, "账户充值", 32, 32, GREEN);
+    setfillstyle(1, YELLOW);
+    bar(170, 80, 470, 150);
+    bar(170, 200, 470, 270);
+    bar(170, 320, 470, 390);
+    setlinestyle(0, 0, 3);
+    setcolor(GREEN);
+    line(170, 80, 470, 80);
+    line(170, 80, 170, 150);
+    line(470, 80, 470, 150);
+    line(170, 150, 470, 150);
+    line(170, 200, 470, 200);
+    line(170, 200, 170, 270);
+    line(470, 200, 470, 270);
+    line(170, 270, 470, 270);
+    line(170, 320, 470, 320);
+    line(170, 320, 170, 390);
+    line(470, 320, 470, 390);
+    line(170, 390, 470, 390);
+    puthz(200, 95, "购票", 32, 32, GREEN);
+    puthz(200, 215, "账户查询", 32, 32, GREEN);
+    puthz(200, 335, "账户充值", 32, 32, GREEN);
 
-	while(1)
-	{
-		newxy(&mx, &my, &buttons);
-		if(buttons)//点击事件
-		{
-			if (mx >= 535 && mx <= 565 && my >= 5&& my <= 45 && buttons)//退出按钮点击退出
-			{
-				*judge=turnTo_c(person,1);
-				return;
-			}
-			if (mx >= 170 && mx <= 470 && my >=80 && my<=150 && buttons)//点入购票界面
-			{
-			    *judge=turnTo_c(person,5);
-				return;
-			}
-			if (mx >= 170 && mx <= 470 && my >= 200&& my <= 270 && buttons)//点入余额查询界面
-			{
-				*judge=turnTo_c(person,6);
-				return;
-			}
-			if (mx >= 170 && mx <= 470 && my >= 320&& my <= 390 && buttons)//点入充值界面
-			{
-				*judge=turnTo_c(person,7);
-				return;
-			}
-		}
-	}
+    while (1)
+    {
+        newxy(&mx, &my, &buttons);
+        if (buttons) //点击事件
+        {
+            if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
+            {
+                *judge = turnTo_c(person, 1);
+                return;
+            }
+            if (mx >= 170 && mx <= 470 && my >= 80 && my <= 150 && buttons) //点入购票界面
+            {
+                *judge = turnTo_c(person, 5);
+                return;
+            }
+            if (mx >= 170 && mx <= 470 && my >= 200 && my <= 270 && buttons) //点入余额查询界面
+            {
+                *judge = turnTo_c(person, 6);
+                return;
+            }
+            if (mx >= 170 && mx <= 470 && my >= 320 && my <= 390 && buttons) //点入充值界面
+            {
+                *judge = turnTo_c(person, 7);
+                return;
+            }
+        }
+    }
 }
 /**********************************************************
 Function:  DrawbuyScreen
@@ -167,7 +166,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
         {
             if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
             {
-                *judge = turnTo_c(person, 3);
+                *judge = turnTo_c(person, -1);
                 return;
             }
             if (mx >= 400 && mx <= 510 && my >= 150 && my <= 220 && buttons)
@@ -398,7 +397,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             if (money >= price)
             {
                 setfillstyle(1, LIGHTMAGENTA);
-                bar(220, 180, 420, 300);
+                bar(220, 180, 450, 300);
                 puthz(220, 210, "购票成功！", 16, 16, GREEN);
                 puthz(220, 240, "查询：个人中心——账户查询", 16, 16, GREEN);
                 //( setuser *person,  setuser *head,int *start_name,int*end_name,int price);
@@ -430,7 +429,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
 }
 /**********************************************************
 Function:  DrawcheckScreen
-Description：画出余额查询界面
+Description：画出账户查询界面
 Attention:  无
 **********************************************************/
 void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
@@ -445,13 +444,13 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     puthz(90, 28, "您好！尊敬的：", 16, 16, CYAN);
     setcolor(MAGENTA);
     outtextxy(220, 30, person->accounts);
-    puthz(400, 435, "关于我们", 16, 16, MAGENTA);
-    puthz(540, 435, "帮助", 16, 16, MAGENTA);
+    //puthz(400, 435, "关于我们", 16, 16, MAGENTA);
+    //puthz(540, 435, "帮助", 16, 16, MAGENTA);
 
     setlinestyle(0, 0, 1);
     setcolor(LIGHTRED);
-    rectangle(398, 433, 465, 453); //关于我们的位置
-    rectangle(538, 433, 571, 453); //帮助的位置
+    //rectangle(398, 433, 465, 453); //关于我们的位置
+    //rectangle(538, 433, 571, 453); //帮助的位置
 
     //画出返回按钮
     returnBtn_c(300, 400, GREEN);
@@ -460,14 +459,22 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     puthz(250, 100, "积分：", 16, 16, CYAN);
     //changemoney_j(0, person, 10, head);
     setcolor(MAGENTA);
-    outtextxy(140, 90, person->money);
-    outtextxy(300, 90, person->score);
-    /*
-    closegraph();
-    printf("%s",person->score);
-    printf("%s",person->money);
-    getch();
-    */
+    if(atoi(person->money)==0)
+    {
+        outtextxy(140,95,"0");
+    }
+    else
+    {
+        outtextxy(140, 95, person->money); 
+    }
+    if(atoi(person->score)==0)
+    {
+        outtextxy(300,95,"0");
+    }
+    else 
+    {
+        outtextxy(300, 95, person->score);
+    }
 
     puthz(90, 160, "您可以选择：", 16, 16, CYAN);
     setfillstyle(1, LIGHTCYAN);
@@ -477,7 +484,7 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     bar(100, 305, 280, 395);
     bar(330, 305, 510, 395);
     puthz(160, 223, "购票", 32, 32, MAGENTA);
-    puthz(357, 223, "账户充值", 32, 32, MAGENTA);
+    puthz(357, 223, "修改密码", 32, 32, MAGENTA);
     puthz(127, 328, "购票记录", 32, 32, MAGENTA);
     puthz(357, 328, "积分兑换", 32, 32, MAGENTA);
 
@@ -489,7 +496,7 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
             mousehide(mx, my);
             if (mx >= 300 && mx <= 360 && my >= 400 && my <= 460 && buttons) //返回按钮点击返回
             {
-                *judge = turnTo_c(person, 3);
+                *judge = turnTo_c(person, -1);
                 return;
             }
             if (mx >= 100 && mx <= 280 && my >= 200 && my <= 290 && buttons) //点击购票方框，返回购票界面
@@ -497,9 +504,9 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
                 *judge = turnTo_c(person, 5);
                 return;
             }
-            if (mx >= 330 && mx <= 510 && my >= 200 && my <= 290 && buttons) //点击账户充值方框，返回账户充值界面
+            if (mx >= 330 && mx <= 510 && my >= 200 && my <= 290 && buttons) //点击修改密码方框
             {
-                *judge = turnTo_c(person, 7);
+                *judge = turnTo_c(person, 14);
                 return;
             }
             if (mx >= 100 && mx <= 305 && my >= 280 && my <= 395 && buttons)
@@ -517,32 +524,104 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     }
 }
 /**********************************************************
+Function:  outputcharge
+Description：修改、实时显示用户余额，显示delay正在充值
+Attention:  无
+**********************************************************/
+void outputcharge_j(setuser *person, int add_money, setuser *head)
+{
+    setcolor(LIGHTMAGENTA);
+    setlinestyle(0, 0, 1);
+    rectangle(400, 70, 560, 110);
+    puthz(410, 75, "正在支付中。。。", 16, 16, LIGHTMAGENTA);
+    settextstyle(0, 0, 2);
+    setcolor(LIGHTMAGENTA);
+    if(atoi(person->money)==0)
+    {
+        outtextxy(200,75,"0");
+    }
+    else
+    {
+        outtextxy(200, 75, person->money);
+    }
+    puthz(270, 75, "元", 16, 16, LIGHTMAGENTA);
+    delay(1000);
+    setcolor(WHITE);
+    bar(400, 70, 560, 110);
+    bar(200, 70, 280, 110);
+    changemoney_j(add_money, person, 10, head); //充值add_money元，修改person->money的值
+    settextstyle(0, 0, 2);
+    setcolor(LIGHTMAGENTA);
+    outtextxy(200, 75, person->money);
+    puthz(270, 75, "元", 16, 16, LIGHTMAGENTA);
+}
+/**********************************************************
+Function:  click_charge_j
+Description：点击之后加框效果
+Attention:  无
+**********************************************************/
+void click_charge_j(int color) //点击之后加框效果
+{
+    int kuang[] = {498, 55, 555, 55, 555, 85, 498, 85, 498, 55};
+    setlinestyle(SOLID_LINE, 0, THICK_WIDTH);
+    setcolor(color);
+    drawpoly(5, kuang);
+}
+/**********************************************************
 Function:  DrawchargeScreen
 Description：画充值界面，并且实现充值功能
 Attention:  无
 **********************************************************/
+
 void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
 {
     int buttons, mx, my;         //鼠标相关变量
     char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
+    int key = 0, sign = 0;       //输入法标记第几个数字或字母的参数
+    int choose;
+    int charge;
+    int flag;
+    char place[4];
+    char str_charge[4];
+    int zidingyi;
+    place[0] = '\0';
     mouseInit(&mx, &my, &buttons);
+    choose = 0;
+    flag = 0;
+    zidingyi = 0;
     cleardevice();
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
-    puthz(90, 28, "您好！尊敬的：", 16, 16, GREEN);
-    outtextxy(220, 25, person->accounts);
-    puthz(400, 435, "关于我们", 16, 16, MAGENTA);
-    puthz(540, 435, "帮助", 16, 16, MAGENTA);
+    puthz(80, 28, "您好！尊敬的：", 16, 16, GREEN);
+    outtextxy(190, 27, person->accounts);
+    //puthz(400, 435, "关于我们", 16, 16, MAGENTA);
+    //puthz(540, 435, "帮助", 16, 16, MAGENTA);
+
+    // closegraph();
+    // printf("%s",place);//输出乱码了
+    // getch();
 
     setlinestyle(0, 0, 1);
     setcolor(LIGHTRED);
-    rectangle(398, 433, 465, 453); //关于我们的位置
-    rectangle(538, 433, 571, 453); //帮助的位置
-                                   //画出返回按钮
+    //rectangle(398, 433, 465, 453); //关于我们的位置
+    //rectangle(538, 433, 571, 453); //帮助的位置
+    //画出返回按钮
     returnBtn_c(300, 400, GREEN);
 
-    puthz(80, 80, "请选择充值金额：", 16, 16, GREEN);
+    puthz(80, 75, "您的余额：", 16, 16, GREEN);
+    settextstyle(0, 0, 2);
+    setcolor(LIGHTMAGENTA);
+    if(atoi(person->money)==0)
+    {
+        outtextxy(200,75,"0");
+    }
+    else
+    {
+        outtextxy(200, 75, person->money);
+    }
+    puthz(270, 75, "元", 16, 16, LIGHTMAGENTA);
     setlinestyle(0, 0, 1);
+    puthz(80, 110, "您可以选择：", 16, 16, GREEN);
     setcolor(YELLOW);
     //画充值框
     rectangle(100, 150, 190, 200);
@@ -570,53 +649,144 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 *judge = turnTo_c(person, -1);
                 return;
             }
-            if (mx >= 100 && mx <= 190 && my >= 150 && my <= 200 && buttons)
+            else if (mx >= 100 && mx <= 190 && my >= 150 && my <= 200 && buttons && choose == 0)
             {
                 setfillstyle(1, WHITE);
-                bar(60, 340, 250, 370);
-                changemoney_j(10, person, 10, head); //充值10元，修改person->money的值
-                //changemoney_j(person,head);
+                bar(60, 340, 250, 370); //覆盖掉“您已成功充值XXX元”的提示
+                bar(180, 70, 290, 100);
+                outputcharge_j(person, 10, head);
                 puthz(80, 350, "您已成功充值10元", 16, 16, RED);
             }
-            if (mx >= 280 && mx <= 370 && my >= 150 && my <= 200 && buttons)
+            else if (mx >= 280 && mx <= 370 && my >= 150 && my <= 200 && buttons && choose == 0)
             {
                 setfillstyle(1, WHITE);
                 bar(60, 340, 250, 370);
-                changemoney_j(20, person, 10, head); //充值20元，修改person->money的值
-                //changemoney_j(person,head);
+                bar(180, 70, 290, 100);
+                outputcharge_j(person, 20, head);
                 puthz(80, 350, "您已成功充值20元", 16, 16, RED);
             }
-            if (mx >= 460 && mx <= 550 && my >= 150 && my <= 200 && buttons)
+            else if (mx >= 460 && mx <= 550 && my >= 150 && my <= 200 && buttons && choose == 0)
             {
                 setfillstyle(1, WHITE);
                 bar(60, 340, 250, 370);
-                changemoney_j(50, person, 10, head);
-                //changemoney_j(person,head);
+                bar(180, 70, 290, 100);
+                outputcharge_j(person, 50, head);
                 puthz(80, 350, "您已成功充值50元", 16, 16, RED);
             }
-            if (mx >= 100 && mx <= 190 && my >= 280 && my <= 330 && buttons)
+            else if (mx >= 100 && mx <= 190 && my >= 280 && my <= 330 && buttons && choose == 0)
             {
 
                 setfillstyle(1, WHITE);
                 bar(60, 340, 250, 370);
-                changemoney_j(100, person, 10, head);
-                //changemoney_j(person,head);
+                bar(180, 70, 290, 100);
+                outputcharge_j(person, 100, head);
                 puthz(80, 350, "您已成功充值100元", 16, 16, RED);
             }
-            if (mx >= 280 && mx <= 370 && my >= 280 && my <= 330 && buttons)
+            else if (mx >= 280 && mx <= 370 && my >= 280 && my <= 330 && buttons && choose == 0)
             {
 
                 setfillstyle(1, WHITE);
                 bar(60, 340, 250, 370);
-                changemoney_j(200, person, 10, head);
-                //changemoney_j(person,head);
+                bar(180, 70, 290, 100);
+                outputcharge_j(person, 200, head);
                 puthz(80, 350, "您已成功充值200元", 16, 16, RED);
             }
-            if (mx >= 460 && mx <= 550 && my >= 280 && my <= 330 && buttons)
+            else if (mx >= 460 && mx <= 550 && my >= 280 && my <= 330 && buttons && zidingyi == 0) //之前没点过“自定义”
             {
-                //待开发
+                setfillstyle(1, DARKGRAY);
+                bar(400, 50, 560, 112);
+                setfillstyle(1, WHITE);
+                bar(500, 55, 555, 85);
+                bar(420, 88, 470, 108); //确定
+                bar(490, 88, 540, 108); //取消
+                puthz(430, 90, "确定", 16, 16, BLUE);
+                puthz(500, 90, "取消", 16, 16, BLUE);
+                puthz(405, 60, "请输入金额：", 16, 16, WHITE);
+                zidingyi = 1;
             }
-            getMousebk(mx, my);
+            else if (mx >= 500 && mx <= 545 && my >= 55 && my <= 85 && buttons) //框变绿效果
+            {
+                mousehide(mx, my);
+                choose = 1; //选中了框框
+                click_charge_j(GREEN);
+                getMousebk(mx, my);
+            }
+            else if (mx >= 490 && mx <= 540 && my >= 88 && my <= 108 && buttons) //点击“取消”
+            {
+                mousehide(mx, my);
+                setfillstyle(1, WHITE);
+                bar(400, 50, 560, 112);
+                choose = 0;
+                sign = 0;
+                zidingyi = 0;
+                getMousebk(mx, my);
+            }
+            else if (mx >= 420 && mx <= 470 && my >= 88 && my <= 108 && buttons && choose == 1 && charge != 0) //点击“确认”
+            {
+                mousehide(mx, my);
+                setfillstyle(1, WHITE);
+                bar(400, 50, 560, 112);
+                bar(60, 340, 250, 370);
+                bar(180, 70, 290, 100);
+                choose = 0;
+                sign = 0;
+                zidingyi = 0;
+                outputcharge_j(person, charge, head);
+                itoa(charge, str_charge, 10);
+                puthz(80, 350, "您已成功充值", 16, 16, RED);
+                puthz(180, 350, str_charge, 16, 16, RED);
+                puthz(210, 350, "元", 16, 16, RED);
+                getMousebk(mx, my);
+            }
+        }
+        settextstyle(SMALL_FONT, HORIZ_DIR, 7);
+        setcolor(BLUE);
+        if (choose == 1) //选中账号框
+        {
+            key = 0; //重置键值并得到新键值
+            temp[0] = '\0';
+            if (kbhit() != 0) //如果检测到键盘输入
+            {
+                mousehide(mx, my);
+                key = bioskey(0);
+                if (key != 0xe08 && sign >= 0 && sign <= 3) //如果输入不是退格键
+                {
+                    if (searchKeyValue(key) == '0' || searchKeyValue(key) == '1' || searchKeyValue(key) == '2' || searchKeyValue(key) == '3' || searchKeyValue(key) == '4' ||
+                        searchKeyValue(key) == '5' || searchKeyValue(key) == '6' || searchKeyValue(key) == '7' || searchKeyValue(key) == '8' || searchKeyValue(key) == '9') //其中输入的是数字
+                    {
+                        sign++; //字符数加一
+                        //setfillstyle(1,WHITE);
+                        //bar(500+sign*12,80,500+(sign+1)*12,98);
+                        settextstyle(SMALL_FONT, HORIZ_DIR, 7);
+                        setcolor(BLUE);
+                        temp[0] = searchKeyValue(key);
+                        place[sign - 1] = temp[0]; //字符缓存
+                        place[sign] = '\0';
+                        outtextxy(490 + sign * 12, 60, temp);
+                        charge = atoi(place);
+                    }
+                }
+                else if (key == 0xe08 && sign > 0) //如果按了回删键
+                {
+                    sign--; //字符数减1
+                    setfillstyle(1, WHITE);
+                    bar(500 + sign * 12, 60, 500 + (sign + 1) * 12, 78); //输入框1账号
+                    place[sign] = '\0';
+                    charge = atoi(place);
+                }
+                getMousebk(mx, my);
+            }
+            if (charge > 200)
+            {
+                puthz(350, 120, "单笔充值金额不可超过200元！", 16, 16, RED);
+                flag = 1;
+            }
+            if (charge <= 200 && choose == 1 && flag == 1)
+            {
+                setfillstyle(1, WHITE);
+                bar(350, 115, 600, 147);
+                flag = 0;
+            }
         }
     }
 }

@@ -402,7 +402,7 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 		{
 			if (mx >= 60 && mx <= 120 && my >= 184&& my <= 244 && buttons)//返回按钮返回个人中心界面
 			{
-				*judge=turnTo_c(person,4);
+				*judge=turnTo_c(person,-1);
 				return;
 			}
 			else if (mx >= 300 && mx <= 470 && my >= 150 && my <= 180 && buttons)//点击原密码
@@ -471,10 +471,10 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 					{
 						// printf("\nok");
 						strcpy(person->code,managerTemp.confirm);
-						page=Choose_c("密码修改成功","是否返回个人中心？", &mx, &my, BROWN);
+						page=Choose_c("密码修改成功","是否返回主界面？", &mx, &my, BROWN);
 						if(page==1)
 						{
-							*judge=4;
+							*judge=turnTo_c(person,-1);
 							return;
 						}
 						else if(page==0)
