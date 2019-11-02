@@ -17,7 +17,6 @@ void failConfirm_c(int sign);
 void Drawplane();//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
 void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
-// void circleBtn(int x,int y,int bkcolor,int charcolor,int radius,char *str)//圆形按钮
 /**********************************************************
 以下为开始界面的相关函数
 **********************************************************/
@@ -788,13 +787,6 @@ void DrawControlSystem_c(setuser *person,int *judge)
 			pieslice(320,365,0,360,20);
 			getMousebk(mx,my);
 		}
-
 	}
 }
-// void circleBtn(int x,int y,int bkcolor,int charcolor,int radius,char *str)
-// {
-// 	setfillstyle(1,bkcolor);
-// 	pieslice(x,y,0,360,radius);
-// 	puthz(x, y, str, 16, 16, charcolor);
-// }
 

@@ -10,10 +10,11 @@ typedef struct User
 	char money[6];  //用户余额
 	char score[6];
 	char record[200];//出行记录
+	char goods[50];//兑换商品记录
 	struct User *next;  //指向下一个用户的指针
 }setuser;
 
-/*管理员型结构*/
+/*登录界面暂存结构*/
 typedef struct Manager
 {
 	char accounts[13];  //用户的账号

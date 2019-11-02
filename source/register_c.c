@@ -14,6 +14,7 @@ void register_c(setManager managertemp,setuser *head)//×¢²áº¯Êý£º°Ñ×¢²áÓÃ»§Ð´ÈëÎ
 {
     FILE *fp;
     setuser *p=head;
+    int i;
 
     //Á´±í²Ù×÷
     while(p->next!=NULL)
@@ -32,7 +33,14 @@ void register_c(setManager managertemp,setuser *head)//×¢²áº¯Êý£º°Ñ×¢²áÓÃ»§Ð´ÈëÎ
     strcpy(p->class,managertemp.class);
     strcpy(p->money,"0");
     strcpy(p->score,"0");
-    p->record[0]='\0';
+    for(i=0;i<200;i++)
+    {
+        p->record[i]='\0';
+    }
+    for(i=0;i<50;i++)
+    {
+        p->goods[i]='\0';
+    }
     p->next=NULL;
 
     //ÎÄ¼þ²Ù×÷
@@ -51,6 +59,9 @@ void register_c(setManager managertemp,setuser *head)//×¢²áº¯Êý£º°Ñ×¢²áÓÃ»§Ð´ÈëÎ
     fputs("00000",fp);
     fputc('(',fp);//(±êÖ¾ÓÃ»§»ý·Ö
     fputs("00000",fp);
+    fputc('^',fp);//^±êÖ¾ÓÃ»§ÐÐ³Ì
+    // fputs("00000",fp);
+    fputc('&',fp);//&±êÖ¾ÓÃ»§ÉÌÆ·¼ÇÂ¼
     fclose(fp);
 }
 /****************************************
@@ -74,7 +85,7 @@ int turnTo_c(setuser *person,int direct)//Ìø×ªº¯Êý
         {
             return 3;
         }
-        else if(strcmp(person->class,"cjwzs")!=0 && strcmp(person->class,"00000")!=0)//È¨ÏÞÂëÓÐÎó
+        else if(strcmp(person->class,"cjwzs")!=0 && strcmp(person->class,"00000")!=0 && strcmp(person->class,"jmxzs")!=0)//È¨ÏÞÂëÓÐÎó
         {
             return 1;
         }
@@ -104,6 +115,7 @@ int login_c(setManager managertemp,setuser *head,setuser *person)//µÇÂ½º¯Êý
             strcpy(person->money,p->money);
             strcpy(person->score,p->score);
             strcpy(person->record,p->record);
+            strcpy(person->goods,p->goods);
             return 1;//ÑéÖ¤³É¹¦·µ»Ø1
         }
         else if(strcmp(managertemp.accounts,p->accounts)==0)
@@ -149,7 +161,8 @@ int changePass_c(setChangePass *managerTemp,char *accounts,setuser *head)
         fputs(ph->score,fp);
         fputc('^',fp);//±êÖ¾³öÐÐ¼ÇÂ¼µÄ¿ªÍ·
         fputs(ph->record,fp);
-        fputc('&',fp);//½áÊø·û
+        fputc('&',fp);//±êÖ¾¶Ò»»µÄÉÌÆ·¼ÇÂ¼¿ªÍ·
+        fputs(ph->goods,fp);
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
@@ -161,7 +174,6 @@ Function:  createuserlist_c
 Description:¸ù¾ÝÊý¾ÝÎÄ¼þÖÐ´æ´¢µÄÓÃ»§ÐÅÏ¢´´½¨Á´±í
 Attention:ÎÄ¼þ±ØÐë°´ÒªÇó¸ñÊ½»¯ÊéÐ´;
             Ò»¶¨Òª°ÑÖ¸ÕëµÄµØÖ·´«¹ýÀ´
-            money,spendµÈÓÃÊýÖµ´¢´æµÄ¿ÉÄÜ»áÓÐÎÊÌâ£¬×îºÃ½«Æä¸ÄÎª×Ö·û´®ÀàÐÍ·½±ã¶ÁÈ¡ºÍ´æÈë
 *****************************************/
 void createuserlist_c(setuser *head)//´´½¨ÓÃ»§Á´±í
 {
@@ -177,8 +189,6 @@ void createuserlist_c(setuser *head)//´´½¨ÓÃ»§Á´±í
     {
         closegraph();
         printf("Can't open userinf.txt");
-	    //getchar();
-	    //exit(1);
     }
     while(!feof(fp))//ÎÄ¼þ¶ÁÈ¡£¬Èç¹ûÓöµ½ÎÄ¼þ½áÊø·µ»ØÖµÊÇ1£¬·ñÔòÎª0
 	{
@@ -225,7 +235,12 @@ void createuserlist_c(setuser *head)//´´½¨ÓÃ»§Á´±í
             p=now->record;
             // fprintf(fp,"%d",now->money);     
         }
-       
+        else if(cha=='&') 
+        {     //±íÊ¾³öÐÐ¼ÇÂ¼µÄ½áÊø£¬¶Ò»»¼ÇÂ¼µÄ¿ªÊ¼
+	        *p='\0';   
+            p=now->goods;
+            // fprintf(fp,"%d",now->money);     
+        }
 	    else if(cha!=' '&&cha!='\n')       //½«¶ÔÓ¦µÄÕË»§´®»òÃÜÂë´®×°ÈëÁ´±íÖÐ
         {
 	        *p=cha;
@@ -237,9 +252,6 @@ void createuserlist_c(setuser *head)//´´½¨ÓÃ»§Á´±í
         }
     }
     now->next=NULL;
-                
-    // closegraph();
-    // printf("%s\n%s\n%s\n\n",now->accounts,now->code,now->class);
 }
 /****************************************
 Function:  freeuserlist_c
@@ -261,4 +273,47 @@ void freeuserlist_c(setuser **head)
     }
 	free(per);
 	*head=NULL;
+}
+/****************************************
+FUNCTION:  changeGoods_c
+Description: ¶Ô»»ÉÌÆ·
+Attention: signÉÌÆ·±àºÅ 1£º800»ý·Ö 2£º5000»ý·Ö 3£º32000»ý·Ö  4£º99999»ý·Ö
+*****************************************/
+void changeGoods_c(setuser *head,setuser *person)
+{
+    FILE *fp=NULL; //´ò¿ªÎÄ¼þµÄÖ¸Õë
+    setuser *ph;
+    for(ph=head->next;ph!=NULL;ph=ph->next)
+    {
+        if(strcmp(ph->accounts,person->accounts)==0 && strcmp(ph->code,ph->code)==0)//²éÕÒÕË»§
+        {
+            strcpy(ph->score,person->score);
+            strcpy(ph->goods,person->goods);
+        }
+    }
+    if ((fp = fopen("data_c\\user\\userchange.txt", "wt")) == NULL)//ÒÔÐ´µÄ·½Ê½ÐÂ½¨Ò»¸öÎÄ¼þ
+    {
+        closegraph();
+        printf("Can't open userchange.txt");
+    }
+    for(ph=head->next;ph!=NULL;ph=ph->next)
+    {
+        fputc('@',fp);//@±êÖ¾Ò»¸öÓÃ»§µÄ¿ªÍ·
+        fputs(ph->accounts,fp);
+        fputc('*',fp);//*±êÖ¾ÓÃ»§ÃÜÂëµÄ¿ªÍ·
+        fputs(ph->code,fp);
+        fputc('#',fp);//#±êÖ¾ÓÃ»§µÄÈ¨ÏÞÂë
+        fputs(ph->class,fp);
+        fputc('$',fp);//$±êÖ¾ÓÃ»§Óà¶î
+        fputs(ph->money,fp);
+        fputc('(',fp);//(±êÖ¾ÓÃ»§»ý·Ö
+        fputs(ph->score,fp);
+        fputc('^',fp);//±êÖ¾³öÐÐ¼ÇÂ¼µÄ¿ªÍ·
+        fputs(ph->record,fp);
+        fputc('&',fp);//±êÖ¾¶Ò»»µÄÉÌÆ·¼ÇÂ¼¿ªÍ·
+        fputs(ph->goods,fp);
+    }
+    fclose(fp);
+    remove("data_c\\user\\userinf.txt");
+    rename("data_c\\user\\userchange.txt","data_c\\user\\userinf.txt");
 }

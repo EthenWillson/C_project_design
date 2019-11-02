@@ -137,12 +137,6 @@ void DrawrecordScreen_j(setuser *person,int *judge,all_lines_stations* all)
         {
             continue;
         }
-        /*
-        closegraph();
-        printf("%d\n",i);
-        printf("%s",person->record);
-        getch();
-        */
         m++;
         if(m%8==3||m%8==6)
         {

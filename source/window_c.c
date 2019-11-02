@@ -4,6 +4,7 @@ Attention:  必须要用GB2312编码保存，不然汉字会有乱码
 Author：陈俊玮
 **********************************************************/
 #include"window_c.h"
+#include"common_c.h"
 /***********************************************************
 Function: Choose_c
 Description:选择框
@@ -13,7 +14,7 @@ return:点击“是”返回1，点击“否”返回0
 int Choose_c(char *contentOne,char *contentTwo, int *mx, int *my, int color)
 {
 	int buttons;
-
+	mousehide(*mx,*my);
 	setcolor(LIGHTCYAN);
 	setfillstyle(1, WHITE);
 	bar(200, 160, 420, 300);
@@ -35,6 +36,7 @@ int Choose_c(char *contentOne,char *contentTwo, int *mx, int *my, int color)
 	setcolor(WHITE);
 	puthz(240, 252, "是", 16, 16, GREEN);
 	puthz(365, 252, "否", 16, 16, LIGHTRED);
+	getMousebk(*mx,*my);
 
 
 	while (1)
@@ -46,4 +48,21 @@ int Choose_c(char *contentOne,char *contentTwo, int *mx, int *my, int color)
 		else if (*mx >= 365 && *mx <= 381 && *my >= 252 && *my <= 268 && buttons)
 			return 0;//否
 	}
+}
+/***********************************************************
+Function: infoWindow_c
+Description:提示框
+Input:选择内容content,提示框坐标指针mx,my，提示字体颜色color，time延迟时间（ms）
+return: 无
+**********************************************************/
+void infoWindow_c(char *contentOne,char *contentTwo, int color,int time)
+{
+	setcolor(LIGHTCYAN);
+	setfillstyle(1, WHITE);
+	bar(200, 160, 420, 300);
+	rectangle(200, 160, 420, 300);
+	puthz(240, 200, contentOne, 16, 16, color);
+	puthz(240, 223, contentTwo, 16, 16, color);
+	delay(time);
+
 }

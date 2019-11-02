@@ -124,7 +124,7 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
             if(buttons)
             {
                *judge=turnTo_c(person,5);
-               return;
+                return;
             } 
         }
         else if(mx>=185&&mx<=274&&my>=181&&my<=259)//修改密码
@@ -139,7 +139,7 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
             if(buttons)
             {
                *judge=turnTo_c(person,14);
-               return;
+                return;
             } 
         }
         else if(mx>=366&&mx<=455&&my>=181&&my<=259)//积分商城
@@ -154,7 +154,7 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
             if(buttons)
             {
                *judge=turnTo_c(person,10);
-               return;
+                return;
             } 
         }
         else if(mx>=185&&mx<=274&&my>=261&&my<=339)//用户查询
@@ -197,7 +197,7 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
             if(buttons)
             {
                *judge=turnTo_c(person,7);
-               return;
+                return;
             } 
         }
         else if(sign[0]==1&&!(mx>=275&&mx<=365&&my>=100&&my<=180&&sign[0]==0)&&!(mx>=185&&mx<=275&&my>=180&&my<=260)&&!(mx>=365&&mx<=455&&my>=180&&my<=260)
