@@ -28,6 +28,7 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 	int sign[2]={0,0};//用于判断鼠标移动到按钮上的标志
 	// 初始化
 	// 鼠标初始化
+	settextstyle(1,0,2);
 	mouseInit(&mx, &my, &buttons);
 	cleardevice();
 	setbkcolor(WHITE);

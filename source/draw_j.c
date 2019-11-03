@@ -1,11 +1,21 @@
 #include "common_c.h"
 #include "draw_j.h"
 void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stations *all); //购票界面
-void DrawcheckScreen_j(setuser *person, int *judge, setuser *head);                        //查询界面
-void DrawchargeScreen_j(setuser *person, int *judge, setuser *head);                       //充值界面
-void outputcharge_j(setuser *person, int add_money, setuser *head);                        //修改、实时显示用户余额，显示delay正在充值
-void click_charge_j(int color);                                                            //点框框加效果
-void DrawUserScreen_j(setuser *person, int *judge);                                        //普通用户界面
+void rectangles_j(int color);
+void DrawcheckScreen_j(setuser *person, int *judge, setuser *head);  //查询界面
+void DrawchargeScreen_j(setuser *person, int *judge, setuser *head); //充值界面
+void outputcharge_j(setuser *person, int add_money, setuser *head);  //修改、实时显示用户余额，显示delay正在充值
+void click_charge_j(int color);                                      //点框框加效果
+void DrawUserScreen_j(setuser *person, int *judge);                  //普通用户界面
+void rectangles_j(int color)
+{
+    setlinestyle(0, 0, 3);
+    setcolor(color);
+    rectangle(170, 80, 470, 150);
+    rectangle(170, 200, 470, 270);
+    rectangle(170, 320, 470, 390);
+}
+
 /***********************************************
 Function：DrawUserScreen
 Description：画普通用户界面
@@ -15,6 +25,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
     char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
+    int sign[3] = {0, 0, 0};
     // 初始化
     // 鼠标初始化
     mouseInit(&mx, &my, &buttons);
@@ -24,35 +35,14 @@ void DrawUserScreen_j(setuser *person, int *judge)
     puthz(90, 28, "您好！尊敬的：", 16, 16, GREEN);
     settextstyle(0, 0, 2);
     outtextxy(220, 25, person->accounts);
-    //puthz(400, 435, "关于我们", 16, 16,MAGENTA );
-    //puthz(540 ,435, "帮助", 16, 16, MAGENTA);
-
-    setlinestyle(0, 0, 1);
-    setcolor(LIGHTRED);
-    //rectangle(398,433,465,453);//关于我们的位置
-    //rectangle(538,433,571,453);//帮助的位置
-
     returnBtn_c(550, 210, GREEN);
-
     //画出三个矩形，填充为黄色
     setfillstyle(1, YELLOW);
     bar(170, 80, 470, 150);
     bar(170, 200, 470, 270);
     bar(170, 320, 470, 390);
-    setlinestyle(0, 0, 3);
-    setcolor(GREEN);
-    line(170, 80, 470, 80);
-    line(170, 80, 170, 150);
-    line(470, 80, 470, 150);
-    line(170, 150, 470, 150);
-    line(170, 200, 470, 200);
-    line(170, 200, 170, 270);
-    line(470, 200, 470, 270);
-    line(170, 270, 470, 270);
-    line(170, 320, 470, 320);
-    line(170, 320, 170, 390);
-    line(470, 320, 470, 390);
-    line(170, 390, 470, 390);
+    rectangles_j(GREEN);
+
     puthz(200, 95, "购票", 32, 32, GREEN);
     puthz(200, 215, "账户查询", 32, 32, GREEN);
     puthz(200, 335, "账户充值", 32, 32, GREEN);
@@ -83,6 +73,49 @@ void DrawUserScreen_j(setuser *person, int *judge)
                 return;
             }
         }
+        //鼠标放上去，框变紫色的动画
+        if (mx >= 170 && mx <= 470 && my >= 80 && my <= 150 && sign[0] == 0)
+        {
+            mousehide(mx, my);
+            setcolor(LIGHTMAGENTA);
+            rectangle(170, 80, 470, 150);
+            setcolor(GREEN);
+            rectangle(170, 200, 470, 270);
+            rectangle(170, 320, 470, 390);
+            sign[0] = 1;
+            getMousebk(mx, my);
+        }
+        else if (mx >= 170 && mx <= 470 && my >= 200 && my <= 270 && sign[1] == 0)
+        {
+            mousehide(mx, my);
+            setcolor(LIGHTMAGENTA);
+            rectangle(170, 200, 470, 270);
+            setcolor(GREEN);
+            rectangle(170, 80, 470, 150);
+            rectangle(170, 320, 470, 390);
+            sign[1] = 1;
+            getMousebk(mx, my);
+        }
+        else if (mx >= 170 && mx <= 470 && my >= 320 && my <= 390 && sign[2] == 0)
+        {
+            mousehide(mx, my);
+            setcolor(LIGHTMAGENTA);
+            rectangle(170, 320, 470, 390);
+            setcolor(GREEN);
+            rectangle(170, 80, 470, 150);
+            rectangle(170, 200, 470, 270);
+            sign[2] = 1;
+            getMousebk(mx, my);
+        }
+        else if ((sign[0] || sign[1] || sign[2]) && !(mx >= 170 && mx <= 470 && my >= 80 && my <= 150) && !(mx >= 170 && mx <= 470 && my >= 200 && my <= 270) && !(mx >= 170 && mx <= 470 && my >= 320 && my <= 390))
+        {
+            mousehide(mx, my);
+            rectangles_j(GREEN);
+            sign[0] = 0;
+            sign[1] = 0;
+            sign[2] = 0;
+            getMousebk(mx, my);
+        }
     }
 }
 /**********************************************************
@@ -100,7 +133,8 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     int start_station; //存储起点信息,比如12代表1号线第2站为起点
     int end_station;   //存储终点信息，和上面一行差不多
     int price;
-    int money; //用户余额
+    int money;                  //用户余额
+    int sign[4] = {0, 0, 0, 0}; //sign0标志“计费规则”框
     //char sss[10]="江明轩";
     flag = 0;
     start_station = 0;
@@ -149,6 +183,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     circle(580, 320, 30);
     //计费规则按钮
     rectangle(400, 150, 510, 220);
+    //显示距离按钮
     rectangle(400, 240, 510, 310);
 
     puthz(565, 142, "购票", 16, 16, CYAN);
@@ -169,7 +204,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
                 *judge = turnTo_c(person, -1);
                 return;
             }
-            if (mx >= 400 && mx <= 510 && my >= 150 && my <= 220 && buttons)
+            if (mx >= 400 && mx <= 510 && my >= 150 && my <= 220 && buttons) //计费规则
             {
                 *judge = turnTo_c(person, 8);
                 return;
@@ -389,7 +424,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             price = 0;
             getMousebk(mx, my);
         }
-        //580, 150
+        //购票！
         if (mx >= 550 && mx <= 610 && my >= 120 && my <= 180 && buttons && flag == 2)
         {
             mousehide(mx, my);
@@ -425,6 +460,52 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             }
             getMousebk(mx, my);
         }
+        if (mx >= 400 && mx <= 510 && my >= 150 && my <= 220 && sign[0] == 0) //计费规则变紫
+        {
+            mousehide(mx, my);
+            setlinestyle(0, 0, 3);
+            setcolor(LIGHTMAGENTA);
+            rectangle(400, 150, 510, 220);
+            sign[0] = 1;
+            getMousebk(mx, my);
+        }
+        else if (mx >= 400 && mx <= 510 && my >= 240 && my <= 310 && sign[1] == 0) //显示距离变紫
+        {
+            mousehide(mx, my);
+            setlinestyle(0, 0, 3);
+            setcolor(LIGHTMAGENTA);
+            rectangle(400, 240, 510, 310);
+            sign[1] = 1;
+            getMousebk(mx, my);
+        }
+        else if (mx >= 550 && mx <= 610 && my >= 120 && my <= 180 && sign[2] == 0 && flag == 2) //购票变紫(选好了起点终点才会变色)
+        {
+            mousehide(mx, my);
+            setlinestyle(0, 0, 3);
+            setcolor(LIGHTMAGENTA);
+            circle(580, 150, 30);
+            sign[2] = 1;
+            getMousebk(mx, my);
+        }
+        else if (mx >= 550 && mx <= 610 && my >= 290 && my <= 350 && sign[3] == 0)
+        {
+            mousehide(mx, my);
+            setlinestyle(0, 0, 3);
+            setcolor(LIGHTMAGENTA);
+            circle(580, 320, 30);
+            sign[3] = 1;
+            getMousebk(mx, my);
+        }
+        else if ((sign[0] || sign[1] || sign[2] || sign[3]) && !(mx >= 400 && mx <= 510 && my >= 150 && my <= 220) && !(mx >= 400 && mx <= 510 && my >= 240 && my <= 310) && !(mx >= 550 && mx <= 610 && my >= 120 && my <= 180) && !(mx >= 550 && mx <= 610 && my >= 290 && my <= 350))
+        {
+            setlinestyle(0, 0, 3);
+            setcolor(GREEN);
+            circle(580, 150, 30);
+            circle(580, 320, 30);
+            rectangle(400, 150, 510, 220);
+            rectangle(400, 240, 510, 310);
+            sign[0] = sign[1] = sign[2] = sign[3] = 0;
+        }
     }
 }
 /**********************************************************
@@ -440,7 +521,7 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     cleardevice();
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
-    settextstyle(0,0,2);
+    settextstyle(0, 0, 2);
     setcolor(LIGHTMAGENTA);
 
     puthz(90, 28, "您好！尊敬的：", 16, 16, CYAN);
@@ -461,19 +542,19 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     puthz(250, 100, "积分：", 16, 16, CYAN);
     //changemoney_j(0, person, 10, head);
     setcolor(MAGENTA);
-    if(atoi(person->money)==0)
+    if (atoi(person->money) == 0)
     {
-        outtextxy(140,95,"0");
+        outtextxy(140, 95, "0");
     }
     else
     {
-        outtextxy(140, 95, person->money); 
+        outtextxy(140, 95, person->money);
     }
-    if(atoi(person->score)==0)
+    if (atoi(person->score) == 0)
     {
-        outtextxy(300,95,"0");
+        outtextxy(300, 95, "0");
     }
-    else 
+    else
     {
         outtextxy(300, 95, person->score);
     }
@@ -538,9 +619,9 @@ void outputcharge_j(setuser *person, int add_money, setuser *head)
     puthz(410, 75, "正在支付中。。。", 16, 16, LIGHTMAGENTA);
     settextstyle(0, 0, 2);
     setcolor(LIGHTMAGENTA);
-    if(atoi(person->money)==0)
+    if (atoi(person->money) == 0)
     {
-        outtextxy(200,75,"0");
+        outtextxy(200, 75, "0");
     }
     else
     {
@@ -581,7 +662,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
     char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int key = 0, sign = 0;       //输入法标记第几个数字或字母的参数
     int choose;
-    int charge;
+    int charge = 0;
     int flag;
     char place[4];
     char str_charge[4];
@@ -613,9 +694,9 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
     puthz(80, 75, "您的余额：", 16, 16, GREEN);
     settextstyle(0, 0, 2);
     setcolor(LIGHTMAGENTA);
-    if(atoi(person->money)==0)
+    if (atoi(person->money) == 0)
     {
-        outtextxy(200,75,"0");
+        outtextxy(200, 75, "0");
     }
     else
     {
@@ -718,12 +799,13 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 mousehide(mx, my);
                 setfillstyle(1, WHITE);
                 bar(400, 50, 560, 112);
+                bar(350, 115, 600, 147);
                 choose = 0;
                 sign = 0;
                 zidingyi = 0;
                 getMousebk(mx, my);
             }
-            else if (mx >= 420 && mx <= 470 && my >= 88 && my <= 108 && buttons && choose == 1 && charge != 0) //点击“确认”
+            else if (mx >= 420 && mx <= 470 && my >= 88 && my <= 108 && buttons && choose == 1 && charge != 0 && flag == 0) //点击“确认”
             {
                 mousehide(mx, my);
                 setfillstyle(1, WHITE);

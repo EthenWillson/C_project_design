@@ -19,7 +19,8 @@ typedef struct Manager
 	char accounts[13];  //用户的账号
 	char code[13];  //用户的密码 
 	char class[6];  //管理员权限码,用户为00000
-	char money[6];  //用户余额
+	char money[6];
+	char score[6];
 }setManager;
 
 /*修改密码结构*/
