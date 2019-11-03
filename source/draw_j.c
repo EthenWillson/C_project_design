@@ -435,15 +435,8 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
                 bar(220, 180, 450, 300);
                 puthz(220, 210, "购票成功！", 16, 16, GREEN);
                 puthz(220, 240, "查询：个人中心——账户查询", 16, 16, GREEN);
-                //( setuser *person,  setuser *head,int *start_name,int*end_name,int price);
-
                 changemoney_j(-price, person, 10, head);
                 changescore_j(price * 10, person, head);
-                /*
-                closegraph();
-                printf("%s",person->score);
-                getch();
-                */
                 changerecord_j(person, head, start_station, end_station, price);
                 delay(2000);
                 *judge = turnTo_c(person, -1);
@@ -527,13 +520,9 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     puthz(90, 28, "您好！尊敬的：", 16, 16, CYAN);
     setcolor(MAGENTA);
     outtextxy(220, 30, person->accounts);
-    //puthz(400, 435, "关于我们", 16, 16, MAGENTA);
-    //puthz(540, 435, "帮助", 16, 16, MAGENTA);
 
     setlinestyle(0, 0, 1);
     setcolor(LIGHTRED);
-    //rectangle(398, 433, 465, 453); //关于我们的位置
-    //rectangle(538, 433, 571, 453); //帮助的位置
 
     //画出返回按钮
     returnBtn_c(300, 400, GREEN);
@@ -569,7 +558,7 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
     puthz(160, 223, "购票", 32, 32, MAGENTA);
     puthz(357, 223, "修改密码", 32, 32, MAGENTA);
     puthz(127, 328, "购票记录", 32, 32, MAGENTA);
-    puthz(357, 328, "积分兑换", 32, 32, MAGENTA);
+    puthz(357, 328, "积分商城", 32, 32, MAGENTA);
 
     while (1)
     {
@@ -817,6 +806,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 zidingyi = 0;
                 outputcharge_j(person, charge, head);
                 itoa(charge, str_charge, 10);
+                bar(60, 340, 250, 370); //覆盖掉“您已成功充值XXX元”的提示
                 puthz(80, 350, "您已成功充值", 16, 16, RED);
                 puthz(180, 350, str_charge, 16, 16, RED);
                 puthz(210, 350, "元", 16, 16, RED);

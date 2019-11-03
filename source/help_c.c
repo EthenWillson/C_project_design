@@ -88,7 +88,7 @@ void DrawhelpScreen_c(int *judge)
             setcolor(WHITE);
             setfillstyle(1,WHITE);
             bar(190,300,500,370);
-            DrawListbutton(210, 320, LIGHTBLUE,LIGHTBLUE,"管理加调度");
+            DrawListbutton(210, 320, LIGHTBLUE,LIGHTBLUE,"运营加调度");
             mouseover[3]=1;
             getMousebk(mx,my);
         }
@@ -98,7 +98,7 @@ void DrawhelpScreen_c(int *judge)
             setcolor(WHITE);
             setfillstyle(1,WHITE);
             bar(190,300,500,370);
-            DrawListbutton(200, 330, LIGHTGRAY,LIGHTGRAY,"管理加调度");
+            DrawListbutton(200, 330, LIGHTGRAY,LIGHTGRAY,"运营加调度");
             mouseover[3]=0;
             getMousebk(mx,my);
         }
@@ -146,17 +146,18 @@ void DrawLoginHelp(int *judge)
     DrawBeautifulFrame_c();
     returnBtn_c(290, 400, CYAN);//返回按钮
     puthz(248,40,"登陆与注册",32,32,CYAN);
-    puthz(70,100,"·登陆：",16,16,LIGHTGRAY);
-    puthz(80,130,"·用户登陆：对于已经注册过的普通用户，点击右上角用户按钮，在",16,16,LIGHTGRAY);
-    puthz(80,150,"框体中输入用户名和密码，单击登录按钮进入系统。",16,16,LIGHTGRAY);
-    puthz(80,180,"·管理员登陆：对于已经注册过的管理员，点击右上角管理员按钮，",16,16,LIGHTGRAY);
-    puthz(80,200,"在框体中输入用户名、密码及权限码，单击登录按钮进入系统。",16,16,LIGHTGRAY);
-    puthz(70,240,"·注册：",16,16,LIGHTGRAY);
-    puthz(80,270,"·用户注册：对于新用户，点击右上角用户按钮，在框体中输入想要",16,16,LIGHTGRAY);
-    puthz(80,290,"创建的用户名和密码，单击自动注册按钮即可注册账户并进入系统。",16,16,LIGHTGRAY);
-    puthz(80,320,"·管理员注册：对于新管理员，点击右上角管理员按钮，在框体中输",16,16,LIGHTGRAY);
-    puthz(80,340,"入想要创建的用户名和密码，权限码填写cjwzs，单击自动注册",16,16,LIGHTGRAY);
-    puthz(80,360,"按钮即可注册账户并进入系统。",16,16,LIGHTGRAY);
+    puthz(70,90,"·登陆：",16,16,LIGHTGRAY);
+    puthz(80,120,"·用户登陆：对于已经注册过的普通用户，点击右上角用户按钮，在",16,16,LIGHTGRAY);
+    puthz(80,140,"框体中输入用户名和密码，单击登录按钮进入系统。",16,16,LIGHTGRAY);
+    puthz(80,170,"·管理员登陆：对于已经注册过的管理员，点击右上角管理员按钮，",16,16,LIGHTGRAY);
+    puthz(80,190,"在框体中输入用户名、密码及权限码，单击登录按钮进入系统。",16,16,LIGHTGRAY);
+    puthz(70,230,"·注册：",16,16,LIGHTGRAY);
+    puthz(80,260,"·用户注册：对于新用户，点击右上角用户按钮，在框体中输入想要",16,16,LIGHTGRAY);
+    puthz(80,280,"创建的用户名和密码，单击自动注册按钮即可注册账户并进入系统。",16,16,LIGHTGRAY);
+    puthz(80,310,"·管理员注册：对于新管理员，点击右上角管理员按钮，在框体中输",16,16,LIGHTGRAY);
+    puthz(80,330,"入想要创建的用户名和密码，若为调度管理员权限码填写cjwzs，",16,16,LIGHTGRAY);
+    puthz(80,350,"若为运营权限码填写jmxs，单击自动注册按钮即可注册账户并进",16,16,LIGHTGRAY);
+    puthz(80,370,"入系统。",16,16,LIGHTGRAY);
     while (1)
     {
         newxy(&mx, &my, &buttons);
@@ -187,14 +188,13 @@ void DrawBuyHelp(int *judge)
     puthz(70,100,"·充值：",16,16,LIGHTGRAY);
     puthz(80,130,"·用户充值：在用户主界面点击账户充值选项，进入充值界面，选择",16,16,LIGHTGRAY);
     puthz(80,150,"充值的金额，即可充值",16,16,LIGHTGRAY);
-    puthz(80,180,"·管理员充值：在管理员主界面点击左上角头像图标，进入管理员个，",16,16,LIGHTGRAY);
-    puthz(80,200,"人中心，点击账户信息，进入账户信息界面，再点击账户充值，进入",16,16,LIGHTGRAY);
-    puthz(80,220,"充值界面，操作同用户充值",16,16,LIGHTGRAY);
-    puthz(70,260,"·购票：",16,16,LIGHTGRAY);
-    puthz(80,290,"·用户购票：在用户主界面点击购票选项，进入购票界面，选择起点",16,16,LIGHTGRAY);
-    puthz(80,310,"和终点后，点击购票",16,16,LIGHTGRAY);
-    puthz(80,340,"·管理员购票：在管理员主界面点击太极下侧，进入购票界面，操作",16,16,LIGHTGRAY);
-    puthz(80,360,"同用户购票",16,16,LIGHTGRAY);
+    puthz(80,180,"·管理员充值：调度管理员主界面点击左上角头像图标，进入管理员个",16,16,LIGHTGRAY);
+    puthz(80,200,"人中心，点击账户充值；运营管理员点击首页六芒星账户充值选项。",16,16,LIGHTGRAY);
+    puthz(70,240,"·购票：",16,16,LIGHTGRAY);
+    puthz(80,270,"·用户购票：在用户主界面点击购票选项，进入购票界面，选择起点",16,16,LIGHTGRAY);
+    puthz(80,290,"和终点后，点击购票",16,16,LIGHTGRAY);
+    puthz(80,320,"·管理员购票：在管理员主界面点击太极下侧，进入购票界面；运营",16,16,LIGHTGRAY);
+    puthz(80,340,"管理员点击六芒星购票选项",16,16,LIGHTGRAY);
     while (1)
     {
         newxy(&mx, &my, &buttons);
@@ -225,12 +225,13 @@ void DrawRecordHelp(int *judge)
     puthz(70,100,"·修改密码：",16,16,LIGHTGRAY);
     puthz(80,130,"·用户：在用户主界面点击账户查询选项，进入账户查询界面，选择",16,16,LIGHTGRAY);
     puthz(80,150,"修改密码选项，按要求输入即可修改密码",16,16,LIGHTGRAY);
-    puthz(80,180,"·管理员：在管理员主界面点击左上角头像图标，进入管理员个人中",16,16,LIGHTGRAY);
-    puthz(80,200,"心，点击修改密码，操作同用户",16,16,LIGHTGRAY);
+    puthz(80,180,"·管理员：调度管理员主界面点击左上角头像图标，进入管理员个人",16,16,LIGHTGRAY);
+    puthz(80,200,"中心，点击账户查询；运营管理员点击六芒星修改密码选项",16,16,LIGHTGRAY);
     puthz(70,240,"·出行记录：",16,16,LIGHTGRAY);
     puthz(80,270,"·用户：在用户主界面点击账户查询选项，进入账户查询界面，选择",16,16,LIGHTGRAY);
     puthz(80,290,"购票记录选项可查看历史购票记录",16,16,LIGHTGRAY);
-    puthz(80,320,"·管理员：在管理员个人中心点击账户查询选项，后续操作同用户",16,16,LIGHTGRAY);
+    puthz(80,320,"·管理员：在调度管理员个人中心点击账户查询选项；运营管理员点",16,16,LIGHTGRAY);
+    puthz(80,340,"击六芒星账户查询选项，后续操作同用户",16,16,LIGHTGRAY);
     
     while (1)
     {
@@ -253,27 +254,104 @@ Input:   图标的坐标；颜色
 void DrawManageHelp(int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
+    int mouseover=0;
     mouseInit(&mx, &my, &buttons);
     cleardevice();
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
     returnBtn_c(290, 400, CYAN);//返回按钮
-    puthz(248,40,"管理加调度",32,32,CYAN);
+    puthz(298,40,"调度",32,32,CYAN);
     puthz(65,100,"·调度：",16,16,LIGHTGRAY);
-    puthz(75,130,"·进入管理员主界面，点击太极上侧，进入调度界面，共有三个模块：",16,16,LIGHTGRAY);
-    puthz(85,160,"·线路选择模块：右上角可选择控制的线路",16,16,LIGHTGRAY);
-    puthz(85,190,"·调度主控模块：右侧模块可调整当前选择线路的列车速度，停站时",16,16,LIGHTGRAY);
-    puthz(85,210,"间和发车间隔",16,16,LIGHTGRAY);
-    puthz(85,240,"·站点信息模块：在地铁线上随意点击站点，左侧可显示站点的信息",16,16,LIGHTGRAY);
-    puthz(75,280,"·若想重置模拟，点击右下角reset按钮",16,16,LIGHTGRAY);
+    puthz(75,130,"·进入调度管理员主界面，点击太极上侧，进入调度界面，共有三个",16,16,LIGHTGRAY);
+    puthz(85,150,"模块：",16,16,LIGHTGRAY);
+    puthz(85,180,"·线路选择模块：右上角可选择控制的线路",16,16,LIGHTGRAY);
+    puthz(85,210,"·调度主控模块：右侧模块可调整当前选择线路的列车速度，停站时",16,16,LIGHTGRAY);
+    puthz(85,240,"间和发车间隔",16,16,LIGHTGRAY);
+    puthz(85,270,"·站点信息模块：在地铁线上随意点击站点，左侧可显示站点的信息",16,16,LIGHTGRAY);
+    puthz(75,300,"·若想重置模拟，点击右下角reset按钮",16,16,LIGHTGRAY);
+    returnBtn_next_c(420,70,CYAN);
     while (1)
     {
         newxy(&mx, &my, &buttons);
+        if (mx >= 350 && mx <= 450 && my >= 40 && my <= 70 && mouseover==0) 
+        {
+            mousehide(mx,my);
+            returnBtn_next_c(420,70,LIGHTBLUE);
+            mouseover=1;
+            getMousebk(mx,my);
+        }
+        if (!(mx >= 350 && mx <= 450 && my >= 40 && my <= 70) && mouseover==1) 
+        {
+            mousehide(mx,my);
+            returnBtn_next_c(420,70,CYAN);
+            mouseover=0;
+            getMousebk(mx,my);
+        }
         if(buttons)
         {
             if (mx >= 290 && mx <= 360 && my >= 400 && my <= 460) //返回按钮点击返回
             {
                 *judge = 20;
+                return;
+            }
+            if (mx >= 350 && mx <= 450 && my >= 40 && my <= 70) //下一项到运营帮助界面
+            {
+                *judge = 27;
+                return;
+            }
+        }
+    }
+}
+/**********************************************************
+Function:      DrawRunHelp
+Description：	画出管理加调度帮助界面 代号27
+Input:   图标的坐标；颜色
+**********************************************************/
+void DrawRunHelp(int *judge)
+{
+    int buttons, mx, my;         //鼠标相关变量
+    int mouseover=0;
+    mouseInit(&mx, &my, &buttons);
+    cleardevice();
+    setbkcolor(WHITE);
+    DrawBeautifulFrame_c();
+    returnBtn_c(290, 400, CYAN);//返回按钮
+    puthz(298,40,"运营",32,32,CYAN);
+    puthz(65,100,"·运营：",16,16,LIGHTGRAY);
+    puthz(75,130,"·进入运营管理员主界面，六芒星六个选项上，共有两个运营模块：",16,16,LIGHTGRAY);
+    puthz(85,160,"·用户查询模块：可以查询已注册用户的各项信息",16,16,LIGHTGRAY);
+    puthz(85,190,"·权限管理模块：可以修改用户的权限，删除用户",16,16,LIGHTGRAY);
+    // puthz(85,210,"间和发车间隔",16,16,LIGHTGRAY);
+    // puthz(85,240,"·站点信息模块：在地铁线上随意点击站点，左侧可显示站点的信息",16,16,LIGHTGRAY);
+    // puthz(75,280,"·若想重置模拟，点击右下角reset按钮",16,16,LIGHTGRAY);
+    returnBtn_small_c(240,40,CYAN);
+    while (1)
+    {
+        newxy(&mx, &my, &buttons);
+        if (mx >= 250 && mx <= 280 && my >= 30 && my <= 80 && mouseover==0) 
+        {
+            mousehide(mx,my);
+            returnBtn_small_c(240,40,LIGHTBLUE);
+            mouseover=1;
+            getMousebk(mx,my);
+        }
+        if (!(mx >= 250 && mx <= 280 && my >= 30 && my <= 80) && mouseover==1) 
+        {
+            mousehide(mx,my);
+            returnBtn_small_c(240,40,CYAN);
+            mouseover=0;
+            getMousebk(mx,my);
+        }
+        if(buttons)
+        {
+            if (mx >= 290 && mx <= 360 && my >= 400 && my <= 460) //返回按钮点击返回
+            {
+                *judge = 20;
+                return;
+            }
+            if (mx >= 250 && mx <= 280 && my >= 30 && my <= 80) //上一项点击返回
+            {
+                *judge = 24;
                 return;
             }
         }

@@ -39,7 +39,7 @@ void main()
 	// printf("%d %d\n",Info[0].trainHead->x,Info[0].rtrainHead->y);
 	// getch();
 
-	judge = 3;
+	judge = 1;
 	while (1)
 	{
 		/*根据judge的值判断需要调用界面和其后台函数*/
@@ -118,45 +118,49 @@ void main()
 		case 22: //购票帮助界面
 			DrawBuyHelp(&judge);
 			break;
-		case 23:
+		case 23://记录帮助界面
 			DrawRecordHelp(&judge);
 			break;
-		case 24:
+		case 24://调度帮助界面
 			DrawManageHelp(&judge);
 			break;
-		case 25: //商品兑换界面
-			DrawStoreScreen(&person, &judge, head);
+		case 25://商品兑换界面
+			DrawStoreScreen(&person,&judge,head);
 			break;
-		case 26: //我的兑换界面
-			DrawMyChangeScreen(&person, &judge, head);
+		case 26://我的兑换界面
+			DrawMyChangeScreen(&person,&judge,head);
 			break;
-			// case 2: //注册
-			// 	Drawregisterscreen();
-			// 	judge = personregister(head, person.accounts, person.code);
-			// 	break;
-
-			// case 3: //用户登录后
-			//     Drawjiazaitiao();
-			//     Drawuserscreen();
-			//     judge = usermain(&person);
-			// 	//将person的信息存入链表
-			// 	saveinftolist(head,&person);
-
-			// 	person.accounts[0] = '\0';
-			//     person.code[0] = '\0';
-			// 	break;
-
-			// case 4://管理员登录后
-			//     //Drawmanagerscreen();
-			// 	//judge=manager();
-			// 	manage();
-			// 	judge=1;
-			// 	break;
-
-			// case 5://退出程序
-			// 	freeuserlist(&head);//释放用户链表
-			// 	 //free(person.Routes);
-			// 	return ;
+		case 27:
+			DrawRunHelp(&judge);
+			break;
+		// case 2: //注册	
+		// 	Drawregisterscreen();
+		// 	judge = personregister(head, person.accounts, person.code);
+		// 	break;
+			
+		// case 3: //用户登录后
+		//     Drawjiazaitiao();
+        //     Drawuserscreen();
+        //     judge = usermain(&person);
+		// 	//将person的信息存入链表
+		// 	saveinftolist(head,&person);
+			
+		// 	person.accounts[0] = '\0';
+	    //     person.code[0] = '\0';
+		// 	break;
+			
+		// case 4://管理员登录后
+		//     //Drawmanagerscreen();
+		// 	//judge=manager();
+		// 	manage();
+		// 	judge=1;
+		// 	break;
+			
+		// case 5://退出程序
+		// 	freeuserlist(&head);//释放用户链表
+		// 	 //free(person.Routes);
+		// 	return ;
+			
 		}
 	}
 }

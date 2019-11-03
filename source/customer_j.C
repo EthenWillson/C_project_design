@@ -50,6 +50,8 @@ void changemoney_j(int n, setuser *person, int radix, setuser *head) //文件操作
         fputs(ph->score, fp);
         fputc('^', fp); //出行记录
         fputs(ph->record, fp);
+        fputc('&', fp); //商品兑换记录
+        fputs(ph->goods, fp);
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
@@ -95,6 +97,8 @@ void changescore_j(int n, setuser *person, setuser *head)
         fputs(ph->score, fp);
         fputc('^', fp); //出行记录
         fputs(ph->record, fp);
+        fputc('&', fp); //商品兑换记录
+        fputs(ph->goods, fp);
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");
@@ -198,6 +202,8 @@ void change_class_j(setuser *person, setuser *head, int sign1, int sign2)
         fputs(ph->score, fp);
         fputc('^', fp); //出行记录
         fputs(ph->record, fp);
+        fputc('&', fp); //商品兑换记录
+        fputs(ph->goods, fp);
     }
     fclose(fp);
     remove("data_c\\user\\userinf.txt");

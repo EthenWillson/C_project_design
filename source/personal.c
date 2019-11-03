@@ -17,6 +17,7 @@ void inputBoxGroup(int x, int y, int framecolor,int color);//绘制输入框体函数
 void frameChange_c(int x1,int y1,int x2,int y2,int color);//输入框变色函数
 void PersonalCenter_c(setuser *person,int *judge,setuser *head);//个人中心界面
 void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//修改密码界面
+void returnBtn_next_c(int x,int y,int color);
 
 /**********************************************************
 个人中心界面函数
@@ -33,8 +34,8 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 	cleardevice();
 	setbkcolor(WHITE);
 	DrawBeautifulFrame_c();//边框
-    Drawxc_self( 0, 0 , LIGHTGRAY);//修改密码按钮
-    Drawxc_auto( 0, 0 , LIGHTGRAY);//账户充值按钮
+    Drawxc_self( 0, 0 , LIGHTGRAY);//充值按钮
+    Drawxc_auto( 0, 0 , LIGHTGRAY);//账户信息按钮
 	returnBtn_c( 285, 395, CYAN);//返回按钮
 	puthz(260, 30, "个人中心", 32, 32, GREEN); 
 	puthz(220, 80, "您好！尊敬的：", 16, 16, BLUE); 
@@ -51,7 +52,7 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 				return;
 			}
 		}
-		//(157,134,476,220)修改密码////////////////////////////////
+		//(157,134,476,220)充值////////////////////////////////
 		if( mx >= 147 && mx <= 486 && my >=111 && my <=230 )
 		{
 			if (sign[0]==0)
@@ -65,8 +66,8 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 			}
 			if ( buttons )
 			{
-				changePasswordScreen_c(person,judge,head);
-				// changePasswordScreen_c(person,judge);
+				*judge=turnTo_c(person,7);
+				// changePasswordScreen_c(person,judge,head);
 				return;
 			}
 		}
@@ -79,7 +80,7 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 			sign[0]=0;
 			getMousebk(mx,my);
 		}
-		//(157,284,476,370)充值///////////////////////////////////////
+		//(157,284,476,370)账户信息///////////////////////////////////////
 		if ( mx >= 147 && mx <= 486 && my >=261 && my <=380 )
 		{
 		
@@ -319,7 +320,7 @@ void Drawxc_self( int x, int y, int color)
 	setlinestyle(0, 0, 3);
 	Drawbuttons( x+90-50,  y+235-180, color);
 	Drawxctubiaoone(x+80-50, y+235-180,  color);
-	puthz(x+360-50,y+343-180,"修改密码",16,16,color);
+	puthz(x+360-50,y+343-180,"账户充值",16,16,color);
 	setcolor(DARKGRAY);
 }
 /**********************************************************
@@ -393,6 +394,38 @@ void returnBtn_small_c(int x,int y,int color)
 	{
 		arrow_one[i*2]=arrow_one[i*2]+4;
 		arrow_two[i*2]=arrow_two[i*2]-4;
+	}
+	drawpoly(3,arrow_one);
+	drawpoly(3,arrow_two);
+}
+/**********************************************************
+FUNCTION:   returnBtn_next_c
+Description：	界面里的下一项按钮(小)
+Input:   图标的坐标；颜色
+**********************************************************/
+void returnBtn_next_c(int x,int y,int color)
+{
+	int i;
+	int arrow_one[]={13,0,0,15,13,30};
+	int arrow_two[]={28,0,15,15,28,30};
+	for(i=0;i<3;i++)
+	{
+		arrow_one[i*2+1]=-arrow_one[i*2+1]+y;
+		arrow_two[i*2+1]=-arrow_two[i*2+1]+y;
+	}
+	for(i=0;i<3;i++)
+	{
+		arrow_one[i*2]=-arrow_one[i*2]+x;
+		arrow_two[i*2]=-arrow_two[i*2]+x;
+	}
+	setcolor(color);
+	setlinestyle(0, 0, 3);
+	drawpoly(3,arrow_one);
+	drawpoly(3,arrow_two);
+	for(i=0;i<3;i++)
+	{
+		arrow_one[i*2]=arrow_one[i*2]-4;
+		arrow_two[i*2]=arrow_two[i*2]+4;
 	}
 	drawpoly(3,arrow_one);
 	drawpoly(3,arrow_two);
