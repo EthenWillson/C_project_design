@@ -491,6 +491,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
         }
         else if ((sign[0] || sign[1] || sign[2] || sign[3]) && !(mx >= 400 && mx <= 510 && my >= 150 && my <= 220) && !(mx >= 400 && mx <= 510 && my >= 240 && my <= 310) && !(mx >= 550 && mx <= 610 && my >= 120 && my <= 180) && !(mx >= 550 && mx <= 610 && my >= 290 && my <= 350))
         {
+            mousehide(mx, my);
             setlinestyle(0, 0, 3);
             setcolor(GREEN);
             circle(580, 150, 30);
@@ -498,6 +499,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             rectangle(400, 150, 510, 220);
             rectangle(400, 240, 510, 310);
             sign[0] = sign[1] = sign[2] = sign[3] = 0;
+            getMousebk(mx, my);
         }
     }
 }

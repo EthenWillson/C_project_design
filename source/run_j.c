@@ -110,7 +110,7 @@ void Draw_run_Screen_j(setuser *person, int *judge, setuser *head)
                 }
                 else if (page == 0)
                 {
-                    *judge = 2;
+                    *judge = 13;
                     return;
                 }
             }
