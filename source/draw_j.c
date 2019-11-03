@@ -811,7 +811,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 bar(60, 340, 250, 370); //覆盖掉“您已成功充值XXX元”的提示
                 puthz(80, 350, "您已成功充值", 16, 16, RED);
                 puthz(180, 350, str_charge, 16, 16, RED);
-                puthz(210, 350, "元", 16, 16, RED);
+                puthz(235, 350, "元", 16, 16, RED);
                 getMousebk(mx, my);
             }
         }
