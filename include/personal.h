@@ -1,7 +1,6 @@
 #ifndef _personal_h
 #define _personal_h
 
-#include"register_c.h"
 #include"struct_c.h"
 #include"common_c.h"
 void DrawBeautifulFrame_c();//漂亮的边框
