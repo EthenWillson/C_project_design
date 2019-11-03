@@ -78,8 +78,8 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
     puthz(305,140,"购票",16,16,WHITE);
     puthz(215,185,"修改",16,16,WHITE);
     puthz(215,210,"密码",16,16,WHITE);
-    puthz(395,185,"积分",16,16,WHITE);
-    puthz(395,210,"商城",16,16,WHITE);
+    puthz(395,185,"账户",16,16,WHITE);
+    puthz(395,210,"查询",16,16,WHITE);
     puthz(215,295,"用户",16,16,WHITE);
     puthz(215,320,"查询",16,16,WHITE);
     puthz(395,295,"权限",16,16,WHITE);
@@ -142,7 +142,7 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
                 return;
             } 
         }
-        else if(mx>=366&&mx<=455&&my>=181&&my<=259)//积分商城
+        else if(mx>=366&&mx<=455&&my>=181&&my<=259)//账户查询
         {
             if(sign[0]==0)
             {
@@ -153,7 +153,7 @@ void Draw_run_Screen_j(setuser *person,int* judge,setuser *head)
             }
             if(buttons)
             {
-               *judge=turnTo_c(person,10);
+               *judge=turnTo_c(person,6);
                 return;
             } 
         }

@@ -17,6 +17,7 @@ void inputBoxGroup(int x, int y, int framecolor,int color);//绘制输入框体函数
 void frameChange_c(int x1,int y1,int x2,int y2,int color);//输入框变色函数
 void PersonalCenter_c(setuser *person,int *judge,setuser *head);//个人中心界面
 void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//修改密码界面
+void returnBtn_next_c(int x,int y,int color);
 
 /**********************************************************
 个人中心界面函数
@@ -392,6 +393,38 @@ void returnBtn_small_c(int x,int y,int color)
 	{
 		arrow_one[i*2]=arrow_one[i*2]+4;
 		arrow_two[i*2]=arrow_two[i*2]-4;
+	}
+	drawpoly(3,arrow_one);
+	drawpoly(3,arrow_two);
+}
+/**********************************************************
+FUNCTION:   returnBtn_next_c
+Description：	界面里的下一项按钮(小)
+Input:   图标的坐标；颜色
+**********************************************************/
+void returnBtn_next_c(int x,int y,int color)
+{
+	int i;
+	int arrow_one[]={13,0,0,15,13,30};
+	int arrow_two[]={28,0,15,15,28,30};
+	for(i=0;i<3;i++)
+	{
+		arrow_one[i*2+1]=-arrow_one[i*2+1]+y;
+		arrow_two[i*2+1]=-arrow_two[i*2+1]+y;
+	}
+	for(i=0;i<3;i++)
+	{
+		arrow_one[i*2]=-arrow_one[i*2]+x;
+		arrow_two[i*2]=-arrow_two[i*2]+x;
+	}
+	setcolor(color);
+	setlinestyle(0, 0, 3);
+	drawpoly(3,arrow_one);
+	drawpoly(3,arrow_two);
+	for(i=0;i<3;i++)
+	{
+		arrow_one[i*2]=arrow_one[i*2]-4;
+		arrow_two[i*2]=arrow_two[i*2]+4;
 	}
 	drawpoly(3,arrow_one);
 	drawpoly(3,arrow_two);
