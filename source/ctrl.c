@@ -455,6 +455,7 @@ void changeDot(setTrainInfo *Info,station *line2)
 				hideDot(fT);
 			}
 			fT->i+=speed;//加上speed
+			//防止除数为0
 			if(fT->Ti==0)
 			{
 				fT->Ti=300;
@@ -484,30 +485,19 @@ void changeDot(setTrainInfo *Info,station *line2)
 			drawDot(fT,BLUE);
 			if(fT->Ti<=fT->i)//到站
 			{
-				// line[fT->k+1].peopleNum=line[fT->k+1].peopleNum/2;
 				if(fT->k!=Info->stationNum+1)//非终点站
 				{
+					hideDot(fT);
 					fT->i=0;
 					fT->k++;
 					fT->count=(Info->wait)*TIMEUNIT;
+					drawDot(fT,BLUE);
 				}
 				else//终点站
 				{
-					// deleteTrain(fTb,fT);
-					// fT=fTb;
-					// closegraph();
-					// fTb=fT->next;
-					// printf("%d  %d  %d\n",Info->trainHead->k,fT->k,fT->next->k);
-					// Info->trainHead=fT->next;
 					Info->trainHead=Info->trainHead->next;
 					free(fT);
-					// printf("%d  %d  %d\n",Info->trainHead->k,fT->k,fT->next->k);
 					fT=Info->trainHead;
-					// free(Info->trainHead);
-					// Info->trainHead=fTb;
-					// fT=Info->trainHead;
-					// printf("%d  %d  %d\n",Info->trainHead->k,fT->k,fT->next->k);
-					// getch();
 				}
 				
 			}
@@ -571,7 +561,7 @@ void changeDot(setTrainInfo *Info,station *line2)
 			}
 			rT->i+=speed;//加上speed
 			//防止除数为0
-			if(fT->Ti==0)
+			if(rT->Ti==0)
 			{
 				rT->Ti=300;
 				rT->i=300;
@@ -600,25 +590,22 @@ void changeDot(setTrainInfo *Info,station *line2)
 			drawDot(rT,RED);
 			if(rT->Ti<=rT->i)//到站
 			{
-				// line[fT->k-1].peopleNum=line[fT->k-1].peopleNum/2;
 				if(rT->k!=1)//非起点站
 				{
+					hideDot(rT);
 					rT->i=0;
 					rT->k--;
 					rT->count=(Info->wait)*TIMEUNIT;
+					drawDot(rT,RED);
 				}
 				else//起点站
 				{
-					// deleteTrain(rTb,rT);
-					// rT=rTb;
-					// Info->rtrainHead=rT->next;
 					Info->rtrainHead=Info->rtrainHead->next;
 					free(rT);
 					rT=Info->rtrainHead;
 				}
 				
 			}
-			// delay(5);
 		}
 		else//车在站台
 		{
@@ -851,60 +838,10 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 		if(accum>=ACCUMTIME)
 		{
 			accum=0;
-			// Drawstation1_j();
-			// Drawstation2_j();
-			// Drawstation4_j();
-			// DrawCircles_j();
-			setbkcolor(DARKGRAY);
-			//绘制界面
-			//绘制返回按钮
-			returnBtn_small_c(15,15,LIGHTBLUE);
-			//绘制基本界面
-			setcolor(GREEN);
-			settextstyle(SMALL_FONT,HORIZ_DIR,5);
-			line(460,0,460,75);
-			line(460,75,640,75);
-			setlinestyle(0,0,3);
-			setcolor(LIGHTCYAN);
-			line(500,10,550,10);
-			outtextxy(560,5,"1");
-			puthz(570,5,"号线",16,16,CYAN);
-			setcolor(LIGHTGREEN);
-			line(500,30,550,30);
-			outtextxy(560,25,"2");
-			puthz(570,25,"号线",16,16,LIGHTGREEN);
-			setcolor(YELLOW);
-			line(500,50,550,50);
-			outtextxy(560,45,"4");
-			puthz(570,45,"号线",16,16,YELLOW);
-			puthz(183,2,"地铁调度控制",32,32,BROWN);
-			//绘制地铁线路
 			Drawstation1_j();
 			Drawstation2_j();
 			Drawstation4_j();
 			DrawCircles_j();
-			//调度相关绘制
-			//reset按钮
-			setcolor(LIGHTBLUE);
-			setfillstyle(1,LIGHTBLUE);
-			pieslice(590,430,0,360,27);
-			setcolor(WHITE);
-			setfillstyle(1,WHITE);
-			pieslice(590,430,0,360,25);
-			setcolor(LIGHTRED);
-			settextstyle(SMALL_FONT,HORIZ_DIR,6);
-			outtextxy(567,420,"RESET");
-			//选取地铁线圆
-			setcolor(LIGHTBLUE);
-			setfillstyle(1,LIGHTBLUE);
-			pieslice(620,12,0,360,6);
-			setcolor(WHITE);
-			setfillstyle(1,WHITE);
-			pieslice(620,12,0,360,2);
-			//调整模块
-			drawControlFrame(410,190,para);
-			//站点信息模块
-			drawStationDetail(35,190,DARKGRAY,LIGHTCYAN,currentStation);
 		}
 		switch(otherEvent(&mx,&my,&buttons))
 		{

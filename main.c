@@ -13,18 +13,10 @@ void main()
 	all_lines_stations all;
 	setTrainInfo Info[3]; //记录三条线调度的相关参数
 
-	//char *p=NULL;
-	//setuser *pt = NULL;
 	person.accounts[0] = '\0'; //初始化
 	person.code[0] = '\0';	 //初始化
-	//person.money[0]='\0';
-	//person.score[0]='\0';
-	//person.record[0]='\0';
-	//person.Routes=NULL;
-	//person.size=0;
 
-	// clock();
-	initgraph(&driver, &mode, "../BORLANDC\\bgi");
+	initgraph(&driver, &mode, "..\\BORLANDC\\bgi");
 	cleardevice();
 	if ((head = (setuser *)malloc(sizeof(setuser))) == NULL)
 	{

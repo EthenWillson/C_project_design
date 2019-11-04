@@ -140,34 +140,60 @@ int changePass_c(setChangePass *managerTemp,char *accounts,setuser *head)
         if( strcmp(ph->accounts,accounts)==0 && strcmp(ph->code,managerTemp->old)==0 )//旧的密码验证成功
         {
             strcpy(ph->code,managerTemp->new);
+            if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
+            {
+                closegraph();
+                printf("Can't open usernew.txt");
+            }
+            for(ph=head->next;ph!=NULL;ph=ph->next)
+            {
+                fputc('@',fp);//@标志一个用户的开头
+                fputs(ph->accounts,fp);
+                fputc('*',fp);//*标志用户密码的开头
+                fputs(ph->code,fp);
+                fputc('#',fp);//#标志用户的权限码
+                fputs(ph->class,fp);
+                fputc('$',fp);//$标志用户余额
+                fputs(ph->money,fp);
+                fputc('(',fp);//(标志用户积分
+                fputs(ph->score,fp);
+                fputc('^',fp);//标志出行记录的开头
+                fputs(ph->record,fp);
+                fputc('&',fp);//标志兑换的商品记录开头
+                fputs(ph->goods,fp);
+            }
+            fclose(fp);
+            remove("data_c\\user\\userinf.txt");
+            rename("data_c\\user\\usernew.txt","data_c\\user\\userinf.txt");
+            return 0;
         }
     }
-    if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
-    {
-        closegraph();
-        printf("Can't open usernew.txt");
-    }
-    for(ph=head->next;ph!=NULL;ph=ph->next)
-    {
-        fputc('@',fp);//@标志一个用户的开头
-        fputs(ph->accounts,fp);
-        fputc('*',fp);//*标志用户密码的开头
-        fputs(ph->code,fp);
-        fputc('#',fp);//#标志用户的权限码
-        fputs(ph->class,fp);
-        fputc('$',fp);//$标志用户余额
-        fputs(ph->money,fp);
-        fputc('(',fp);//(标志用户积分
-        fputs(ph->score,fp);
-        fputc('^',fp);//标志出行记录的开头
-        fputs(ph->record,fp);
-        fputc('&',fp);//标志兑换的商品记录开头
-        fputs(ph->goods,fp);
-    }
-    fclose(fp);
-    remove("data_c\\user\\userinf.txt");
-    rename("data_c\\user\\usernew.txt","data_c\\user\\userinf.txt");
-    return 0;
+    // if ((fp = fopen("data_c\\user\\usernew.txt", "wt")) == NULL)//以写的方式新建一个文件
+    // {
+    //     closegraph();
+    //     printf("Can't open usernew.txt");
+    // }
+    // for(ph=head->next;ph!=NULL;ph=ph->next)
+    // {
+    //     fputc('@',fp);//@标志一个用户的开头
+    //     fputs(ph->accounts,fp);
+    //     fputc('*',fp);//*标志用户密码的开头
+    //     fputs(ph->code,fp);
+    //     fputc('#',fp);//#标志用户的权限码
+    //     fputs(ph->class,fp);
+    //     fputc('$',fp);//$标志用户余额
+    //     fputs(ph->money,fp);
+    //     fputc('(',fp);//(标志用户积分
+    //     fputs(ph->score,fp);
+    //     fputc('^',fp);//标志出行记录的开头
+    //     fputs(ph->record,fp);
+    //     fputc('&',fp);//标志兑换的商品记录开头
+    //     fputs(ph->goods,fp);
+    // }
+    // fclose(fp);
+    // remove("data_c\\user\\userinf.txt");
+    // rename("data_c\\user\\usernew.txt","data_c\\user\\userinf.txt");
+    return 1;
 }
 /****************************************
 Function:  createuserlist_c
