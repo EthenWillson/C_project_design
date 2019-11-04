@@ -2,7 +2,7 @@
 #include "draw_j.h"
 void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stations *all); //购票界面
 void rectangles_user_j(int color);
-void DrawcheckScreen_j(setuser *person, int *judge, setuser *head);  //查询界面
+void DrawcheckScreen_j(setuser *person, int *judge); //查询界面
 void DrawchargeScreen_j(setuser *person, int *judge, setuser *head); //充值界面
 void outputcharge_j(setuser *person, int add_money, setuser *head);  //修改、实时显示用户余额，显示delay正在充值
 void click_charge_j(int color);                                      //点框框加效果
@@ -46,7 +46,6 @@ Attention:
 void DrawUserScreen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int sign[3] = {0, 0, 0};
     // 初始化
     // 鼠标初始化
@@ -148,7 +147,6 @@ Attention:  无
 void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stations *all)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int i;                       //划线循环变量
     int sta_checkclick[5][10];   //二维数组标志量，检验点击了几次（0表示没点击，1表示点击了），其实这个没啥用了，后期可以删掉了
     int flag;
@@ -530,10 +528,9 @@ Function:  DrawcheckScreen
 Description：画出账户查询界面
 Attention:  无
 **********************************************************/
-void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
+void DrawcheckScreen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int sign[4] = {0, 0, 0, 0};
     mouseInit(&mx, &my, &buttons);
     cleardevice();

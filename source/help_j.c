@@ -3,7 +3,7 @@
 void DrawpriceScreen_j(setuser *person, int *judge);
 void judgestation_j(int x, int y, int station_name);
 void DrawDistance_j();
-void Draw_about_us_Screen_j(int *judge, int flag);
+void Draw_about_us_Screen_j(int *judge);
 /**********************************************************
 Function:  DrawpriceScreen
 Description：价格图
@@ -11,9 +11,7 @@ Attention:  无
 **********************************************************/
 void DrawpriceScreen_j(setuser *person, int *judge)
 {
-
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     mouseInit(&mx, &my, &buttons);
     cleardevice();
     setbkcolor(WHITE);
@@ -132,10 +130,9 @@ Function:  Draw_about_us_Screen
 Description：关于我们
 Attention:  无
 **********************************************************/
-void Draw_about_us_Screen_j(int *judge, int flag)
+void Draw_about_us_Screen_j(int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     mouseInit(&mx, &my, &buttons);
     cleardevice();
     setbkcolor(WHITE);

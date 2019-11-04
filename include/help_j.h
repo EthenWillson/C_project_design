@@ -8,5 +8,6 @@ void DrawRecordHelp(int *judge);
 void DrawManageHelp(int *judge);
 void DrawRunHelp(int *judge);
 void DrawListbutton(int x, int y, int bkcolor, int ccolor, char *str);
+void Draw_about_us_Screen_j(int *judge);
 
 #endif

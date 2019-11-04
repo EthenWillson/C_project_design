@@ -6,9 +6,9 @@ Author：江明轩
 **********************************************************/
 void DrawLine_j(int x1, int y1, int x2, int y2, int x3, int y3, int color);
 void DrawStar_j();
-void Draw_run_Screen_j(setuser *person, int *judge, setuser *head);
+void Draw_run_Screen_j(setuser *person, int *judge);
 void run_check_Screen_j(setuser *person, int *judge, setuser *head);
-void run_power_Screen_j(setuser *person, int *judge, setuser *head);
+void run_power_Screen_j(setuser *person, int *judge);
 void Draw_poly1_j();                         //更改权限
 void Draw_poly2_j();                         //删除用户
 void Draw_frame1_j(int x, int y, int color); //更改权限操作框
@@ -49,10 +49,9 @@ Function:  Draw_run_Screen
 Description：运营管理员基本界面
 Attention:  无
 **********************************************************/
-void Draw_run_Screen_j(setuser *person, int *judge, setuser *head)
+void Draw_run_Screen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int sign[2] = {0, 0};        //用于判断鼠标移动到按钮上的标志
     int page;
     int move=0;
@@ -256,7 +255,6 @@ Attention:  无
 void run_check_Screen_j(setuser *person, int *judge, setuser *head)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区
     int i = 0;                   //标记用户总数
     int ordinary_user = 0;       //标记普通用户
     int run_manager = 0;         //标记运营管理员
@@ -355,10 +353,9 @@ Function:  run_power_Screen
 Description：管理用户权限功能
 Attention:  无
 **********************************************************/
-void run_power_Screen_j(setuser *person, int *judge, setuser *head)
+void run_power_Screen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变
     int sign = 0;
     mouseInit(&mx, &my, &buttons);
     cleardevice();
@@ -467,7 +464,6 @@ void change_power_Screen_j(setuser *person, int *judge, setuser *head)
     int input_num = 0; //标志输入了几个字符
     char place[14];    //字符缓存，最多可以存13位，在用户输入第13位的时候会有提示
     int flag = 0;      //标志账号不可多于12位的提示
-    //int flag2=0;//给出“请输入普通用户账号”的提示
     int find = 0;
     setuser *p; //临时指针
     mouseInit(&mx, &my, &buttons);

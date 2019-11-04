@@ -183,10 +183,9 @@ Function:  DrawscoreScreen
 Description：	画出积分兑换界面
 Attention:  无
 **********************************************************/
-void DrawscoreScreen_j(setuser* person,int *judge,setuser* head)
+void DrawscoreScreen_j(setuser* person,int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int mouseover[2]={0,0};
     mouseInit(&mx, &my, &buttons);
     cleardevice();
@@ -496,10 +495,10 @@ Function:  DrawMyChangeScreen
 Description：	画出我的兑换界面 代号26
 Attention:  无
 **********************************************************/
-void DrawMyChangeScreen(setuser* person,int *judge,setuser* head)
+void DrawMyChangeScreen(setuser* person,int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    int i,m=0;
+    int i;
     char temp[3]={'\0','\0','\0'};
     cleardevice();
     setbkcolor(WHITE);
