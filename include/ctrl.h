@@ -16,6 +16,8 @@ void clickStation(int x,int y,station *sta,station **currentStation,int *mx,int 
 void initTranInfo(setTrainInfo *Info,all_lines_stations *all);
 void drawControlFrame(int x,int y,int *para);
 void resetInfo(setTrainInfo *Info,all_lines_stations *all);
+void addPN_c(setTrainInfo *Info,int *timeCycle);
+void drawDot(setTrain *dot,int color);
 
 
 #endif

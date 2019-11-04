@@ -175,11 +175,11 @@ void change_class_j(setuser *person, setuser *head, int sign1, int sign2)
     {
         if (strcmp(ph->accounts, person->accounts) == 0)
         {
-            if (sign1 == 0) //改为运营管理员
+            if (sign1) //改为运营管理员
             {
                 strcpy(ph->class, "jmxzs");
             }
-            else if (sign2 == 0) //改为调度管理员
+            else if (sign2) //改为调度管理员
             {
                 strcpy(ph->class, "cjwzs");
             }
