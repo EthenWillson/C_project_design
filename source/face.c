@@ -29,6 +29,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 	int page,choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
 	setManager managerTemp;//缓存输入的信息
 	setuser *up=NULL;
+	int sign[2]={0,0};
 	//初始化
 	//managerTemp初始化
 	managerTemp.accounts[0]='\0';
@@ -284,10 +285,34 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 				clear_effect_c(manager);//清除加框效果
 				// getMousebk(mx,my);
 			}
-
-			
-
-		}//点击事件结束
+        }//点击事件结束
+		//关于我们和帮助的动画
+		if(mx >= 398 && mx <= 465 &&my >= 433 && my<= 453&&sign[0]==0)//关于我们
+		{
+			mousehide(mx,my);
+			setlinestyle(0,0,1);
+			setcolor(GREEN);
+			rectangle(398,433,465,453);
+			sign[0]=1;
+			getMousebk(mx,my);
+		}
+		else if(mx >= 538 && mx <= 571 &&my >= 433 && my<= 453&&sign[1]==0)//帮助
+		{
+			mousehide(mx,my);
+			setlinestyle(0,0,1);
+			setcolor(GREEN);
+			rectangle(538,433,571,453);
+			sign[1]=1;
+			getMousebk(mx,my);
+		}
+		else if((sign[0]||sign[1])&&!(mx >= 398 && mx <= 465 &&my >= 433 && my<= 453)&&!(mx >= 538 && mx <= 571 &&my >= 433 && my<= 453))
+		{
+			setlinestyle(0,0,1);
+			setcolor(LIGHTRED);
+			rectangle(398,433,465,453);
+			rectangle(538,433,571,453);
+			sign[0]=sign[1]=0;
+		}
 		//输入法
 		settextstyle(SMALL_FONT,HORIZ_DIR,7);
 		setcolor(BLUE);
