@@ -55,6 +55,7 @@ void Draw_run_Screen_j(setuser *person, int *judge, setuser *head)
     char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     int sign[2] = {0, 0};        //用于判断鼠标移动到按钮上的标志
     int page;
+    int move=0;
     mouseInit(&mx, &my, &buttons);
     cleardevice();
     setbkcolor(DARKGRAY);
@@ -120,6 +121,33 @@ void Draw_run_Screen_j(setuser *person, int *judge, setuser *head)
                 return;
             }
         }
+        //鼠标放到头像变蓝动画
+        if(mx >= 0 && mx <= 50 && my >= 0&& my <= 50 && move==0)
+		{
+			move=1;
+			mousehide(mx,my);
+			setcolor(LIGHTBLUE);
+			setfillstyle(1,LIGHTBLUE);
+			pieslice(25,25,0,360,20);
+			setcolor(WHITE);
+			setfillstyle(1,WHITE);
+			pieslice(25,20,0,360,9);
+			pieslice(25,25,232,308,19);
+			getMousebk(mx,my);
+		}
+		if(!(mx >= 0 && mx <= 50 && my >= 0&& my <= 50) && move==1)
+		{
+			move=0;
+			mousehide(mx,my);
+			setcolor(DARKGRAY);
+			setfillstyle(1,DARKGRAY);
+			pieslice(25,25,0,360,20);
+			setcolor(LIGHTGRAY);
+			setfillstyle(1,LIGHTGRAY);
+			pieslice(25,20,0,360,9);
+			pieslice(25,25,232,308,19);
+			getMousebk(mx,my);
+		}
         if (mx >= 278 && mx <= 362 && my >= 100 && my <= 177) //购票
         {
             if (sign[0] == 0)
