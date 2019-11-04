@@ -17,6 +17,9 @@ void main()
 	//setuser *pt = NULL;
 	person.accounts[0] = '\0'; //初始化
 	person.code[0] = '\0';	 //初始化
+	//person.money[0]='\0';
+	//person.score[0]='\0';
+	//person.record[0]='\0';
 	//person.Routes=NULL;
 	//person.size=0;
 

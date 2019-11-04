@@ -606,12 +606,12 @@ void DrawcheckScreen_j(setuser *person, int *judge, setuser *head)
                 *judge = turnTo_c(person, 14);
                 return;
             }
-            if (mx >= 100 && mx <= 305 && my >= 280 && my <= 395 && buttons)
+            if (mx >= 100 && mx <= 305 && my >= 280 && my <= 395 && buttons)//购票记录
             {
                 *judge = turnTo_c(person, 9);
                 return;
             }
-            if (mx >= 330 && mx <= 510 && my >= 305 && my <= 395 && buttons)
+            if (mx >= 330 && mx <= 510 && my >= 305 && my <= 395 && buttons)//积分商城
             {
                 *judge = turnTo_c(person, 10);
                 return;
@@ -864,6 +864,8 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 choose = 0;
                 signs = 0;
                 zidingyi = 0;
+                charge=0;
+                strcpy(str_charge,"\0");
                 getMousebk(mx, my);
             }
             else if (mx >= 420 && mx <= 470 && my >= 88 && my <= 108 && buttons && choose == 1 && charge != 0 && flag == 0) //点击“确认”

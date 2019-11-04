@@ -253,6 +253,9 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 							strcpy(person->code,managerTemp.code);
 							strcpy(person->class,managerTemp.class);
 							strcpy(person->money,managerTemp.money);
+							strcpy(person->score,"0\0");
+							strcpy(person->goods,"\0");
+							strcpy(person->record,"\0");
 							register_c(managerTemp,head);//×¢²áĞÂÓÃ»§
 
 							// up=head;
