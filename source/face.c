@@ -6,16 +6,17 @@ Author：陈俊玮
 #include"face.h"
 #include"common_c.h"
 void Drawloginscreen_c(setuser *person,int *judge,setuser *head);//开始界面函数
-void Btn_change_manager_c();
-void Btn_change_user_c();
+void Btn_change_manager_c(void);
+void Btn_change_user_c(void);
 void click_user_c(int color);
 void click_pass_c(int color);
 void click_limit_c(int color);
 void clear_effect_c(int manager);
 void failConfirm_c(int sign);
-void Drawplane();//画飞机函数
+void Drawplane(void);//画飞机函数
 void DrawControlSystem_c(setuser *person,int *judge);//管理员调控中心界面函数
 void DrawPersonalCenter_c(setuser *person,int *judge);//个人中心界面
+void drawSignal(int x,int y,int r);
 /**********************************************************
 以下为开始界面的相关函数
 **********************************************************/
@@ -28,7 +29,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int page,choose=0;//点击输入框事件：0没有选中框，1账号框，2密码框，3权限码框
 	setManager managerTemp;//缓存输入的信息
-	setuser *up=NULL;
+	// setuser *up=NULL;
 	int sign[2]={0,0};
 	//初始化
 	//managerTemp初始化
@@ -48,6 +49,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 	bar(400,82,600,400);
 	setfillstyle(1,LIGHTGRAY);
 	bar(500,50,600,82);//管理员按钮
+	
 	
 	
 	setfillstyle(1,WHITE);
@@ -258,22 +260,6 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 							strcpy(person->record,"\0");
 							register_c(managerTemp,head);//注册新用户
 
-							// up=head;
-							// while(up->next!=NULL)
-							// {
-							// 	up=head->next;
-							// }
-							// if((up->next=(setuser*)malloc(sizeof(setuser)))==NULL)
-							// {
-							// 	closegraph();
-							// 	printf("\n OUT OF MEMORY!");
-							// }
-							// up=up->next;
-							// strcpy(up->accounts,managerTemp.accounts);
-							// strcpy(up->code,managerTemp.code);
-							// strcpy(up->class,managerTemp.class);
-							// strcpy(up->money,managerTemp.money);
-
 							*judge=turnTo_c(person,-1);
 							return;
 						}
@@ -440,7 +426,7 @@ void Drawloginscreen_c(setuser *person,int *judge,setuser *head)
 	}
 }	
 
-void Btn_change_manager_c()//点击管理员按钮后按钮样式变换
+void Btn_change_manager_c(void)//点击管理员按钮后按钮样式变换
 {
 	setfillstyle(1, DARKGRAY);
 	bar(500,50,600,82);//管理员按钮
@@ -453,7 +439,7 @@ void Btn_change_manager_c()//点击管理员按钮后按钮样式变换
 	puthz(410,240,"管理员权限码",16,16,WHITE);
 }
 
-void Btn_change_user_c()//点击用户按钮后按钮样式变换
+void Btn_change_user_c(void)//点击用户按钮后按钮样式变换
 {
 	setfillstyle(1, DARKGRAY);
 	bar(400,50,500 ,82 );//用户按钮
@@ -526,7 +512,7 @@ Function:  Drawplane
 Description：	画飞机函数函数
 Attention:  必须要用GB2312编码保存，不然汉字会有乱码
 **********************************************************/
-void Drawplane()
+void Drawplane(void)
 {
 	setcolor(LIGHTCYAN);
 	setlinestyle(0,0,1);
@@ -633,7 +619,6 @@ void DrawControlSystem_c(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
 	int sign[2]={0,0};//移动到按钮的标志
-	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int page;
 	int mouseover=0;
 	//int tri[]={25,15};//用户图标的三角形
@@ -816,4 +801,17 @@ void DrawControlSystem_c(setuser *person,int *judge)
 		}
 	}
 }
-
+void drawSignal(int x,int y,int r)
+{
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	setcolor(LIGHTRED);
+	ellipse(x,y,90,270,r,r);
+	setcolor(LIGHTBLUE);
+	ellipse(x,y,90,270,2*r,2*r);
+	setcolor(LIGHTRED);
+	ellipse(x,y+r/2,270,90,3*r/2,3*r/2);
+	ellipse(x,y-3*r,270,90,r,r);
+	setcolor(LIGHTMAGENTA);
+	line(x,y-4*r,x,y+4*r);
+	ellipse(x-r/2,y+4*r,180,0,r/2,r/2);
+}

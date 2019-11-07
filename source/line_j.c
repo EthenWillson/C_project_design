@@ -3,10 +3,10 @@
 #define MAXINITPN 100
 void Initstation_j(station *sta, int x, int y, char *station_name, int code, float dx, float dy, float dz, int level);
 void station_information_j(all_lines_stations *all);
-void DrawCircles_j();
-void Drawstation1_j();
-void Drawstation2_j();
-void Drawstation4_j();
+void DrawCircles_j(void);
+void Drawstation1_j(void);
+void Drawstation2_j(void);
+void Drawstation4_j(void);
 void Draw_start_sta_j(int x, int y, station *sta, int *sta_checkclick, int *start_station, int *flag);
 void Draw_end_sta_j(all_lines_stations *all, int x, int y, station sta, int *sta_checkclick, int *start_station, int *end_station, int *flag, int *price);
 float cal_distance_j(all_lines_stations *all, int *start_name, int *end_name);
@@ -91,7 +91,7 @@ Function:  DrawCircles
 Description：	画圆圈
 Attention:  无
 **********************************************************/
-void DrawCircles_j()
+void DrawCircles_j(void)
 {
     int i;
     setlinestyle(0, 0, 3);
@@ -118,7 +118,7 @@ Function:  DrawStation1
 Description：	画1号线
 Attention:  无
 **********************************************************/
-void Drawstation1_j()
+void Drawstation1_j(void)
 {
     int i;
 
@@ -142,7 +142,7 @@ Function:  DrawStation2
 Description：	画2号线
 Attention:  无
 **********************************************************/
-void Drawstation2_j()
+void Drawstation2_j(void)
 {
     int i;
     puthz(268, 45, "中山公园", 16, 16, LIGHTMAGENTA);
@@ -168,7 +168,7 @@ Function:  DrawStation4_j
 Description：	画圆圈
 Attention:  无
 **********************************************************/
-void Drawstation4_j()
+void Drawstation4_j(void)
 {
     int i;
     puthz(40, 355, "武昌火车站", 16, 16, LIGHTMAGENTA);
@@ -293,7 +293,7 @@ float cal_distance_j(all_lines_stations *all, int *start_name, int *end_name) //
     }
     else if (*start_name == 30)
     {
-        if (*end_name = 29)
+        if (*end_name == 29)
         {
             return fabs(13.6 - 12.2);
         }
@@ -395,6 +395,7 @@ float cal_distance_j(all_lines_stations *all, int *start_name, int *end_name) //
     {
         return fabs(z1 - z2); //Δz
     }
+    return 0.0;
 }
 /**********************************************************
 Function:  cal_price_j

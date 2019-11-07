@@ -2,18 +2,18 @@
 #include "personal.h"
 void main()
 {
-	int judge = 1;		  //åˆ¤æ–­åº”è¯¥è°ƒç”¨é‚£äº›å‡½æ•°çš„å˜é‡
-	setuser person;		  //è¡¨ç¤ºå½“å‰ç”¨æˆ·çš„å˜é‡
-	setuser *head = NULL; //ç”¨æˆ·é“¾è¡¨çš„å¤´èŠ‚ç‚¹
-	int temp;			  //ç”¨äºå¸æ”¶é”®ç›˜ç¼“å†²åŒºçš„å˜é‡
-	int buttons, mx, my;  //é¼ æ ‡ç›¸å…³å˜é‡
+	int judge = 1;		  //ÅĞ¶ÏÓ¦¸Ãµ÷ÓÃÄÇĞ©º¯ÊıµÄ±äÁ¿
+	setuser person;		  //±íÊ¾µ±Ç°ÓÃ»§µÄ±äÁ¿
+	setuser *head = NULL; //ÓÃ»§Á´±íµÄÍ·½Úµã
+	int temp;			  //ÓÃÓÚÎüÊÕ¼üÅÌ»º³åÇøµÄ±äÁ¿
+	int buttons, mx, my;  //Êó±êÏà¹Ø±äÁ¿
 	int driver = VGA;
 	int mode = VGAHI;
 	all_lines_stations all;
-	setTrainInfo Info[3]; //è®°å½•ä¸‰æ¡çº¿è°ƒåº¦çš„ç›¸å…³å‚æ•°
+	setTrainInfo Info[3]; //¼ÇÂ¼ÈıÌõÏßµ÷¶ÈµÄÏà¹Ø²ÎÊı
 
-	person.accounts[0] = '\0'; //åˆå§‹åŒ–
-	person.code[0] = '\0';	 //åˆå§‹åŒ–
+	person.accounts[0] = '\0'; //³õÊ¼»¯
+	person.code[0] = '\0';	 //³õÊ¼»¯
 
 	initgraph(&driver, &mode, "..\\BORLANDC\\bgi");
 	cleardevice();
@@ -24,7 +24,7 @@ void main()
 		getch();
 		return;
 	}
-	createuserlist_c(head); //åˆ›å»ºç”¨æˆ·é“¾è¡¨ï¼Œè®°å¾—è¦é‡Šæ”¾
+	createuserlist_c(head); //´´½¨ÓÃ»§Á´±í£¬¼ÇµÃÒªÊÍ·Å
 
 	station_information_j(&all);
 	initTranInfo(Info, &all);
@@ -32,91 +32,90 @@ void main()
 	judge = 1;
 	while (1)
 	{
-		/*æ ¹æ®judgeçš„å€¼åˆ¤æ–­éœ€è¦è°ƒç”¨ç•Œé¢å’Œå…¶åå°å‡½æ•°*/
+		/*¸ù¾İjudgeµÄÖµÅĞ¶ÏĞèÒªµ÷ÓÃ½çÃæºÍÆäºóÌ¨º¯Êı*/
 		switch (judge)
 		{
-		case 0:					   //é€€å‡ºç¨‹åº
-			freeuserlist_c(&head); //é‡Šæ”¾ç”¨æˆ·é“¾è¡¨
+		case 0:					   //ÍË³ö³ÌĞò
+			freeuserlist_c(&head); //ÊÍ·ÅÓÃ»§Á´±í
 			closegraph();
 			return;
-		case 1: //ç™»å½•
+		case 1: //µÇÂ¼
 			Drawloginscreen_c(&person, &judge, head);
 			break;
-		case 2: //è°ƒåº¦ç®¡ç†å‘˜è°ƒåº¦ä¸­å¿ƒ
+		case 2: //µ÷¶È¹ÜÀíÔ±µ÷¶ÈÖĞĞÄ
 			DrawControlSystem_c(&person, &judge);
 			break;
-		case 3: //æ™®é€šç”¨æˆ·
+		case 3: //ÆÕÍ¨ÓÃ»§
 			DrawUserScreen_j(&person, &judge);
 			break;
-		case 4: //ä¸ªäººä¸­å¿ƒ
-			PersonalCenter_c(&person, &judge, head);
+		case 4: //¸öÈËÖĞĞÄ
+			PersonalCenter_c(&person, &judge);
 			break;
-		case 5:											  //è´­ç¥¨ç•Œé¢
-			DrawbuyScreen_j(&person, &judge, head, &all); //è¿™ä¸ªåœ°æ–¹å°‘ä¼ ä¸€ä¸ªå‚æ•°ç«Ÿç„¶ä¸ä¼šæŠ¥é”™ï¼
+		case 5:	//¹ºÆ±½çÃæ
+			DrawbuyScreen_j(&person, &judge, head, &all); //Õâ¸öµØ·½ÉÙ´«Ò»¸ö²ÎÊı¾¹È»²»»á±¨´í£¡
 			break;
-		case 6: //è´¦æˆ·æŸ¥è¯¢
+		case 6: //ÕË»§²éÑ¯
 			DrawcheckScreen_j(&person, &judge);
 			break;
-		case 7: //å……å€¼
+		case 7: //³äÖµ
 			DrawchargeScreen_j(&person, &judge, head);
 			break;
-		case 8: //ç¥¨ä»·è¯´æ˜
-			//closegraph();
-			//getch();
+		case 8: //Æ±¼ÛËµÃ÷
 			DrawpriceScreen_j(&person, &judge);
 			break;
-		case 9: //è´­ç¥¨è®°å½•
-			DrawrecordScreen_j(&person, &judge, &all);
+		case 9: //¹ºÆ±¼ÇÂ¼
+			DrawrecordScreen_j(&person, &judge);
 			break;
-		case 10: //ç§¯åˆ†å•†åŸ
+		case 10: //»ı·ÖÉÌ³Ç
 			DrawscoreScreen_j(&person, &judge);
 			break;
-		case 11: //è°ƒåº¦ç•Œé¢
-			drawControlScreen(&person, &judge, head, &all, &Info);
+		case 11: //µ÷¶È½çÃæ
+			drawControlScreen(&person, &judge, &all, Info);
+			//drawControlScreen(setuser *person,int *judge,all_lines_stations *all,setTrainInfo *Info)
 			break;
-		case 12: //å…³äºæˆ‘ä»¬
+		case 12: //¹ØÓÚÎÒÃÇ
 			Draw_about_us_Screen_j(&judge);
 			break;
-		case 13: //è¿è¥ç®¡ç†å‘˜ç•Œé¢
+		case 13: //ÔËÓª¹ÜÀíÔ±½çÃæ
 			Draw_run_Screen_j(&person, &judge);
 			break;
-		case 14: //ä¿®æ”¹å¯†ç 
+		case 14: //ĞŞ¸ÄÃÜÂë
 			changePasswordScreen_c(&person, &judge, head);
 			break;
-		case 15://ç”¨æˆ·æŸ¥è¯¢
+		case 15://ÓÃ»§²éÑ¯
 			run_check_Screen_j(&person, &judge, head);
 			break;
-		case 16://æƒé™ç®¡ç†
+		case 16://È¨ÏŞ¹ÜÀí
 			run_power_Screen_j(&person, &judge);
 			break;
-		case 17://æ›´æ”¹æƒé™
+		case 17://¸ü¸ÄÈ¨ÏŞ
 		    change_power_Screen_j(&person,&judge,head);
 			break;
-		case 18://åˆ é™¤ç”¨æˆ·
+		case 18://É¾³ıÓÃ»§
 		    delete_user_Screen_j(&person,&judge,head);
 			break;
-		case 20: //å¸®åŠ©ç•Œé¢
+		case 20: //°ïÖú½çÃæ
 			DrawhelpScreen_c(&judge);
 			break;
-		case 21: //ç™»é™†å¸®åŠ©ç•Œé¢
+		case 21: //µÇÂ½°ïÖú½çÃæ
 			DrawLoginHelp(&judge);
 			break;
-		case 22: //è´­ç¥¨å¸®åŠ©ç•Œé¢
+		case 22: //¹ºÆ±°ïÖú½çÃæ
 			DrawBuyHelp(&judge);
 			break;
-		case 23://è®°å½•å¸®åŠ©ç•Œé¢
+		case 23://¼ÇÂ¼°ïÖú½çÃæ
 			DrawRecordHelp(&judge);
 			break;
-		case 24://è°ƒåº¦å¸®åŠ©ç•Œé¢
+		case 24://µ÷¶È°ïÖú½çÃæ
 			DrawManageHelp(&judge);
 			break;
-		case 25://å•†å“å…‘æ¢ç•Œé¢
+		case 25://ÉÌÆ·¶Ò»»½çÃæ
 			DrawStoreScreen(&person,&judge,head);
 			break;
-		case 26://æˆ‘çš„å…‘æ¢ç•Œé¢
+		case 26://ÎÒµÄ¶Ò»»½çÃæ
 			DrawMyChangeScreen(&person,&judge);
 			break;
-		case 27:
+		case 27://ÔËÓª¹ÜÀíÔ±Ê¹ÓÃ°ïÖú½çÃæ
 			DrawRunHelp(&judge);
 			break;
 		}

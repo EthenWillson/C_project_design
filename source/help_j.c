@@ -2,7 +2,7 @@
 #include "common_c.h"
 void DrawpriceScreen_j(setuser *person, int *judge);
 void judgestation_j(int x, int y, int station_name);
-void DrawDistance_j();
+void DrawDistance_j(void);
 void Draw_about_us_Screen_j(int *judge);
 /**********************************************************
 Function:  DrawpriceScreen
@@ -95,7 +95,7 @@ Function:  DrawDistance
 Description：显示站点之间的距离
 Attention:  无
 **********************************************************/
-void DrawDistance_j()
+void DrawDistance_j(void)
 {
     setcolor(RED);
     settextstyle(0, 0, 1);
@@ -158,6 +158,7 @@ void Draw_about_us_Screen_j(int *judge)
     puthz(230, 400, "HUST版权所有", 16, 16, LIGHTGRAY);
     setcolor(LIGHTGRAY);
     outtextxy(130, 425, "Copyright @2019 All Rights Reserved");
+    drawSignal(520,140,10);//标志
     while (1)
     {
         newxy(&mx, &my, &buttons);

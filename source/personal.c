@@ -15,17 +15,16 @@ void Drawxc_auto( int x, int y, int color);//充值按钮
 void returnBtn_c(int x,int y,int color);//返回按钮
 void inputBoxGroup(int x, int y, int framecolor,int color);//绘制输入框体函数
 void frameChange_c(int x1,int y1,int x2,int y2,int color);//输入框变色函数
-void PersonalCenter_c(setuser *person,int *judge,setuser *head);//个人中心界面
+void PersonalCenter_c(setuser *person,int *judge);//个人中心界面
 void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//修改密码界面
 void returnBtn_next_c(int x,int y,int color);
 
 /**********************************************************
 个人中心界面函数
 **********************************************************/
-void PersonalCenter_c(setuser *person,int *judge,setuser *head)
+void PersonalCenter_c(setuser *person,int *judge)
 {
 	int buttons,mx,my;//鼠标相关变量
-	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int sign[2]={0,0};//用于判断鼠标移动到按钮上的标志
 	// 初始化
 	// 鼠标初始化
@@ -117,7 +116,7 @@ void PersonalCenter_c(setuser *person,int *judge,setuser *head)
 /**********************************************************
 Description：	画出漂亮边框
 **********************************************************/
-void DrawBeautifulFrame_c()						//界面边框
+void DrawBeautifulFrame_c(void)						//界面边框
 {
 	setcolor(CYAN);
 	setlinestyle(0, 0, 1);
@@ -446,7 +445,6 @@ void changePasswordScreen_c(setuser *person,int *judge,setuser *head)
 {
 	int buttons,mx,my;//鼠标相关变量
 	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
-	int sign[2]={0,0};//用于判断鼠标移动到按钮上的标志
 	int key=0,i[3]={0,0,0};//输入法标记第几个数字或字母的参数
 	setChangePass managerTemp;//修改密码缓存
 	// 初始化

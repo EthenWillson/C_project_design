@@ -1,9 +1,11 @@
 #include "common_c.h"
 #include "draw_j.h"
+#include <bios.h>
 void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stations *all); //购票界面
 void rectangles_user_j(int color);
 void DrawcheckScreen_j(setuser *person, int *judge); //查询界面
 void DrawchargeScreen_j(setuser *person, int *judge, setuser *head); //充值界面
+
 void outputcharge_j(setuser *person, int add_money, setuser *head);  //修改、实时显示用户余额，显示delay正在充值
 void click_charge_j(int color);                                      //点框框加效果
 void DrawUserScreen_j(setuser *person, int *judge);                  //普通用户界面
@@ -50,7 +52,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
     // 初始化
     // 鼠标初始化
     mouseInit(&mx, &my, &buttons);
-    cleardevice();
+	cleardevice();
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
     puthz(90, 28, "您好！尊敬的：", 16, 16, GREEN);
@@ -76,7 +78,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
             if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
             {
                 *judge = turnTo_c(person, 1);
-                return;
+				return;
             }
             if (mx >= 170 && mx <= 470 && my >= 80 && my <= 150 && buttons) //点入购票界面
             {
@@ -89,7 +91,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
                 return;
             }
             if (mx >= 170 && mx <= 470 && my >= 320 && my <= 390 && buttons) //点入充值界面
-            {
+			{
                 *judge = turnTo_c(person, 7);
                 return;
             }
@@ -102,7 +104,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
             rectangle(170, 80, 470, 150);
             setcolor(GREEN);
             rectangle(170, 200, 470, 270);
-            rectangle(170, 320, 470, 390);
+			rectangle(170, 320, 470, 390);
             sign[0] = 1;
             getMousebk(mx, my);
         }
@@ -115,7 +117,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
             rectangle(170, 80, 470, 150);
             rectangle(170, 320, 470, 390);
             sign[1] = 1;
-            getMousebk(mx, my);
+			getMousebk(mx, my);
         }
         else if (mx >= 170 && mx <= 470 && my >= 320 && my <= 390 && sign[2] == 0)
         {
@@ -128,7 +130,7 @@ void DrawUserScreen_j(setuser *person, int *judge)
             sign[2] = 1;
             getMousebk(mx, my);
         }
-        else if ((sign[0] || sign[1] || sign[2]) && !(mx >= 170 && mx <= 470 && my >= 80 && my <= 150) && !(mx >= 170 && mx <= 470 && my >= 200 && my <= 270) && !(mx >= 170 && mx <= 470 && my >= 320 && my <= 390))
+		else if ((sign[0] || sign[1] || sign[2]) && !(mx >= 170 && mx <= 470 && my >= 80 && my <= 150) && !(mx >= 170 && mx <= 470 && my >= 200 && my <= 270) && !(mx >= 170 && mx <= 470 && my >= 320 && my <= 390))
         {
             mousehide(mx, my);
             rectangles_user_j(GREEN);
@@ -154,7 +156,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     int end_station;   //存储终点信息，和上面一行差不多
     int price;
     int money;                  //用户余额
-    int sign[4] = {0, 0, 0, 0}; //sign0标志“计费规则”框
+	int sign[4] = {0, 0, 0, 0}; //sign0标志“计费规则”框
     //char sss[10]="江明轩";
     flag = 0;
     start_station = 0;
@@ -167,7 +169,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     //puthz(30,130,sss,16,16,RED);//这句话可以显示！
     //outtextxy(30,160,all->line1[1].x);
 
-    //画出返回按钮
+	//画出返回按钮
     returnBtn_c(550, 210, GREEN);
 
     setcolor(BROWN);
@@ -180,7 +182,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     line(500, 10, 550, 10);
     outtextxy(560, 0, "1");
     puthz(570, 5, "号线", 16, 16, LIGHTBLUE);
-    setcolor(LIGHTGREEN);
+	setcolor(LIGHTGREEN);
     line(500, 30, 550, 30);
     outtextxy(560, 20, "2");
     puthz(570, 25, "号线", 16, 16, LIGHTGREEN);
@@ -193,7 +195,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     Drawstation1_j();
     Drawstation2_j();
     Drawstation4_j();
-    DrawCircles_j();
+	DrawCircles_j();
 
     //购票按钮
     setcolor(GREEN);
@@ -206,7 +208,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
     //显示距离按钮
     rectangle(400, 240, 510, 310);
 
-    puthz(565, 142, "购票", 16, 16, CYAN);
+	puthz(565, 142, "购票", 16, 16, CYAN);
     puthz(565, 312, "重选", 16, 16, CYAN);
     puthz(425, 180, "计费规则", 16, 16, CYAN);
     puthz(425, 270, "显示距离", 16, 16, CYAN);
@@ -219,7 +221,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
         newxy(&mx, &my, &buttons);
         if (buttons) //专门用来搞返回上个界面
         {
-            if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
+			if (mx >= 550 && mx <= 610 && my >= 210 && my <= 270 && buttons) //返回按钮点击返回
             {
                 *judge = turnTo_c(person, -1);
                 return;
@@ -232,7 +234,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             if (mx >= 400 && mx <= 510 && my >= 240 && my <= 310 && buttons)
             {
                 DrawDistance_j();
-            }
+			}
         }
 
         /***************对于第一次点击起点站******************/
@@ -243,100 +245,100 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             mousehide(mx, my);
             if (mx >= 75 && mx <= 85 && my >= 95 && my <= 105 && buttons) //第一次点击
             {
-                Draw_start_sta_j(80, 100, &all->line1[1], &sta_checkclick[1][1], &start_station, &flag, &price);
+                Draw_start_sta_j(80, 100, &all->line1[1], &sta_checkclick[1][1], &start_station, &flag);
             }
-            if (mx >= 135 && mx <= 145 && my >= 95 && my <= 105 && buttons)
+			if (mx >= 135 && mx <= 145 && my >= 95 && my <= 105 && buttons)
             {
-                Draw_start_sta_j(140, 100, &all->line1[2], &sta_checkclick[1][2], &start_station, &flag, &price);
+                Draw_start_sta_j(140, 100, &all->line1[2], &sta_checkclick[1][2], &start_station, &flag);
             }
             if (mx >= 195 && mx <= 205 && my >= 95 && my <= 105 && buttons)
             {
-                Draw_start_sta_j(200, 100, &all->line1[3], &sta_checkclick[1][3], &start_station, &flag, &price);
+                Draw_start_sta_j(200, 100, &all->line1[3], &sta_checkclick[1][3], &start_station, &flag);
             }
             if (mx >= 255 && mx <= 265 && my >= 95 && my <= 105 && buttons) //这个是循礼门站，1和2的交点，到时候要特殊处理
             {
-                Draw_start_sta_j(260, 100, &all->line1[4], &sta_checkclick[1][4], &start_station, &flag, &price);
+                Draw_start_sta_j(260, 100, &all->line1[4], &sta_checkclick[1][4], &start_station, &flag);
             }
             if (mx >= 315 && mx <= 325 && my >= 95 && my <= 105 && buttons)
-            {
-                Draw_start_sta_j(320, 100, &all->line1[5], &sta_checkclick[1][5], &start_station, &flag, &price);
+			{
+                Draw_start_sta_j(320, 100, &all->line1[5], &sta_checkclick[1][5], &start_station, &flag);
             }
             if (mx >= 375 && mx <= 385 && my >= 95 && my <= 105 && buttons)
             {
-                Draw_start_sta_j(380, 100, &all->line1[6], &sta_checkclick[1][6], &start_station, &flag, &price);
+                Draw_start_sta_j(380, 100, &all->line1[6], &sta_checkclick[1][6], &start_station, &flag);
             }
             if (mx >= 435 && mx <= 445 && my >= 95 && my <= 105 && buttons)
             {
-                Draw_start_sta_j(440, 100, &all->line1[7], &sta_checkclick[1][7], &start_station, &flag, &price);
+                Draw_start_sta_j(440, 100, &all->line1[7], &sta_checkclick[1][7], &start_station, &flag);
             }
             if (mx >= 495 && mx <= 505 && my >= 95 && my <= 105 && buttons)
             {
-                Draw_start_sta_j(500, 100, &all->line1[8], &sta_checkclick[1][8], &start_station, &flag, &price);
+				Draw_start_sta_j(500, 100, &all->line1[8], &sta_checkclick[1][8], &start_station, &flag);
             }
             //2号线的
             if (mx >= 295 && mx <= 305 && my >= 65 && my <= 75 && buttons) //第一次点击
             {
-                Draw_start_sta_j(300, 70, &all->line2[1], &sta_checkclick[2][1], &start_station, &flag, &price);
+                Draw_start_sta_j(300, 70, &all->line2[1], &sta_checkclick[2][1], &start_station, &flag);
             }
             if (mx >= 255 && mx <= 265 && my >= 151 && my <= 161 && buttons)
             {
-                Draw_start_sta_j(260, 156, &all->line2[3], &sta_checkclick[2][3], &start_station, &flag, &price);
+                Draw_start_sta_j(260, 156, &all->line2[3], &sta_checkclick[2][3], &start_station, &flag);
             }
             if (mx >= 255 && mx <= 265 && my >= 207 && my <= 217 && buttons)
             {
-                Draw_start_sta_j(260, 212, &all->line2[4], &sta_checkclick[2][4], &start_station, &flag, &price);
+				Draw_start_sta_j(260, 212, &all->line2[4], &sta_checkclick[2][4], &start_station, &flag);
             }
             if (mx >= 255 && mx <= 265 && my >= 263 && my <= 273 && buttons)
             {
-                Draw_start_sta_j(260, 268, &all->line2[5], &sta_checkclick[2][5], &start_station, &flag, &price);
+                Draw_start_sta_j(260, 268, &all->line2[5], &sta_checkclick[2][5], &start_station, &flag);
             }
             if (mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons)
             {
-                Draw_start_sta_j(260, 324, &all->line2[6], &sta_checkclick[2][6], &start_station, &flag, &price); //有个小的计算失误，但问题不大
+                Draw_start_sta_j(260, 324, &all->line2[6], &sta_checkclick[2][6], &start_station, &flag); //有个小的计算失误，但问题不大
             }                                                                                                     //这两个draw距离其实是66
             if (mx >= 255 && mx <= 265 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(260, 380, &all->line2[7], &sta_checkclick[2][7], &start_station, &flag, &price);
-            }
+                Draw_start_sta_j(260, 380, &all->line2[7], &sta_checkclick[2][7], &start_station, &flag );
+			}
             if (mx >= 195 && mx <= 205 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(200, 380, &all->line2[8], &sta_checkclick[2][8], &start_station, &flag, &price);
+                Draw_start_sta_j(200, 380, &all->line2[8], &sta_checkclick[2][8], &start_station, &flag );
             }
             if (mx >= 235 && mx <= 245 && my >= 405 && my <= 415 && buttons)
             {
-                Draw_start_sta_j(240, 410, &all->line2[9], &sta_checkclick[2][9], &start_station, &flag, &price);
+                Draw_start_sta_j(240, 410, &all->line2[9], &sta_checkclick[2][9], &start_station, &flag );
             }
             //4号线的
             if (mx >= 75 && mx <= 85 && my >= 375 && my <= 385 && buttons) //第一次点击
             {
-                Draw_start_sta_j(80, 380, &all->line4[1], &sta_checkclick[4][1], &start_station, &flag, &price);
-            }
+                Draw_start_sta_j(80, 380, &all->line4[1], &sta_checkclick[4][1], &start_station, &flag );
+			}
             if (mx >= 135 && mx <= 145 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(140, 380, &all->line4[2], &sta_checkclick[4][2], &start_station, &flag, &price);
+                Draw_start_sta_j(140, 380, &all->line4[2], &sta_checkclick[4][2], &start_station, &flag );
             }
             if (mx >= 315 && mx <= 325 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(320, 380, &all->line4[5], &sta_checkclick[4][5], &start_station, &flag, &price);
+                Draw_start_sta_j(320, 380, &all->line4[5], &sta_checkclick[4][5], &start_station, &flag );
             }
             if (mx >= 375 && mx <= 385 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(380, 380, &all->line4[6], &sta_checkclick[4][6], &start_station, &flag, &price);
+                Draw_start_sta_j(380, 380, &all->line4[6], &sta_checkclick[4][6], &start_station, &flag );
             }
-            if (mx >= 435 && mx <= 445 && my >= 375 && my <= 385 && buttons)
+			if (mx >= 435 && mx <= 445 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(440, 380, &all->line4[7], &sta_checkclick[4][7], &start_station, &flag, &price);
+                Draw_start_sta_j(440, 380, &all->line4[7], &sta_checkclick[4][7], &start_station, &flag );
             }
             if (mx >= 495 && mx <= 505 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_start_sta_j(500, 380, &all->line4[8], &sta_checkclick[4][8], &start_station, &flag, &price);
+                Draw_start_sta_j(500, 380, &all->line4[8], &sta_checkclick[4][8], &start_station, &flag );
             }
             getMousebk(mx, my);
             continue;
         } //if第一次点击起始站
         /***************对于第一次点击起点站之后******************/
 
-        if (buttons && flag == 1)
+		if (buttons && flag == 1)
         {
             mousehide(mx, my);
             if (mx >= 75 && mx <= 85 && my >= 95 && my <= 105 && buttons) //第一次点击
@@ -349,7 +351,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             }
             if (mx >= 195 && mx <= 205 && my >= 95 && my <= 105 && buttons)
             {
-                Draw_end_sta_j(all, 200, 100, all->line1[3], &sta_checkclick[1][3], &start_station, &end_station, &flag, &price);
+				Draw_end_sta_j(all, 200, 100, all->line1[3], &sta_checkclick[1][3], &start_station, &end_station, &flag, &price);
             }
             if (mx >= 255 && mx <= 265 && my >= 95 && my <= 105 && buttons) //这个是循礼门站，1和2的交点，到时候要特殊处理
             {
@@ -362,7 +364,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             if (mx >= 375 && mx <= 385 && my >= 95 && my <= 105 && buttons)
             {
                 Draw_end_sta_j(all, 380, 100, all->line1[6], &sta_checkclick[1][6], &start_station, &end_station, &flag, &price);
-            }
+			}
             if (mx >= 435 && mx <= 445 && my >= 95 && my <= 105 && buttons)
             {
                 Draw_end_sta_j(all, 440, 100, all->line1[7], &sta_checkclick[1][7], &start_station, &end_station, &flag, &price);
@@ -375,7 +377,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             if (mx >= 295 && mx <= 305 && my >= 65 && my <= 75 && buttons)
             {
                 Draw_end_sta_j(all, 300, 70, all->line2[1], &sta_checkclick[2][1], &start_station, &end_station, &flag, &price);
-            }
+			}
             if (mx >= 255 && mx <= 265 && my >= 151 && my <= 161 && buttons)
             {
                 Draw_end_sta_j(all, 260, 156, all->line2[3], &sta_checkclick[2][3], &start_station, &end_station, &flag, &price);
@@ -388,7 +390,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             {
                 Draw_end_sta_j(all, 260, 268, all->line2[5], &sta_checkclick[2][5], &start_station, &end_station, &flag, &price);
             }
-            if (mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons)
+			if (mx >= 255 && mx <= 265 && my >= 319 && my <= 329 && buttons)
             {
                 Draw_end_sta_j(all, 260, 324, all->line2[6], &sta_checkclick[2][6], &start_station, &end_station, &flag, &price);
             }
@@ -401,7 +403,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
                 Draw_end_sta_j(all, 200, 380, all->line2[8], &sta_checkclick[2][8], &start_station, &end_station, &flag, &price);
             }
             if (mx >= 235 && mx <= 245 && my >= 405 && my <= 415 && buttons)
-            {
+			{
                 Draw_end_sta_j(all, 240, 410, all->line2[9], &sta_checkclick[2][9], &start_station, &end_station, &flag, &price);
             }
             //4号线的
@@ -414,7 +416,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
                 Draw_end_sta_j(all, 140, 380, all->line4[2], &sta_checkclick[4][2], &start_station, &end_station, &flag, &price);
             }
             if (mx >= 315 && mx <= 325 && my >= 375 && my <= 385 && buttons)
-            {
+			{
                 Draw_end_sta_j(all, 320, 380, all->line4[5], &sta_checkclick[4][5], &start_station, &end_station, &flag, &price);
             }
             if (mx >= 375 && mx <= 385 && my >= 375 && my <= 385 && buttons)
@@ -427,7 +429,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             }
             if (mx >= 495 && mx <= 505 && my >= 375 && my <= 385 && buttons)
             {
-                Draw_end_sta_j(all, 500, 380, all->line4[8], &sta_checkclick[4][8], &start_station, &end_station, &flag, &price);
+				Draw_end_sta_j(all, 500, 380, all->line4[8], &sta_checkclick[4][8], &start_station, &end_station, &flag, &price);
             }
             getMousebk(mx, my);
         }
@@ -440,7 +442,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             bar(20, 130, 160, 280);
             DrawCircles_j();
             start_station = 0; //起点站置0
-            end_station = 0;   //终点站置0
+			end_station = 0;   //终点站置0
             price = 0;
             getMousebk(mx, my);
         }
@@ -453,7 +455,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             {
                 setfillstyle(1, LIGHTMAGENTA);
                 bar(220, 180, 450, 300);
-                puthz(220, 210, "购票成功！", 16, 16, GREEN);
+				puthz(220, 210, "购票成功！", 16, 16, GREEN);
                 puthz(220, 240, "查询：个人中心——账户查询", 16, 16, GREEN);
                 changemoney_j(-price, person, 10, head);
                 changescore_j(price * 10, person, head);
@@ -466,7 +468,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             {
                 setfillstyle(1, LIGHTMAGENTA);
                 bar(220, 180, 420, 300);
-                puthz(220, 225, "余额不足！请先充值！", 16, 16, GREEN);
+				puthz(220, 225, "余额不足！请先充值！", 16, 16, GREEN);
                 delay(2000);
                 *judge = turnTo_c(person, 3);
                 return;
@@ -479,7 +481,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             setlinestyle(0, 0, 3);
             setcolor(LIGHTMAGENTA);
             rectangle(400, 150, 510, 220);
-            sign[0] = 1;
+			sign[0] = 1;
             getMousebk(mx, my);
         }
         else if (mx >= 400 && mx <= 510 && my >= 240 && my <= 310 && sign[1] == 0) //显示距离变紫
@@ -492,7 +494,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             getMousebk(mx, my);
         }
         else if (mx >= 550 && mx <= 610 && my >= 120 && my <= 180 && sign[2] == 0 && flag == 2) //购票变紫(选好了起点终点才会变色)
-        {
+		{
             mousehide(mx, my);
             setlinestyle(0, 0, 3);
             setcolor(LIGHTMAGENTA);
@@ -505,7 +507,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             mousehide(mx, my);
             setlinestyle(0, 0, 3);
             setcolor(LIGHTMAGENTA);
-            circle(580, 320, 30);
+			circle(580, 320, 30);
             sign[3] = 1;
             getMousebk(mx, my);
         }
@@ -518,7 +520,7 @@ void DrawbuyScreen_j(setuser *person, int *judge, setuser *head, all_lines_stati
             circle(580, 320, 30);
             rectangle(400, 150, 510, 220);
             rectangle(400, 240, 510, 310);
-            sign[0] = sign[1] = sign[2] = sign[3] = 0;
+			sign[0] = sign[1] = sign[2] = sign[3] = 0;
             getMousebk(mx, my);
         }
     }
@@ -531,7 +533,7 @@ Attention:  无
 void DrawcheckScreen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    int sign[4] = {0, 0, 0, 0};
+	int sign[4] = {0, 0, 0, 0};
     mouseInit(&mx, &my, &buttons);
     cleardevice();
     setbkcolor(WHITE);
@@ -544,7 +546,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
     outtextxy(220, 30, person->accounts);
 
     setlinestyle(0, 0, 1);
-    setcolor(LIGHTRED);
+	setcolor(LIGHTRED);
 
     //画出返回按钮
     returnBtn_c(300, 400, GREEN);
@@ -557,7 +559,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
     {
         outtextxy(140, 95, "0");
     }
-    else
+	else
     {
         outtextxy(140, 95, person->money);
     }
@@ -570,7 +572,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
         outtextxy(300, 95, person->score);
     }
 
-    puthz(90, 160, "您可以选择：", 16, 16, CYAN);
+	puthz(90, 160, "您可以选择：", 16, 16, CYAN);
     setfillstyle(1, LIGHTCYAN);
 
     bar(100, 200, 280, 290);
@@ -583,7 +585,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
     puthz(357, 328, "积分商城", 32, 32, MAGENTA);
 
     while (1)
-    {
+	{
         newxy(&mx, &my, &buttons);
         if (buttons)
         {
@@ -596,7 +598,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
             if (mx >= 100 && mx <= 280 && my >= 200 && my <= 290 && buttons) //点击购票方框，返回购票界面
             {
                 *judge = turnTo_c(person, 5);
-                return;
+				return;
             }
             if (mx >= 330 && mx <= 510 && my >= 200 && my <= 290 && buttons) //点击修改密码方框
             {
@@ -609,7 +611,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
                 return;
             }
             if (mx >= 330 && mx <= 510 && my >= 305 && my <= 395 && buttons)//积分商城
-            {
+			{
                 *judge = turnTo_c(person, 10);
                 return;
             }
@@ -622,7 +624,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
             setlinestyle(0, 0, 1);
             setcolor(LIGHTMAGENTA);
             rectangle(100, 200, 280, 290);
-            sign[0] = 1;
+			sign[0] = 1;
             getMousebk(mx, my);
         }
         else if (mx >= 330 && mx <= 510 && my >= 200 && my <= 290 && sign[1] == 0) //“修改密码”
@@ -635,7 +637,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
             getMousebk(mx, my);
         }
         else if (mx >= 100 && mx <= 280 && my >= 305 && my <= 395 && sign[2] == 0)
-        {
+		{
             mousehide(mx, my);
             setlinestyle(0, 0, 1);
             setcolor(LIGHTMAGENTA);
@@ -648,7 +650,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
             mousehide(mx, my);
             setlinestyle(0, 0, 1);
             setcolor(LIGHTMAGENTA);
-            rectangle(330, 305, 510, 395);
+			rectangle(330, 305, 510, 395);
             sign[3] = 1;
             getMousebk(mx, my);
         }
@@ -661,7 +663,7 @@ void DrawcheckScreen_j(setuser *person, int *judge)
             rectangle(330, 200, 510, 290);
             rectangle(100, 305, 280, 395);
             rectangle(330, 305, 510, 395);
-            sign[0] = 0;
+			sign[0] = 0;
             sign[1] = 0;
             sign[2] = 0;
             sign[3] = 0;
@@ -687,7 +689,7 @@ void outputcharge_j(setuser *person, int add_money, setuser *head)
         outtextxy(200, 75, "0");
     }
     else
-    {
+	{
         outtextxy(200, 75, person->money);
     }
     puthz(270, 75, "元", 16, 16, LIGHTMAGENTA);
@@ -726,7 +728,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
     int choose;
     int charge = 0;
     int flag;
-    char place[4];
+	char place[4];
     char str_charge[4];
     int zidingyi;
     int sign[6]={0,0,0,0,0,0};
@@ -739,7 +741,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
     setbkcolor(WHITE);
     DrawBeautifulFrame_c();
     puthz(80, 28, "您好！尊敬的：", 16, 16, GREEN);
-    outtextxy(190, 27, person->accounts);
+	outtextxy(190, 27, person->accounts);
     //puthz(400, 435, "关于我们", 16, 16, MAGENTA);
     //puthz(540, 435, "帮助", 16, 16, MAGENTA);
 
@@ -752,7 +754,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
     //rectangle(398, 433, 465, 453); //关于我们的位置
     //rectangle(538, 433, 571, 453); //帮助的位置
     //画出返回按钮
-    returnBtn_c(300, 400, GREEN);
+	returnBtn_c(300, 400, GREEN);
 
     puthz(80, 75, "您的余额：", 16, 16, GREEN);
     settextstyle(0, 0, 2);
@@ -765,7 +767,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
     {
         outtextxy(200, 75, person->money);
     }
-    puthz(270, 75, "元", 16, 16, LIGHTMAGENTA);
+	puthz(270, 75, "元", 16, 16, LIGHTMAGENTA);
     setlinestyle(0, 0, 1);
     puthz(80, 110, "您可以选择：", 16, 16, GREEN);
 
@@ -791,7 +793,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 return;
             }
             else if (mx >= 100 && mx <= 190 && my >= 150 && my <= 200 && buttons && choose == 0)
-            {
+			{
                 setfillstyle(1, WHITE);
                 bar(60, 340, 250, 370); //覆盖掉“您已成功充值XXX元”的提示
                 bar(180, 70, 290, 100);
@@ -804,7 +806,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 bar(60, 340, 250, 370);
                 bar(180, 70, 290, 100);
                 outputcharge_j(person, 20, head);
-                puthz(80, 350, "您已成功充值20元", 16, 16, RED);
+				puthz(80, 350, "您已成功充值20元", 16, 16, RED);
             }
             else if (mx >= 460 && mx <= 550 && my >= 150 && my <= 200 && buttons && choose == 0)
             {
@@ -817,7 +819,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             else if (mx >= 100 && mx <= 190 && my >= 280 && my <= 330 && buttons && choose == 0)
             {
 
-                setfillstyle(1, WHITE);
+				setfillstyle(1, WHITE);
                 bar(60, 340, 250, 370);
                 bar(180, 70, 290, 100);
                 outputcharge_j(person, 100, head);
@@ -830,7 +832,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 bar(60, 340, 250, 370);
                 bar(180, 70, 290, 100);
                 outputcharge_j(person, 200, head);
-                puthz(80, 350, "您已成功充值200元", 16, 16, RED);
+				puthz(80, 350, "您已成功充值200元", 16, 16, RED);
             }
             else if (mx >= 460 && mx <= 550 && my >= 280 && my <= 330 && buttons && zidingyi == 0) //之前没点过“自定义”
             {
@@ -843,7 +845,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 puthz(430, 90, "确定", 16, 16, BLUE);
                 puthz(500, 90, "取消", 16, 16, BLUE);
                 puthz(405, 60, "请输入金额：", 16, 16, WHITE);
-                zidingyi = 1;
+				zidingyi = 1;
             }
             else if (mx >= 500 && mx <= 545 && my >= 55 && my <= 85 && buttons) //框变绿效果
             {
@@ -856,7 +858,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             {
                 mousehide(mx, my);
                 setfillstyle(1, WHITE);
-                bar(400, 50, 560, 112);
+				bar(400, 50, 560, 112);
                 bar(350, 115, 600, 147);
                 choose = 0;
                 signs = 0;
@@ -869,7 +871,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             {
                 mousehide(mx, my);
                 setfillstyle(1, WHITE);
-                bar(400, 50, 560, 112);
+				bar(400, 50, 560, 112);
                 bar(60, 340, 250, 370);
                 bar(180, 70, 290, 100);
                 choose = 0;
@@ -882,7 +884,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
                 puthz(180, 350, str_charge, 16, 16, RED);
                 puthz(235, 350, "元", 16, 16, RED);
                 getMousebk(mx, my);
-            }
+			}
         }
         //动画
         if (mx >= 100 && mx <= 190 && my >= 150 && my <= 200 && sign[0] == 0) //10
@@ -895,7 +897,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             getMousebk(mx, my);
         }
         else if(mx >= 280 && mx <= 370 && my >= 150 && my <= 200 && sign[1] == 0)//20
-        {
+		{
             mousehide(mx, my);
             setlinestyle(0, 0, 1);
             setcolor(LIGHTCYAN);
@@ -908,7 +910,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             mousehide(mx, my);
             setlinestyle(0, 0, 1);
             setcolor(LIGHTCYAN);
-            rectangle(460,150,550,200);
+			rectangle(460,150,550,200);
             sign[2] = 1;
             getMousebk(mx, my);
         }
@@ -921,7 +923,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             sign[3] = 1;
             getMousebk(mx, my);
         }
-        else if(mx >= 280 && mx <= 370 && my >= 280 && my <= 330 && sign[4] == 0)//200
+		else if(mx >= 280 && mx <= 370 && my >= 280 && my <= 330 && sign[4] == 0)//200
         {
             mousehide(mx, my);
             setlinestyle(0, 0, 1);
@@ -934,7 +936,7 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
         {
             mousehide(mx, my);
             setlinestyle(0, 0, 1);
-            setcolor(LIGHTCYAN);
+			setcolor(LIGHTCYAN);
             rectangle(460,280,550,330);
             sign[5] = 1;
             getMousebk(mx, my);
@@ -958,7 +960,9 @@ void DrawchargeScreen_j(setuser *person, int *judge, setuser *head)
             if (kbhit() != 0) //如果检测到键盘输入
             {
                 mousehide(mx, my);
-                key = bioskey(0);
+				key = bioskey(0)
+
+				;
                 if (key != 0xe08 && signs >= 0 && signs <= 3) //如果输入不是退格键
                 {
                     if (searchKeyValue(key) == '0' || searchKeyValue(key) == '1' || searchKeyValue(key) == '2' || searchKeyValue(key) == '3' || searchKeyValue(key) == '4' ||

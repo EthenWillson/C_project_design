@@ -5,12 +5,12 @@ Attention:  查询用户的数量，余额，积分，出行记录，并且可以注销用户
 Author：江明轩
 **********************************************************/
 void DrawLine_j(int x1, int y1, int x2, int y2, int x3, int y3, int color);
-void DrawStar_j();
+void DrawStar_j(void);
 void Draw_run_Screen_j(setuser *person, int *judge);
 void run_check_Screen_j(setuser *person, int *judge, setuser *head);
 void run_power_Screen_j(setuser *person, int *judge);
-void Draw_poly1_j();                         //更改权限
-void Draw_poly2_j();                         //删除用户
+void Draw_poly1_j(void);                         //更改权限
+void Draw_poly2_j(void);                         //删除用户
 void Draw_frame1_j(int x, int y, int color); //更改权限操作框
 void Draw_frame2_j(int x, int y, int color); //删除用户操作框
 void change_power_Screen_j(setuser *person, int *judge, setuser *head);
@@ -33,7 +33,7 @@ Function:  DrawStar
 Description：画六芒星
 Attention:  无
 **********************************************************/
-void DrawStar_j()
+void DrawStar_j(void)
 {
     setlinestyle(0, 0, 3);
     setcolor(YELLOW);
@@ -334,14 +334,14 @@ void run_check_Screen_j(setuser *person, int *judge, setuser *head)
         }
     }
 }
-void Draw_poly1_j()
+void Draw_poly1_j(void)
 {
     line(320, 120, 200, 170);
     line(200, 170, 320, 220);
     line(320, 220, 440, 170);
     line(440, 170, 320, 120);
 }
-void Draw_poly2_j()
+void Draw_poly2_j(void)
 {
     line(320, 270, 200, 320);
     line(200, 320, 320, 370);
@@ -464,7 +464,7 @@ void change_power_Screen_j(setuser *person, int *judge, setuser *head)
     int input_num = 0; //标志输入了几个字符
     char place[14];    //字符缓存，最多可以存13位，在用户输入第13位的时候会有提示
     int flag = 0;      //标志账号不可多于12位的提示
-    int find = 0;
+    // int find = 0;
     setuser *p; //临时指针
     mouseInit(&mx, &my, &buttons);
     cleardevice();
@@ -534,7 +534,7 @@ void change_power_Screen_j(setuser *person, int *judge, setuser *head)
                 {
                     if (strcmp(place, p->accounts) == 0)
                     {
-                        find = 1; //代表账号是存在的
+                        // find = 1; //代表账号是存在的
                         if (strcmp(p->class, "jmxzs") == 0 || strcmp(p->class, "cjwzs") == 0)
                         {
                             puthz(240, 80, "请输入普通用户的账号！", 16, 16, RED);
@@ -638,7 +638,7 @@ void delete_user_Screen_j(setuser *person, int *judge, setuser *head)
     int input_num = 0;
     int flag = 0; //账号不可多于12位的提示
     int x = 0, y = 0;
-    int find = 0;
+    // int find = 0;
     setuser *p;
     mouseInit(&mx, &my, &buttons);
     cleardevice();
@@ -674,7 +674,7 @@ void delete_user_Screen_j(setuser *person, int *judge, setuser *head)
                 {
                     if (strcmp(place, p->accounts) == 0)
                     {
-                        find = 1; //代表账号是存在的
+                        // find = 1; //代表账号是存在的
                         if (strcmp(p->class, "jmxzs") == 0)
                         {
                             puthz(240, 80, "您不可删除运营管理员的账号！", 16, 16, RED);

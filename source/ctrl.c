@@ -438,15 +438,15 @@ void changeDot(setTrainInfo *Info,station *line2)
 {
 	//局部变量
 	int i,j;
-	setTrain *fT,*fTb,*rT,*rTb;//fT正向，rT逆向
+	setTrain *fT,*rT;//fT正向，rT逆向,*fTb,*rTb
 	station *line=Info->lineHead->station;
 	float xnew,ynew,distance;
-	int speed=Info->speed,wait=Info->wait,goTime=Info->goTime;
+	int speed=Info->speed;//,goTime=Info->goTime,wait=Info->wait
 	//初始化
 	fT=Info->trainHead;
 	rT=Info->rtrainHead;
 	//正向
-	for(fT=Info->trainHead,fTb=Info->trainHead;fT!=NULL;fTb=fT,fT=fT->next)
+	for(fT=Info->trainHead;fT!=NULL;fT=fT->next)//fTb=fT,,fTb=Info->trainHead
 	{
 		if(fT->count==0)//车不在站台
 		{
@@ -551,7 +551,7 @@ void changeDot(setTrainInfo *Info,station *line2)
 		
 	}
 	//逆向
-	for(rT=Info->rtrainHead,rTb=Info->rtrainHead;rT!=NULL;rTb=rT,rT=rT->next)
+	for(rT=Info->rtrainHead;rT!=NULL;rT=rT->next)//,rTb=Info->rtrainHead，rTb=rT,
 	{
 		if(rT->count==0)//车不在站台
 		{
@@ -738,10 +738,9 @@ Function:  drawControlScreen
 Description：	画调度页面，实现动画
 Attention:  无
 **********************************************************/
-void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_stations *all,setTrainInfo *Info)
+void drawControlScreen(setuser *person,int *judge,all_lines_stations *all,setTrainInfo *Info)
 {
     int buttons,mx,my;//鼠标相关变量
-	char temp[2]={'\0','\0'};//用于吸收键盘缓冲区的变量
 	int i;//划线循环变量
 	long int accum=0;//累计器
 	int currentNum=0;//当前调度线路
@@ -758,9 +757,6 @@ void drawControlScreen(setuser *person,int *judge,setuser *head,all_lines_statio
 	setbkcolor(DARKGRAY);
 	// initTranInfo(Info,all);
 	currentStation=&all->line1[1];
-	// closegraph();
-	// printf("%d %d\n",Info->trainHead->x,Info->rtrainHead->y);
-	// getch();
 
 	//绘制界面
 	//绘制返回按钮

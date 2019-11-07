@@ -9,7 +9,7 @@ void changescore_j(int n, setuser *person, setuser *head);
 void changerecord_j(setuser *person, setuser *head, int start_name, int end_name, int price);
 void change_class_j(setuser *person, setuser *head, int sign1, int sign2);
 void delete_user_j(setuser *p, setuser *head);
-void DrawrecordScreen_j(setuser *person, int *judge, all_lines_stations *all);
+void DrawrecordScreen_j(setuser *person, int *judge);
 /**********************************************************
 Function:  changemoney
 Description：	改变文件中用户余额
@@ -259,10 +259,9 @@ Function:  DrawrecordScreen
 Description：显示出历史记录
 Attention:  无
 **********************************************************/
-void DrawrecordScreen_j(setuser *person, int *judge, all_lines_stations *all)
+void DrawrecordScreen_j(setuser *person, int *judge)
 {
     int buttons, mx, my;         //鼠标相关变量
-    char temp[2] = {'\0', '\0'}; //用于吸收键盘缓冲区的变量
     char name[20];
     char temporary[4];
     char price[2];

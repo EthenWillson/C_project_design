@@ -3,16 +3,17 @@
 
 #include"struct_c.h"
 #include"common_c.h"
-void DrawBeautifulFrame_c();//æ¼‚äº®çš„è¾¹æ¡†
+void DrawBeautifulFrame_c(void);//Æ¯ÁÁµÄ±ß¿ò
 void Drawxctubiaoone(int x, int y, int color);
 void Drawxctubiaotwo(int x, int y, int color);
 void Drawbuttons(int x, int y, int color);
-void Drawxc_self( int x, int y, int color);//ä¿®æ”¹å¯†ç æŒ‰é’®
-void Drawxc_auto( int x, int y, int color);//å……å€¼æŒ‰é’®
-void returnBtn_c(int x,int y,int color);//è¿”å›æŒ‰é’®
-void returnBtn_small_c(int x,int y,int color);//å°è¿”å›æŒ‰é’®
-void inputBoxGroup(int x, int y, int framecolor,int color);//ç»˜åˆ¶è¾“å…¥æ¡†ä½“å‡½æ•°
-void frameChange_c(int x1,int y1,int x2,int y2,int color);//è¾“å…¥æ¡†å˜è‰²å‡½æ•°
-void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//ä¿®æ”¹å¯†ç ç•Œé¢
-void PersonalCenter_c(setuser *person,int *judge,setuser *head);//ä¸ªäººä¸­å¿ƒç•Œé¢
+void Drawxc_self( int x, int y, int color);//ĞŞ¸ÄÃÜÂë°´Å¥
+void Drawxc_auto( int x, int y, int color);//³äÖµ°´Å¥
+void returnBtn_c(int x,int y,int color);//·µ»Ø°´Å¥
+void returnBtn_small_c(int x,int y,int color);//Ğ¡·µ»Ø°´Å¥
+void returnBtn_next_c(int x,int y,int color);//ÏÂÒ»Ïî
+void inputBoxGroup(int x, int y, int framecolor,int color);//»æÖÆÊäÈë¿òÌåº¯Êı
+void frameChange_c(int x1,int y1,int x2,int y2,int color);//ÊäÈë¿ò±äÉ«º¯Êı
+void changePasswordScreen_c(setuser *person,int *judge,setuser *head);//ĞŞ¸ÄÃÜÂë½çÃæ
+void PersonalCenter_c(setuser *person,int *judge);//¸öÈËÖĞĞÄ½çÃæ
 #endif
